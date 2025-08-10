@@ -5,6 +5,7 @@
 #include "memory/VE_MemoryCallbacks.h"
 #include "utils/VulkanBufferInitializers.h"
 #include "utils/VulkanCmdInitializers.h"
+#include "memory/VulkanBuffer.h"
 
 void VE_Device::createMemoryAllocator()
 {
@@ -121,33 +122,38 @@ VkQueue VE_Device::createQueue(const VkQueueFlags a_flag)
 
 
 #pragma region buffer
-void VE_Device::createStagingBuffer(const VkDeviceSize& a_size, VE_Buffer& a_buffer)const
+VulkanBuffer VE_Device::allocateStagingBuffer(const size_t& a_bufferByteSize)const
 {
-	/*if (a_size == 0)
-	{
-		Logger::error("Staging buffer size is zero, can't create staging buffer");
-		return;
-	}
+	VkBufferCreateInfo bufferInfo = Vulkan::Initializers::bufferCreateInfo(Vulkan::Initializers::BufferCreateInfoParameters{
+		.flags = 0,
+		.size = a_bufferByteSize,
+		.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+		.sharingMode = VK_SHARING_MODE_EXCLUSIVE,
+		.familyCount = 0,
+		.familyIndex = nullptr
+		});
 
-	VkBufferCreateInfo bufferInfo = Vulkan::Initializers::bufferCreateInfo(
-		Vulkan::Initializers::BufferCreateInfoParameters{ 
-			0, 
-			a_size, 
-			VK_BUFFER_USAGE_TRANSFER_SRC_BIT, 
-			VK_SHARING_MODE_EXCLUSIVE,
-			0,
-			nullptr }
-	);
-
-	VmaAllocationCreateInfo stagingBufAllocCreateInfo{};
+	VmaAllocationCreateInfo stagingBufAllocCreateInfo = {};
 	stagingBufAllocCreateInfo.usage = VMA_MEMORY_USAGE_AUTO;
 	stagingBufAllocCreateInfo.flags = VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT | VMA_ALLOCATION_CREATE_MAPPED_BIT;
 
-	VK_CHECK_EXCEPT(vmaCreateBuffer(m_memAllocator, 
-		&bufferInfo, 
+	VulkanBuffer stagingBuffer;
+
+	VK_CHECK_EXCEPT(vmaCreateBuffer(m_memAllocator,
+		&stagingBufInfo,
 		&stagingBufAllocCreateInfo,
-		&a_buffer.m_stagingBuffer, 
-		&a_buffer.m_stagingBufAlloc, 
-		&a_buffer.m_stagingBufAllocInfo));*/
+		&stagingBuffer.m_buffer,
+		&stagingBuffer.m_Alloc,
+		&stagingBuffer.m_AllocInfo))
+
+	return stagingBuffer;
 }
+
+void VE_Device::releaseBuffer(VulkanBuffer& a_buffer)const
+{
+	vmaDestroyBuffer(m_memAllocator, a_buffer.m_buffer, a_buffer.m_Alloc);
+	a_buffer.m_buffer = VK_NULL_HANDLE;
+	a_buffer.m_Alloc = VK_NULL_HANDLE;
+}
+//
 #pragma endregion

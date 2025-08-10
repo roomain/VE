@@ -172,6 +172,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClInclude Include="inc\core_globals.h" />
     <ClInclude Include="inc\framework.h" />
     <ClInclude Include="inc\memory\VE_MemoryCallbacks.h" />
+    <ClInclude Include="inc\memory\VulkanBuffer.h" />
     <ClInclude Include="inc\parameters\VE_Parameter.h" />
     <ClInclude Include="inc\parameters\VE_QueueCreateInfo.h" />
     <ClInclude Include="inc\pch.h" />

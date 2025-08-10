@@ -12,6 +12,7 @@
 #include "vk_mem_alloc.h"
 #include "core_globals.h"
 
+struct VulkanBuffer;
 struct VE_Buffer; // forward declaration
 
 #pragma warning(push)
@@ -39,7 +40,19 @@ public:
 #pragma endregion
 
 #pragma region buffer
-	void createStagingBuffer(const VkDeviceSize& a_size, VE_Buffer& a_buffer)const;
+	/*@brief create temporary buffer brfore sending to Gpu*/
+	[[nodiscard]] VulkanBuffer allocateStagingBuffer(const size_t& a_bufferByteSize)const;
+	void releaseBuffer(VulkanBuffer& a_buffer)const;
+
+	template<typename Type>
+	void writeBuffer(const VulkanBuffer& a_buffer, const Type* a_inputBuffer)const
+	{
+		VK_CHECK_EXCEPT(vmaFlushAllocation(m_memAllocator, a_buffer.m_Alloc, 0, sizeof(Type)));
+		void* mapData = nullptr;
+		VK_CHECK_EXCEPT(vmaMapMemory(m_memAllocator, a_buffer.m_Alloc, &data));
+		std::memcpy(mapData, a_inputBuffer, sizeof(Type));
+		vmaUnmapMemory(m_memAllocator, a_buffer.m_Alloc);
+	}
 #pragma endregion
 };
 #pragma warning(pop)
