@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <COMMON_INC>$(SolutionDir)common</COMMON_INC>
+    <LOGGER_INC>$(COMMON_INC)\logger</LOGGER_INC>
+    <MACROS_INC>$(COMMON_INC)\macros</MACROS_INC>
+    <STR_TOOLS_INC>$(COMMON_INC)\string_tools</STR_TOOLS_INC>
+    <THREADING_INC>$(COMMON_INC)\threading</THREADING_INC>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(COMMON_INC);$(LOGGER_INC);$(MACROS_INC);$(STR_TOOLS_INC);$(THREADING_INC);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command></Command>
+    </PostBuildEvent>    
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="COMMON_INC">
+      <Value>$(COMMON_INC)</Value>
+    </BuildMacro>
+    <BuildMacro Include="LOGGER_INC">
+      <Value>$(LOGGER_INC)</Value>
+    </BuildMacro>
+    <BuildMacro Include="MACROS_INC">
+      <Value>$(MACROS_INC)</Value>
+    </BuildMacro>
+    <BuildMacro Include="STR_TOOLS_INC">
+      <Value>$(STR_TOOLS_INC)</Value>
+    </BuildMacro>
+    <BuildMacro Include="THREADING_INC">
+      <Value>$(THREADING_INC)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

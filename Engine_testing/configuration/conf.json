@@ -1,0 +1,35 @@
+{
+    "$shema" : "not_yet_rated",
+    "title" : "test_engine",
+    "include": [],
+    "ClassArray" :[
+        {
+            "Id" :{
+                "name": "configuration",
+                "parent": null
+            },
+            "VE_Parameter" :{
+                "bIsDebug" : true,
+                "extensions" : ["VK_EXT_debug_utils", "VK_KHR_surface"],
+                "layers" : ["VK_LAYER_KHRONOS_validation"]
+            },
+            "VE_DeviceParameter" :{
+                "extensions" : ["VK_KHR_swapchain"],
+                "queues": [
+                    {
+                        "bPresentationAvailable": true,
+                        "flags": "VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_TRANSFER_BIT",
+                        "count": 1
+                    }
+                ],
+                "features" :
+                {
+                    "geometryShader" : true,
+                    "tessellationShader" : true,
+                    "multiViewport" : true
+                }
+
+            }
+        }
+    ]
+}

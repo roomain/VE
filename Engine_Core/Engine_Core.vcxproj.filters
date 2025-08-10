@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Fichiers sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Fichiers de ressources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Capabilities">
+      <UniqueIdentifier>{7920b0b9-c32a-459d-8bdd-1fcb7d66a500}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Capabilities">
+      <UniqueIdentifier>{73c5c3e0-e470-4317-8ebd-6a056ff879c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\utils">
+      <UniqueIdentifier>{311db035-4d0f-4602-8bd6-cf6cab7260d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\memory">
+      <UniqueIdentifier>{399ca6e6-8977-4d3c-8535-eb18ef21cf67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\memory">
+      <UniqueIdentifier>{746ea57e-a126-4ca9-af2d-83d5b7bc2385}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\parameters">
+      <UniqueIdentifier>{656c32ee-157e-44d5-b5d4-ca007059ec51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\parameters">
+      <UniqueIdentifier>{1d73189e-8b55-4d01-a1b0-6f54d25fee0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\rendering">
+      <UniqueIdentifier>{77079749-8e15-4b61-9dd7-c36b0d56764e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\rendering">
+      <UniqueIdentifier>{4746f107-ede4-42c8-96c6-a674791faeac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\buffers">
+      <UniqueIdentifier>{6798e9f6-0b57-4ca6-9b7a-9d655c58e0d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\buffers">
+      <UniqueIdentifier>{589214f5-4389-4a73-9953-b3c86e680616}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="inc\Capabilities\VE_CapabilitiesVisitor.h">
+      <Filter>Fichiers d%27en-tête\Capabilities</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Capabilities\VE_InstanceCapabilities.h">
+      <Filter>Fichiers d%27en-tête\Capabilities</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Capabilities\VE_Capabilities.h">
+      <Filter>Fichiers d%27en-tête\Capabilities</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Capabilities\VE_DeviceCapabilities.h">
+      <Filter>Fichiers d%27en-tête\Capabilities</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\utils\vulkan_enum_to_string.h">
+      <Filter>Fichiers d%27en-tête\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\utils\Vulkan_macros.h">
+      <Filter>Fichiers d%27en-tête\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\utils\vulkan_string_to_enum.h">
+      <Filter>Fichiers d%27en-tête\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\utils\VulkanInitializers.h">
+      <Filter>Fichiers d%27en-tête\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\utils\VulkanPipelineInitializers.h">
+      <Filter>Fichiers d%27en-tête\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\memory\VE_MemoryCallbacks.h">
+      <Filter>Fichiers d%27en-tête\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\utils\VulkanDefines.h">
+      <Filter>Fichiers d%27en-tête\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\core_globals.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\parameters\VE_Parameter.h">
+      <Filter>Fichiers d%27en-tête\parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\VE_Application.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\framework.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\pch.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\VE_Device.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\utils\VulkanContext.h">
+      <Filter>Fichiers d%27en-tête\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\VE_QueueFamily.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\parameters\VE_QueueCreateInfo.h">
+      <Filter>Fichiers d%27en-tête\parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\VE_GraphicalDevice.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\VE_SwapChain.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\rendering\VE_Shader.h">
+      <Filter>Fichiers d%27en-tête\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\utils\VulkanShaderInitializers.h">
+      <Filter>Fichiers d%27en-tête\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\utils\VulkanCmdInitializers.h">
+      <Filter>Fichiers d%27en-tête\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\utils\VulkanBufferInitializers.h">
+      <Filter>Fichiers d%27en-tête\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\utils\VE_Mem_alloc.h">
+      <Filter>Fichiers d%27en-tête\utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Capabilities\VE_Capabilities.cpp">
+      <Filter>Fichiers sources\Capabilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Capabilities\VE_InstanceCapabilities.cpp">
+      <Filter>Fichiers sources\Capabilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Capabilities\VE_DeviceCapabilities.cpp">
+      <Filter>Fichiers sources\Capabilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Capabilities\VE_CapabilitiesVisitor.cpp">
+      <Filter>Fichiers sources\Capabilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\memory\VE_MemoryCallbacks.cpp">
+      <Filter>Fichiers sources\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="src\memory\vmaAllocator.cpp">
+      <Filter>Fichiers sources\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VE_Application.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pch.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VE_QueueFamily.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VE_Device.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VE_GraphicalDevice.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VE_SwapChain.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rendering\VE_Shader.cpp">
+      <Filter>Fichiers sources\rendering</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

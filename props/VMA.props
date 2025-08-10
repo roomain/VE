@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <VK_MEMORY_DIR Condition="exists('D:\Libraries\VulkanMemoryAllocator')">D:\Libraries\VulkanMemoryAllocator</VK_MEMORY_DIR>
+    <VK_MEMORY_DIR Condition="exists('C:\Libraries\VulkanMemoryAllocator')">C:\Libraries\VulkanMemoryAllocator</VK_MEMORY_DIR>
+    <VK_MEMORY_DIR_INC>$(VK_MEMORY_DIR)\include</VK_MEMORY_DIR_INC>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(VK_MEMORY_DIR_INC);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="VK_MEMORY_DIR">
+      <Value>$(VK_MEMORY_DIR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="VK_MEMORY_DIR_INC">
+      <Value>$(VK_MEMORY_DIR_INC)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

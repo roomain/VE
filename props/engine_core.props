@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+	<ENGINE_DIR>$(SolutionDir)Engine_Core</ENGINE_DIR>
+  <ENGINE_INC>$(ENGINE_DIR)/inc</ENGINE_INC>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ENGINE_INC);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Engine_Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="ENGINE_DIR">
+      <Value>$(ENGINE_DIR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ENGINE_INC">
+      <Value>$(ENGINE_INC)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

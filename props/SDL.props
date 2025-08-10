@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <SDL_DIR Condition="exists('D:\libraries\SDL')">D:\libraries\SDL</SDL_DIR>
+    <SDL_DIR Condition="exists('C:\libraries\SDL')">C:\libraries\SDL</SDL_DIR>
+    <SDL_INC>$(SDL_DIR)\include</SDL_INC>
+    <SDL_LIB>$(SDL_DIR)\VS2022\$(Configuration)</SDL_LIB>
+    <SDL_BIN>$(SDL_DIR)\VS2022\$(Configuration)</SDL_BIN>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SDL_INC);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SDL_LIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <CopyFileToFolders>
+      <DestinationFileName>SDL3.dll</DestinationFileName>
+    </CopyFileToFolders>
+    <CopyFileToFolders>
+      <RootFolder>$(SDL_BIN)</RootFolder>
+    </CopyFileToFolders>
+    <PreBuildEvent>
+      <Command>copy /Y $(SDL_BIN)\SDL3.dll $(OutDir) </Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="SDL_DIR">
+      <Value>$(SDL_DIR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="SDL_INC">
+      <Value>$(SDL_INC)</Value>
+    </BuildMacro>
+    <BuildMacro Include="SDL_LIB">
+      <Value>$(SDL_LIB)</Value>
+    </BuildMacro>
+    <BuildMacro Include="SDL_BIN">
+      <Value>$(SDL_BIN)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

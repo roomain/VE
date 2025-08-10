@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+        <GLFW_DIR Condition="exists('D:\Libraries\glfw')">D:\Libraries\glfw</GLFW_DIR>
+        <GLFW_DIR Condition="exists('C:\libraries\glfw')">C:\libraries\glfw</GLFW_DIR>
+        <GLFW_SLN_DIR Condition="exists('$(GLFW_DIR)\VS2019')">$(GLFW_DIR)\VS2019</GLFW_SLN_DIR>
+        <GLFW_SLN_DIR Condition="exists('$(GLFW_DIR)\VS2022')">$(GLFW_DIR)\VS2022</GLFW_SLN_DIR>
+        <GLFW_INC>$(GLFW_DIR)\include</GLFW_INC>
+        <GLFW_LIB>$(GLFW_SLN_DIR)\src\Release</GLFW_LIB>
+  </PropertyGroup> 
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(GLFW_INC);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(GLFW_LIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command></Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="GLFW_DIR">
+      <Value>$(GLFW_DIR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GLFW_SLN_DIR">
+      <Value>$(GLFW_SLN_DIR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GLFW_INC">
+      <Value>$(GLFW_INC)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GLFW_LIB">
+      <Value>$(GLFW_LIB)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
