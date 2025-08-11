@@ -10,6 +10,7 @@
 #include "utils/VulkanContext.h"
 #include "VE_QueueFamily.h"
 #include "vk_mem_alloc.h"
+#include "memory/VulkanBuffer.h"
 #include "core_globals.h"
 
 struct VulkanBuffer;
@@ -40,10 +41,18 @@ public:
 #pragma endregion
 
 #pragma region buffer
+	/*@brief create vulkan buffer in Gpu/Device Memory shared by queues*/
+	[[nodiscard]] VulkanBuffer allocateBuffer(const size_t& a_bufferByteSize, const std::vector<uint32_t>& a_shareQueue)const;
+	/*@brief create vulkan buffer in Gpu/Device Memory NOT shared*/
+	[[nodiscard]] VulkanBuffer allocateBuffer(const size_t& a_bufferByteSize)const;
+
 	/*@brief create temporary buffer brfore sending to Gpu*/
 	[[nodiscard]] VulkanBuffer allocateStagingBuffer(const size_t& a_bufferByteSize)const;
+
+	/*@brief release buffer*/
 	void releaseBuffer(VulkanBuffer& a_buffer)const;
 
+	/*@brief write buffer data*/
 	template<typename Type>
 	void writeBuffer(const VulkanBuffer& a_buffer, const Type* a_inputBuffer)const
 	{

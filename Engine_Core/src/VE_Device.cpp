@@ -5,7 +5,6 @@
 #include "memory/VE_MemoryCallbacks.h"
 #include "utils/VulkanBufferInitializers.h"
 #include "utils/VulkanCmdInitializers.h"
-#include "memory/VulkanBuffer.h"
 
 void VE_Device::createMemoryAllocator()
 {
@@ -122,9 +121,63 @@ VkQueue VE_Device::createQueue(const VkQueueFlags a_flag)
 
 
 #pragma region buffer
+VulkanBuffer VE_Device::allocateBuffer(const size_t& a_bufferByteSize, const std::vector<uint32_t>& a_shareQueue)const
+{
+	VkBufferCreateInfo stagingBufInfo = Vulkan::Initializers::bufferCreateInfo(Vulkan::Initializers::BufferCreateInfoParameters{
+		.flags = 0,
+		.size = a_bufferByteSize,
+		.usage = /*todo*/,
+		.sharingMode = VK_SHARING_MODE_CONCURRENT,
+		.familyCount = static_cast<uint32_t>(a_shareQueue.size()),
+		.familyIndex = a_shareQueue.data()
+		});
+
+	VmaAllocationCreateInfo bufAllocCreateInfo = {};
+	bufAllocCreateInfo.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
+	bufAllocCreateInfo.flags = /*todo*/;
+
+	VulkanBuffer buffer;
+
+	VK_CHECK_EXCEPT(vmaCreateBuffer(m_memAllocator,
+		&stagingBufInfo,
+		&bufAllocCreateInfo,
+		&buffer.m_buffer,
+		&buffer.m_Alloc,
+		&buffer.m_AllocInfo))
+		
+	return buffer;
+}
+
+/*@brief create vulkan buffer in Gpu/Device Memory NOT shared*/
+VulkanBuffer VE_Device::allocateBuffer(const size_t& a_bufferByteSize)const
+{
+	VkBufferCreateInfo stagingBufInfo = Vulkan::Initializers::bufferCreateInfo(Vulkan::Initializers::BufferCreateInfoParameters{
+		.flags = 0,
+		.size = a_bufferByteSize,
+		.usage = /*todo*/,
+		.sharingMode = VK_SHARING_MODE_EXCLUSIVE,
+		.familyCount = 0,
+		.familyIndex = nullptr
+		});
+	VmaAllocationCreateInfo bufAllocCreateInfo = {};
+	bufAllocCreateInfo.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
+	bufAllocCreateInfo.flags = /*todo*/;
+
+	VulkanBuffer buffer;
+
+	VK_CHECK_EXCEPT(vmaCreateBuffer(m_memAllocator,
+		&stagingBufInfo,
+		&bufAllocCreateInfo,
+		&buffer.m_buffer,
+		&buffer.m_Alloc,
+		&buffer.m_AllocInfo))
+
+	return buffer;
+}
+
 VulkanBuffer VE_Device::allocateStagingBuffer(const size_t& a_bufferByteSize)const
 {
-	VkBufferCreateInfo bufferInfo = Vulkan::Initializers::bufferCreateInfo(Vulkan::Initializers::BufferCreateInfoParameters{
+	VkBufferCreateInfo stagingBufInfo = Vulkan::Initializers::bufferCreateInfo(Vulkan::Initializers::BufferCreateInfoParameters{
 		.flags = 0,
 		.size = a_bufferByteSize,
 		.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
