@@ -42,9 +42,15 @@ public:
 
 #pragma region buffer
 	/*@brief create vulkan buffer in Gpu/Device Memory shared by queues*/
-	[[nodiscard]] VulkanBuffer allocateBuffer(const size_t& a_bufferByteSize, const std::vector<uint32_t>& a_shareQueue)const;
+	[[nodiscard]] VulkanBuffer allocateBuffer(const size_t& a_bufferByteSize, 
+		const VkBufferUsageFlags a_bufFlags,
+		const VmaAllocationCreateFlagBits a_allocFlag, 
+		const std::vector<uint32_t>& a_sharedQueue)const;
+
 	/*@brief create vulkan buffer in Gpu/Device Memory NOT shared*/
-	[[nodiscard]] VulkanBuffer allocateBuffer(const size_t& a_bufferByteSize)const;
+	[[nodiscard]] VulkanBuffer allocateBuffer(const size_t& a_bufferByteSize, 
+		const VkBufferUsageFlags a_bufFlags,
+		const VmaAllocationCreateFlagBits a_allocFlag)const;
 
 	/*@brief create temporary buffer brfore sending to Gpu*/
 	[[nodiscard]] VulkanBuffer allocateStagingBuffer(const size_t& a_bufferByteSize)const;
@@ -58,7 +64,7 @@ public:
 	{
 		VK_CHECK_EXCEPT(vmaFlushAllocation(m_memAllocator, a_buffer.m_Alloc, 0, sizeof(Type)));
 		void* mapData = nullptr;
-		VK_CHECK_EXCEPT(vmaMapMemory(m_memAllocator, a_buffer.m_Alloc, &data));
+		VK_CHECK_EXCEPT(vmaMapMemory(m_memAllocator, a_buffer.m_Alloc, &mapData));
 		std::memcpy(mapData, a_inputBuffer, sizeof(Type));
 		vmaUnmapMemory(m_memAllocator, a_buffer.m_Alloc);
 	}

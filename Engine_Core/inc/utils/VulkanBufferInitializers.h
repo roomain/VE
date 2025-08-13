@@ -87,7 +87,7 @@ namespace Vulkan::Initializers
 		VkBufferUsageFlags usage = 0;
 		VkSharingMode sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 		uint32_t familyCount = 0;
-		uint32_t* familyIndex = nullptr;
+		const uint32_t* familyIndex = nullptr;
 	};
 
 	template<typename IndexContainer>

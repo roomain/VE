@@ -121,20 +121,24 @@ VkQueue VE_Device::createQueue(const VkQueueFlags a_flag)
 
 
 #pragma region buffer
-VulkanBuffer VE_Device::allocateBuffer(const size_t& a_bufferByteSize, const std::vector<uint32_t>& a_shareQueue)const
+VulkanBuffer VE_Device::allocateBuffer(const size_t& a_bufferByteSize, 
+	const VkBufferUsageFlags a_bufFlags, 
+	const VmaAllocationCreateFlagBits a_allocFlag,
+	const std::vector<uint32_t>& a_sharedQueue)const
 {
-	VkBufferCreateInfo stagingBufInfo = Vulkan::Initializers::bufferCreateInfo(Vulkan::Initializers::BufferCreateInfoParameters{
+	VkBufferCreateInfo stagingBufInfo = Vulkan::Initializers::bufferCreateInfo(
+		Vulkan::Initializers::BufferCreateInfoParameters{
 		.flags = 0,
 		.size = a_bufferByteSize,
-		.usage = /*todo*/,
+		.usage = a_bufFlags,
 		.sharingMode = VK_SHARING_MODE_CONCURRENT,
-		.familyCount = static_cast<uint32_t>(a_shareQueue.size()),
-		.familyIndex = a_shareQueue.data()
+		.familyCount = static_cast<uint32_t>(a_sharedQueue.size()),
+		.familyIndex = a_sharedQueue.data()
 		});
 
 	VmaAllocationCreateInfo bufAllocCreateInfo = {};
 	bufAllocCreateInfo.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
-	bufAllocCreateInfo.flags = /*todo*/;
+	bufAllocCreateInfo.flags = a_allocFlag;
 
 	VulkanBuffer buffer;
 
@@ -149,19 +153,21 @@ VulkanBuffer VE_Device::allocateBuffer(const size_t& a_bufferByteSize, const std
 }
 
 /*@brief create vulkan buffer in Gpu/Device Memory NOT shared*/
-VulkanBuffer VE_Device::allocateBuffer(const size_t& a_bufferByteSize)const
+VulkanBuffer VE_Device::allocateBuffer(const size_t& a_bufferByteSize, 
+	const VkBufferUsageFlags a_bufFlags,
+	const VmaAllocationCreateFlagBits a_allocFlag)const
 {
 	VkBufferCreateInfo stagingBufInfo = Vulkan::Initializers::bufferCreateInfo(Vulkan::Initializers::BufferCreateInfoParameters{
 		.flags = 0,
 		.size = a_bufferByteSize,
-		.usage = /*todo*/,
+		.usage = a_bufFlags,
 		.sharingMode = VK_SHARING_MODE_EXCLUSIVE,
 		.familyCount = 0,
 		.familyIndex = nullptr
 		});
 	VmaAllocationCreateInfo bufAllocCreateInfo = {};
 	bufAllocCreateInfo.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
-	bufAllocCreateInfo.flags = /*todo*/;
+	bufAllocCreateInfo.flags = a_allocFlag;
 
 	VulkanBuffer buffer;
 

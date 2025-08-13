@@ -7,9 +7,6 @@ using VkCommandBufferVector = std::vector<VkCommandBuffer>;
 template<std::size_t Count>
 using  VkCommandBufferVectorArray = std::array<VkCommandBuffer, Count>;
 
-using VkPipelineStageFlagsVector = std::vector<VkPipelineStageFlags>;
-template<std::size_t Count>
-using  VkPipelineStageFlagsArray = std::array<VkPipelineStageFlags, Count>;
 
 using  SemaphoreVector = std::vector<VkSemaphore>;
 template<std::size_t Count>

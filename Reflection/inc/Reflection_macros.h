@@ -1,8 +1,8 @@
 #pragma once
 #include "ReflectionManager.h"
 
-#pragma message("-> Don't forget REFLECT macro and include generated header IN FILE")
-#pragma message("-> Don't forget include deserialize_functions.h and deserialize surcharge for members")
+//#pragma message("-> Don't forget REFLECT macro and include generated header IN FILE")
+//#pragma message("-> Don't forget include deserialize_functions.h and deserialize surcharge for members")
 
 // macros used by reflection script
 #define REFLECT_CLASS(name)

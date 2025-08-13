@@ -13,7 +13,7 @@ namespace Vulkan::Initializers
 	struct SubmitInfoParameters
 	{
 		VkSemaphore* waitSemaphores = nullptr;
-		VkPipelineStageFlagsVector pipelineStages;
+		std::vector<VkPipelineStageFlags> pipelineStages;
 		VkCommandBuffer* commandBuffers = nullptr;
 		VkSemaphore* signalSemaphores = nullptr;
 		uint32_t waitCount = 1;
@@ -40,7 +40,7 @@ namespace Vulkan::Initializers
 	struct TSubmitInfoParameters
 	{
 		SemaphoreContainer waitSemaphores;
-		VkPipelineStageFlagsVector pipelineStages;
+		std::vector<VkPipelineStageFlags> pipelineStages;
 		BufferContainer commandBuffers;
 		SemaphoreContainer signalSemaphores;
 	};
@@ -64,7 +64,7 @@ namespace Vulkan::Initializers
 	struct SubmitInfoParametersWithWait
 	{
 		VkSemaphore* waitSemaphore = nullptr;
-		VkPipelineStageFlagsVector pipelineStages;
+		std::vector<VkPipelineStageFlags> pipelineStages;
 		VkCommandBuffer* cmdBuffers = nullptr;
 		VkSemaphore* signalSemaphore = nullptr;
 		uint32_t waitCount = 1;
