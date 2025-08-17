@@ -1,7 +1,7 @@
 #pragma once
 /***********************************************
 * @headerfile VulkanShaderInitializers.h
-* @date 06 / 08 / 2026
+* @date 06 / 08 / 2025
 * @author Roomain
 ************************************************/
 #include "vulkan/vulkan.h"
