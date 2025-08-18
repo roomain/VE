@@ -4,15 +4,29 @@
 * @date 15 / 07 / 2025
 * @author Roomain
 ************************************************/
+#include <functional>
 #include "vulkan/vulkan.hpp"
 #include "utils/VulkanContext.h"
+#include "core_globals.h"
 
-//struct VE_CommandBuffer
-//{
-//	std::reference_wrapper<const VE_QueueFamily> Queue;
-//};
+class VE_QueueFamily;
 
-class VE_QueueFamily : private VulkanObject<VE_DeviceContext>
+class VE_CORE_LIB VE_CommandBuffer
+{
+	friend class VE_QueueFamily;
+private:
+	VkCommandBuffer m_commandBuffer = VK_NULL_HANDLE;				/*!< command buffer*/
+	VkCommandBufferLevel m_level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;	/*!< command buffer level*/
+    std::reference_wrapper<const VE_QueueFamily> m_queueFamily;		/*!< queue family associated to command buffer*/
+
+	explicit VE_CommandBuffer(const VkCommandBuffer a_commandBuffer, const VkCommandBufferLevel a_level, const VE_QueueFamily& a_queueFamily) noexcept;
+
+public:
+	VE_CommandBuffer() = delete;
+};
+
+
+class VE_CORE_LIB VE_QueueFamily : private VulkanObject<VE_DeviceContext>
 {
 private:
 	uint32_t m_familyIndex = 0;						/*!< queue family index*/
