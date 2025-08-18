@@ -7,6 +7,11 @@
 #include "vulkan/vulkan.hpp"
 #include "utils/VulkanContext.h"
 
+//struct VE_CommandBuffer
+//{
+//	std::reference_wrapper<const VE_QueueFamily> Queue;
+//};
+
 class VE_QueueFamily : private VulkanObject<VE_DeviceContext>
 {
 private:

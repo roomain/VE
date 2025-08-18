@@ -190,6 +190,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClInclude Include="inc\utils\vulkan_string_to_enum.h" />
     <ClInclude Include="inc\VE_Application.h" />
     <ClInclude Include="inc\VE_Device.h" />
+    <ClInclude Include="inc\VE_FwdDecl.h" />
     <ClInclude Include="inc\VE_GraphicalDevice.h" />
     <ClInclude Include="inc\VE_QueueFamily.h" />
     <ClInclude Include="inc\VE_SwapChain.h" />

@@ -132,6 +132,9 @@
     <ClInclude Include="inc\memory\VulkanBuffer.h">
       <Filter>Fichiers d%27en-tête\memory</Filter>
     </ClInclude>
+    <ClInclude Include="inc\VE_FwdDecl.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Capabilities\VE_Capabilities.cpp">
