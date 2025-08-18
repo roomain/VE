@@ -34,7 +34,7 @@ public:
 
 #pragma region command
 	void createCommandBuffers(const VkQueueFlags a_flag,
-		const VkCommandBufferLevel a_cmdLevel, std::vector<VkCommandBuffer>& a_buffers,const uint32_t a_numBuffers = 1);
+		const VkCommandBufferLevel a_cmdLevel, const uint32_t a_numBuffers, std::vector<VkCommandBuffer>& a_buffers);
 	void createCommandBuffer(const VkQueueFlags a_flag,
 		const VkCommandBufferLevel a_cmdLevel, VkCommandBuffer& a_buffer);
 	VkQueue createQueue(const VkQueueFlags a_flag);

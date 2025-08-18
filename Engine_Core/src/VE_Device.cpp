@@ -56,7 +56,7 @@ VE_Device::~VE_Device()
 	vkDestroyDevice(m_vkCtxt.m_logicalDevice, nullptr);
 }
 
-void VE_Device::createCommandBuffers(const VkQueueFlags a_flag, const VkCommandBufferLevel a_cmdLevel, std::vector<VkCommandBuffer>& a_buffers, const uint32_t a_numBuffers)
+void VE_Device::createCommandBuffers(const VkQueueFlags a_flag, const VkCommandBufferLevel a_cmdLevel, const uint32_t a_numBuffers, std::vector<VkCommandBuffer>& a_buffers)
 {
 	// find queue
 	if (auto iter = std::ranges::find_if(m_queues, [a_flag](const auto& a_queueFam)
