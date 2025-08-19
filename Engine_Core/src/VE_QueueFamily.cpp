@@ -89,6 +89,14 @@ uint32_t VE_QueueFamily::numFences()const
 	return static_cast<uint32_t>(m_waitFences.size());
 }
 
+void VE_QueueFamily::releaseCommandBuffers(CmbBufferConst_Iter a_begin, CmbBufferConst_Iter a_end)
+{
+	auto startIndex = std::distance(m_commandBuffers.cbegin(), a_begin);
+	auto size = std::distance(a_begin, a_end);
+
+	vkFreeCommandBuffers(m_vkCtxt.m_logicalDevice, m_commandPool,
+		static_cast<uint32_t>(size), m_commandBuffers.data() + startIndex);
+}
 
 VkCommandBuffer VE_QueueFamily::createCommandBuffer(const VkCommandBufferLevel a_level)
 {

@@ -9,22 +9,8 @@
 #include "utils/VulkanContext.h"
 #include "core_globals.h"
 
-class VE_QueueFamily;
-
-class VE_CORE_LIB VE_CommandBuffer
-{
-	friend class VE_QueueFamily;
-private:
-	VkCommandBuffer m_commandBuffer = VK_NULL_HANDLE;				/*!< command buffer*/
-	VkCommandBufferLevel m_level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;	/*!< command buffer level*/
-    std::reference_wrapper<const VE_QueueFamily> m_queueFamily;		/*!< queue family associated to command buffer*/
-
-	explicit VE_CommandBuffer(const VkCommandBuffer a_commandBuffer, const VkCommandBufferLevel a_level, const VE_QueueFamily& a_queueFamily) noexcept;
-
-public:
-	VE_CommandBuffer() = delete;
-};
-
+#pragma warning(push)
+#pragma warning( disable : 4251 )
 
 class VE_CORE_LIB VE_QueueFamily : private VulkanObject<VE_DeviceContext>
 {
@@ -51,8 +37,15 @@ public:
 	[[nodiscard]] VkFence getFence(const uint32_t a_index);
 	[[nodiscard]] uint32_t numFences()const;
 
+	using CmbBufferConst_Iter = std::vector<VkCommandBuffer>::const_iterator;
+	[[nodiscard]] inline CmbBufferConst_Iter commandBufferBegin() const noexcept {	return m_commandBuffers.cbegin(); }
+	[[nodiscard]] inline CmbBufferConst_Iter commandBufferEnd() const noexcept { return m_commandBuffers.cend(); }
+	void releaseCommandBuffers(CmbBufferConst_Iter a_begin, CmbBufferConst_Iter a_end);
+
 	[[nodiscard]] VkCommandBuffer createCommandBuffer(const VkCommandBufferLevel a_level);
 	[[nodiscard]] void createCommandBuffer(const VkCommandBufferLevel a_level, const uint32_t a_count);
 	[[nodiscard]] VkCommandBuffer getCommandBuffer(const uint32_t a_index);
 	[[nodiscard]] uint32_t numCommandBuffer()const;
 };
+
+#pragma warning(pop)
