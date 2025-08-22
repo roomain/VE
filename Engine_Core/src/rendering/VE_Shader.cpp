@@ -49,92 +49,9 @@ void VE_Shader::loadShaderSpirV(const std::string& a_filename, const VkShaderSta
 	}
 }
 
-void VE_Shader::createDescriptorUniformTexelBufferBindings(const VkShaderStageFlags a_shaderFlag, const uint32_t a_bind, const uint32_t a_descriptorCount)
+void VE_Shader::addDescriptorSetBinding(const VkDescriptorSetLayoutBinding& a_binding)
 {
-	m_layoutBindings.emplace_back(VkDescriptorSetLayoutBinding{
-		.binding = a_bind,
-		.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER,
-		.descriptorCount = a_descriptorCount,
-		.stageFlags = a_shaderFlag,
-		.pImmutableSamplers = nullptr
-	});
-}
-
-void VE_Shader::createDescriptorStorageTexelBufferBindings(const VkShaderStageFlags a_shaderFlag, const uint32_t a_bind, const uint32_t a_descriptorCount)
-{
-	m_layoutBindings.emplace_back(VkDescriptorSetLayoutBinding{
-		.binding = a_bind,
-		.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER,
-		.descriptorCount = a_descriptorCount,
-		.stageFlags = a_shaderFlag,
-		.pImmutableSamplers = nullptr
-	});
-}
-
-void VE_Shader::createDescriptorUniformBufferBindings(const VkShaderStageFlags a_shaderFlag, const uint32_t a_bind, const uint32_t a_descriptorCount)
-{
-	m_layoutBindings.emplace_back(VkDescriptorSetLayoutBinding{
-		.binding = a_bind,
-		.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
-		.descriptorCount = a_descriptorCount,
-		.stageFlags = a_shaderFlag,
-		.pImmutableSamplers = nullptr
-	});
-}
-
-void VE_Shader::createDescriptorStorageBufferBindings(const VkShaderStageFlags a_shaderFlag, const uint32_t a_bind, const uint32_t a_descriptorCount)
-{
-	m_layoutBindings.emplace_back(VkDescriptorSetLayoutBinding{
-		.binding = a_bind,
-		.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
-		.descriptorCount = a_descriptorCount,
-		.stageFlags = a_shaderFlag,
-		.pImmutableSamplers = nullptr
-	});
-}
-
-void VE_Shader::createDescriptorUniformBufferDynBindings(const VkShaderStageFlags a_shaderFlag, const uint32_t a_bind, const uint32_t a_descriptorCount)
-{
-	m_layoutBindings.emplace_back(VkDescriptorSetLayoutBinding{
-		.binding = a_bind,
-		.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC,
-		.descriptorCount = a_descriptorCount,
-		.stageFlags = a_shaderFlag,
-		.pImmutableSamplers = nullptr
-	});
-}
-
-void VE_Shader::createDescriptorStorageBufferDynBindings(const VkShaderStageFlags a_shaderFlag, const uint32_t a_bind, const uint32_t a_descriptorCount)
-{
-	m_layoutBindings.emplace_back(VkDescriptorSetLayoutBinding{
-		.binding = a_bind,
-		.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC,
-		.descriptorCount = a_descriptorCount,
-		.stageFlags = a_shaderFlag,
-		.pImmutableSamplers = nullptr
-	});
-}
-
-void VE_Shader::createDescriptorSampledImageBindings(const VkShaderStageFlags a_shaderFlag, const uint32_t a_bind, const uint32_t a_descriptorCount)
-{
-	m_layoutBindings.emplace_back(VkDescriptorSetLayoutBinding{
-		.binding = a_bind,
-		.descriptorType = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE,
-		.descriptorCount = a_descriptorCount,
-		.stageFlags = a_shaderFlag,
-		.pImmutableSamplers = nullptr
-	});
-}
-
-void VE_Shader::createDescriptorStorageImageBindings(const VkShaderStageFlags a_shaderFlag, const uint32_t a_bind, const uint32_t a_descriptorCount)
-{
-	m_layoutBindings.emplace_back(VkDescriptorSetLayoutBinding{
-		.binding = a_bind,
-		.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_IMAGE,
-		.descriptorCount = a_descriptorCount,
-		.stageFlags = a_shaderFlag,
-		.pImmutableSamplers = nullptr
-	});
+	m_layoutBindings.emplace_back(a_binding);
 }
 
 void VE_Shader::createDescriptorLayouts()

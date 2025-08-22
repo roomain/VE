@@ -178,6 +178,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClInclude Include="inc\pch.h" />
     <ClInclude Include="inc\rendering\VE_Shader.h" />
     <ClInclude Include="inc\utils\VE_Mem_alloc.h" />
+    <ClInclude Include="inc\utils\VE_PipelineCache.h" />
     <ClInclude Include="inc\utils\VulkanBufferInitializers.h" />
     <ClInclude Include="inc\utils\VulkanCmdInitializers.h" />
     <ClInclude Include="inc\utils\VulkanContext.h" />
@@ -204,6 +205,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClCompile Include="src\memory\vmaAllocator.cpp" />
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\rendering\VE_Shader.cpp" />
+    <ClCompile Include="src\utils\VE_PipelineCache.cpp" />
     <ClCompile Include="src\VE_Application.cpp" />
     <ClCompile Include="src\VE_Device.cpp" />
     <ClCompile Include="src\VE_GraphicalDevice.cpp" />

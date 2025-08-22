@@ -46,6 +46,9 @@
     <Filter Include="Fichiers sources\buffers">
       <UniqueIdentifier>{589214f5-4389-4a73-9953-b3c86e680616}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers sources\utils">
+      <UniqueIdentifier>{511100da-4974-4699-ae73-21da545ab24b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\Capabilities\VE_CapabilitiesVisitor.h">
@@ -135,6 +138,9 @@
     <ClInclude Include="inc\VE_FwdDecl.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="inc\utils\VE_PipelineCache.h">
+      <Filter>Fichiers d%27en-tête\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Capabilities\VE_Capabilities.cpp">
@@ -175,6 +181,9 @@
     </ClCompile>
     <ClCompile Include="src\rendering\VE_Shader.cpp">
       <Filter>Fichiers sources\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\VE_PipelineCache.cpp">
+      <Filter>Fichiers sources\utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

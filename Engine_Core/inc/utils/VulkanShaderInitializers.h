@@ -70,6 +70,47 @@ namespace Vulkan::Initializers
 		};
 	}
 
+	[[nodiscard]] constexpr VkDescriptorSetLayoutBinding descriptorUniformTexelBufferBindings(const VkShaderStageFlags a_shaderFlag, const uint32_t a_bind, const uint32_t a_descriptorCount = 1)
+	{
+		return descriptorSetLayoutBinding(VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER, a_shaderFlag, a_bind, a_descriptorCount);
+	}
+
+	[[nodiscard]] constexpr VkDescriptorSetLayoutBinding descriptorStorageTexelBufferBindings(const VkShaderStageFlags a_shaderFlag, const uint32_t a_bind, const uint32_t a_descriptorCount = 1)
+	{
+		return descriptorSetLayoutBinding(VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER, a_shaderFlag, a_bind, a_descriptorCount);
+	}
+
+	[[nodiscard]] constexpr VkDescriptorSetLayoutBinding descriptorUniformBufferBindings(const VkShaderStageFlags a_shaderFlag, const uint32_t a_bind, const uint32_t a_descriptorCount = 1)
+	{
+		return descriptorSetLayoutBinding(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, a_shaderFlag, a_bind, a_descriptorCount);
+	}
+
+	[[nodiscard]] constexpr VkDescriptorSetLayoutBinding descriptorStorageBufferBindings(const VkShaderStageFlags a_shaderFlag, const uint32_t a_bind, const uint32_t a_descriptorCount = 1)
+	{
+		return descriptorSetLayoutBinding(VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, a_shaderFlag, a_bind, a_descriptorCount);
+	}
+
+	[[nodiscard]] constexpr VkDescriptorSetLayoutBinding descriptorUniformBufferDynBindings(const VkShaderStageFlags a_shaderFlag, const uint32_t a_bind, const uint32_t a_descriptorCount = 1)
+	{
+		return descriptorSetLayoutBinding(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, a_shaderFlag, a_bind, a_descriptorCount);
+	}
+
+	[[nodiscard]] constexpr VkDescriptorSetLayoutBinding descriptorStorageBufferDynBindings(const VkShaderStageFlags a_shaderFlag, const uint32_t a_bind, const uint32_t a_descriptorCount = 1)
+	{
+		return descriptorSetLayoutBinding(VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, a_shaderFlag, a_bind, a_descriptorCount);
+	}
+
+	[[nodiscard]] constexpr VkDescriptorSetLayoutBinding descriptorSampledImageBindings(const VkShaderStageFlags a_shaderFlag, const uint32_t a_bind, const uint32_t a_descriptorCount = 1)
+	{
+		return descriptorSetLayoutBinding(VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, a_shaderFlag, a_bind, a_descriptorCount);
+	}
+
+	[[nodiscard]] constexpr VkDescriptorSetLayoutBinding descriptorStorageImageBindings(const VkShaderStageFlags a_shaderFlag, const uint32_t a_bind, const uint32_t a_descriptorCount = 1)
+	{
+		return descriptorSetLayoutBinding(VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, a_shaderFlag, a_bind, a_descriptorCount);
+	}
+
+
 	[[nodiscard]] constexpr VkDescriptorSetLayoutCreateInfo descriptorSetLayoutCreateInfo(
 		const VkDescriptorSetLayoutBinding* a_pBindings,
 		uint32_t a_bindingCount)

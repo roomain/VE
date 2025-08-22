@@ -12,7 +12,7 @@
 #pragma warning(push)
 #pragma warning( disable : 4251 )
 
-class VE_CORE_LIB VE_QueueFamily : private VulkanObject<VE_DeviceContext>
+class VE_CORE_LIB VE_QueueFamily : public VulkanObject<VE_DeviceContext>
 {
 private:
 	uint32_t m_familyIndex = 0;						/*!< queue family index*/
