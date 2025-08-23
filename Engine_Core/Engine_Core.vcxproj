@@ -177,6 +177,9 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClInclude Include="inc\parameters\VE_QueueCreateInfo.h" />
     <ClInclude Include="inc\pch.h" />
     <ClInclude Include="inc\rendering\VE_Shader.h" />
+    <ClInclude Include="inc\rendering\VE_Uniform.h" />
+    <ClInclude Include="inc\rendering\VE_UniformBuffer.h" />
+    <ClInclude Include="inc\rendering\VE_UniformSampler.h" />
     <ClInclude Include="inc\utils\VE_Mem_alloc.h" />
     <ClInclude Include="inc\utils\VE_PipelineCache.h" />
     <ClInclude Include="inc\utils\VulkanBufferInitializers.h" />
