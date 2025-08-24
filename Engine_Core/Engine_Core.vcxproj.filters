@@ -129,9 +129,6 @@
     <ClInclude Include="inc\utils\VulkanBufferInitializers.h">
       <Filter>Fichiers d%27en-tête\utils</Filter>
     </ClInclude>
-    <ClInclude Include="inc\utils\VE_Mem_alloc.h">
-      <Filter>Fichiers d%27en-tête\utils</Filter>
-    </ClInclude>
     <ClInclude Include="inc\memory\VulkanBuffer.h">
       <Filter>Fichiers d%27en-tête\memory</Filter>
     </ClInclude>
@@ -149,6 +146,12 @@
     </ClInclude>
     <ClInclude Include="inc\rendering\VE_UniformBuffer.h">
       <Filter>Fichiers d%27en-tête\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\memory\VE_Mem_alloc.h">
+      <Filter>Fichiers d%27en-tête\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\memory\VE_Memory.h">
+      <Filter>Fichiers d%27en-tête\memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -193,6 +196,12 @@
     </ClCompile>
     <ClCompile Include="src\utils\VE_PipelineCache.cpp">
       <Filter>Fichiers sources\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rendering\VE_UniformSampler.cpp">
+      <Filter>Fichiers sources\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\memory\VE_Memory.cpp">
+      <Filter>Fichiers sources\memory</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

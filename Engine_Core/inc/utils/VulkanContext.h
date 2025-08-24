@@ -6,6 +6,7 @@
 ************************************************/
 #include <type_traits>
 #include <vulkan/vulkan.hpp>
+#include "vk_mem_alloc.h"
 
 
 /*brief vulkan context used for object using vulkan functions*/
@@ -27,7 +28,8 @@ struct VE_DeviceContext : VE_InstanceContext
 {
 	int m_deviceIndex = -1;
 	VkPhysicalDevice m_physicalDevice = VK_NULL_HANDLE;
-	VkDevice m_logicalDevice = VK_NULL_HANDLE;
+	VkDevice m_logicalDevice = VK_NULL_HANDLE; 
+	VmaAllocator m_memAllocator = VK_NULL_HANDLE;
 
 	VE_DeviceContext() = default;
 	VE_DeviceContext(const VE_DeviceContext& a_other) = default;
@@ -46,6 +48,7 @@ struct VE_DeviceContext : VE_InstanceContext
 		VE_InstanceContext::operator = (a_other);
 		m_physicalDevice = a_other.m_physicalDevice;
 		m_logicalDevice = a_other.m_logicalDevice;
+		m_memAllocator = a_other.m_memAllocator;
 		return *this;
 	}
 };

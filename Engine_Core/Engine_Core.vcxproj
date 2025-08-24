@@ -171,7 +171,9 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClInclude Include="inc\Capabilities\VE_Capabilities.h" />
     <ClInclude Include="inc\core_globals.h" />
     <ClInclude Include="inc\framework.h" />
+    <ClInclude Include="inc\memory\VE_Memory.h" />
     <ClInclude Include="inc\memory\VE_MemoryCallbacks.h" />
+    <ClInclude Include="inc\memory\VE_Mem_alloc.h" />
     <ClInclude Include="inc\memory\VulkanBuffer.h" />
     <ClInclude Include="inc\parameters\VE_Parameter.h" />
     <ClInclude Include="inc\parameters\VE_QueueCreateInfo.h" />
@@ -180,7 +182,6 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClInclude Include="inc\rendering\VE_Uniform.h" />
     <ClInclude Include="inc\rendering\VE_UniformBuffer.h" />
     <ClInclude Include="inc\rendering\VE_UniformSampler.h" />
-    <ClInclude Include="inc\utils\VE_Mem_alloc.h" />
     <ClInclude Include="inc\utils\VE_PipelineCache.h" />
     <ClInclude Include="inc\utils\VulkanBufferInitializers.h" />
     <ClInclude Include="inc\utils\VulkanCmdInitializers.h" />
@@ -204,10 +205,12 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClCompile Include="src\Capabilities\VE_CapabilitiesVisitor.cpp" />
     <ClCompile Include="src\Capabilities\VE_DeviceCapabilities.cpp" />
     <ClCompile Include="src\Capabilities\VE_InstanceCapabilities.cpp" />
+    <ClCompile Include="src\memory\VE_Memory.cpp" />
     <ClCompile Include="src\memory\VE_MemoryCallbacks.cpp" />
     <ClCompile Include="src\memory\vmaAllocator.cpp" />
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\rendering\VE_Shader.cpp" />
+    <ClCompile Include="src\rendering\VE_UniformSampler.cpp" />
     <ClCompile Include="src\utils\VE_PipelineCache.cpp" />
     <ClCompile Include="src\VE_Application.cpp" />
     <ClCompile Include="src\VE_Device.cpp" />
