@@ -175,6 +175,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClInclude Include="inc\memory\VE_MemoryCallbacks.h" />
     <ClInclude Include="inc\memory\VE_Mem_alloc.h" />
     <ClInclude Include="inc\memory\VulkanBuffer.h" />
+    <ClInclude Include="inc\memory\VulkanImage.h" />
     <ClInclude Include="inc\parameters\VE_Parameter.h" />
     <ClInclude Include="inc\parameters\VE_QueueCreateInfo.h" />
     <ClInclude Include="inc\pch.h" />
@@ -187,6 +188,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClInclude Include="inc\utils\VulkanCmdInitializers.h" />
     <ClInclude Include="inc\utils\VulkanContext.h" />
     <ClInclude Include="inc\utils\VulkanDefines.h" />
+    <ClInclude Include="inc\utils\VulkanImageInitializers.h" />
     <ClInclude Include="inc\utils\VulkanInitializers.h" />
     <ClInclude Include="inc\utils\VulkanPipelineInitializers.h" />
     <ClInclude Include="inc\utils\VulkanShaderInitializers.h" />

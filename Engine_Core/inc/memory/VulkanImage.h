@@ -7,10 +7,10 @@
 #include "vulkan/vulkan.hpp"
 #include "vk_mem_alloc.h"
 
-/*@brief structure with vulkan buffer handles*/
-struct VulkanBuffer
+
+struct VulkanImage
 {
-	VkBuffer m_buffer = VK_NULL_HANDLE;					/*!< vulkan buffer handle*/
+	VkImage m_image = VK_NULL_HANDLE;                    /*!< vulkan image handle*/
 	VmaAllocation m_Alloc = VK_NULL_HANDLE;
 	VmaAllocationInfo m_AllocInfo;
 };

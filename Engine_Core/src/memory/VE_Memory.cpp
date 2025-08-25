@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "memory/VulkanImage.h"
 
 VulkanBuffer allocateBuffer(const VE_DeviceContext& a_context, const VE_AllocationParameter& a_allocParameters, const std::vector<uint32_t>& a_sharedQueue)
 {
@@ -88,15 +89,30 @@ void releaseBuffer(const VE_DeviceContext& a_context, VulkanBuffer& a_buffer)
 	a_buffer.m_Alloc = VK_NULL_HANDLE;
 }
 
-VkImage allocateImage(const VE_DeviceContext& a_context/*todo*/)
+VulkanImage allocateImage(const VE_DeviceContext& a_context, const VkImageCreateInfo& a_imageCreateInfo)
 {
-	VkImage image = VK_NULL_HANDLE;
-	VK_CHECK_EXCEPT(vmaCreateImage(a_context.m_memAllocator, /*todo*/, /*todo*/, &image, /*todo*/))
+	VulkanImage image;
+
+	const VmaAllocationCreateInfo alloCreateInfo{
+		.flags,
+		.usage,
+		.requiredFlags,
+		.preferredFlags,
+		.memoryTypeBits,
+		.pool = nullptr,
+		.pUserData = nullptr,
+		.priority = 1.0f
+	};
+
+	VmaAllocation allocation = VK_NULL_HANDLE;
+	VmaAllocationInfo allocInfo;
+	VK_CHECK_EXCEPT(vmaCreateImage(a_context.m_memAllocator, &a_imageCreateInfo, &alloCreateInfo, &image.m_image, &image.m_Alloc, &image.m_AllocInfo))
 	return image;
 }
 
-void releaseImage(const VE_DeviceContext& a_context, VkImage& a_image)
+void releaseImage(const VE_DeviceContext& a_context, VulkanImage& a_image)
 {
-	vmaDestroyImage(a_context.m_memAllocator, a_image, /*todo*/);
-	a_image = VK_NULL_HANDLE;
+	vmaDestroyImage(a_context.m_memAllocator, a_image.m_image, a_image.m_Alloc);
+	a_image.m_image = VK_NULL_HANDLE;
+	a_image.m_Alloc = VK_NULL_HANDLE;
 }

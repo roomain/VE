@@ -29,6 +29,7 @@
 #include "utils/VulkanPipelineInitializers.h"
 #include "utils/VulkanCmdInitializers.h"
 #include "utils/VulkanBufferInitializers.h"
+#include "utils/VulkanImageInitializers.h"
 
 #include "memory/VE_Memory.h"
 

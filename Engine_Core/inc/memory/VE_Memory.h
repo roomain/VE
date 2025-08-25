@@ -10,6 +10,8 @@
 #include "vk_mem_alloc.h"
 #include "memory/VulkanBuffer.h"
 
+struct VulkanImage;
+
 struct VE_AllocationParameter
 {
 	size_t m_size;								/*!< memory size to allocate (in bytes)*/
@@ -41,5 +43,5 @@ void writeBuffer(const VE_DeviceContext& a_context, const VulkanBuffer& a_buffer
 }
 
 
-[[nodiscard]] VkImage allocateImage(const VE_DeviceContext& a_context/*todo*/);
-void releaseImage(const VE_DeviceContext& a_context, VkImage& a_image);
+[[nodiscard]] VulkanImage allocateImage(const VE_DeviceContext& a_context, const VkImageCreateInfo& a_imageCreateInfo);
+void releaseImage(const VE_DeviceContext& a_context, VulkanImage& a_image);

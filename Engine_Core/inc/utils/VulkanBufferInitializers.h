@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 /***********************************************
 * @headerfile VulkanBufferInitializers.h
 * @date 06 / 08 / 2025
