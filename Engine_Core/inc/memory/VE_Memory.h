@@ -43,5 +43,6 @@ void writeBuffer(const VE_DeviceContext& a_context, const VulkanBuffer& a_buffer
 }
 
 
+[[nodiscard]] VulkanImage allocateStagingImage(const VE_DeviceContext& a_context, const VkImageCreateInfo& a_imageCreateInfo);
 [[nodiscard]] VulkanImage allocateImage(const VE_DeviceContext& a_context, const VkImageCreateInfo& a_imageCreateInfo);
 void releaseImage(const VE_DeviceContext& a_context, VulkanImage& a_image);
