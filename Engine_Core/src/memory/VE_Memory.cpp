@@ -110,8 +110,8 @@ VulkanImage allocateImage(const VE_DeviceContext& a_context, const VkImageCreate
 	VulkanImage image;
 
 	const VmaAllocationCreateInfo alloCreateInfo{
-		.flags = //VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT | VMA_ALLOCATION_CREATE_MAPPED_BIT,
-		.usage = //VMA_MEMORY_USAGE_AUTO
+		.flags = VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT | VMA_ALLOCATION_CREATE_MAPPED_BIT,
+		.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE
 	};
 
 	VK_CHECK_EXCEPT(vmaCreateImage(a_context.m_memAllocator, &a_imageCreateInfo, &alloCreateInfo, &image.m_image, &image.m_Alloc, &image.m_AllocInfo))
