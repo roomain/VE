@@ -13,7 +13,7 @@ template<typename VarType>
 class VE_UniformBuffer : public VE_Uniform, public VulkanObject<VE_DeviceContext>
 {
 private:
-    VarType m_uniformVariable;                  /*!< uniform variable for host usage*/
+    VarType m_uniformVariable;     /*!< uniform variable for host usage*/
     VulkanBuffer m_uniformBuffer;  /*!< uniform buffer for shader usage*/
 
 	explicit VE_UniformBuffer(const uint32_t a_bindingPoint, const VE_DeviceContext& a_ctxt) : VE_Uniform(a_bindingPoint), VulkanObject<VE_DeviceContext>{ a_ctxt }

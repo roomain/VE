@@ -6,18 +6,19 @@
 ************************************************/
 #include "rendering/VE_Uniform.h"
 #include "utils/VulkanContext.h"
+#include "memory/VulkanImage.h"
 
 class VE_UniformSampler : public VE_Uniform, public VulkanObject<VE_DeviceContext>
 {
 private:
-    VkImageView m_imageView = VK_NULL_HANDLE;
+    VulkanImage m_image;
     VkSampler m_sampler = VK_NULL_HANDLE;
 
     explicit VE_UniformSampler(const uint32_t a_bindingPoint, const VE_DeviceContext& a_ctxt);
 
 public:
     ~VE_UniformSampler() final;
-    [[nodiscard]] constexpr bool isValid()const noexcept { return m_imageView != VK_NULL_HANDLE; }
+    [[nodiscard]] constexpr bool isValid()const noexcept final { return m_image.m_image != VK_NULL_HANDLE; }
     void initialize()final;
     void cleanup()final;
     void updateShaderVariable() final;
