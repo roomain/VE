@@ -11,15 +11,17 @@
 class VE_UniformSampler : public VE_Uniform, public VulkanObject<VE_DeviceContext>
 {
 private:
-    VulkanImage m_image;
+    VkImageView m_image;                    /*!< image view from outside*/
     VkSampler m_sampler = VK_NULL_HANDLE;
 
     explicit VE_UniformSampler(const uint32_t a_bindingPoint, const VE_DeviceContext& a_ctxt);
 
 public:
     ~VE_UniformSampler() final;
-    [[nodiscard]] constexpr bool isValid()const noexcept final { return m_image.m_image != VK_NULL_HANDLE; }
+    [[nodiscard]] constexpr bool isValid()const noexcept final { return m_image != VK_NULL_HANDLE; }
     void initialize()final;
     void cleanup()final;
-    void updateShaderVariable() final;
+    void updateShaderVariable(const VkDescriptorSet a_descSet) final;
+    void operator = (const VkImageView a_other);
+	VkImageView imageview()const noexcept { return m_image; }
 };

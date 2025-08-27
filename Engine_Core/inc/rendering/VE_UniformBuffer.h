@@ -55,7 +55,7 @@ public:
 
     [[nodiscard]] constexpr bool isValid()const noexcept final { return m_uniformBuffer != VK_NULL_HANDLE; }
 
-    void updateShaderVariable() final
+    void updateShaderVariable(const VkDescriptorSet a_descSet) final
     {
 		writeBuffer(m_vkCtxt, m_uniformBuffer, &m_uniformVariable);
         
@@ -66,18 +66,18 @@ public:
             .range = sizeof(VarType);
         };
 
-        WriteDescriptorSetParameters createInfo
+        Vulkan::Initializers::WriteDescriptorSetParameters createInfo
         {
-            .dstSet;
-            .descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-            .dstBinding = m_bindingPoint;
-            .dstArrayElement = 0;
-            .descriptorCount = 1;
-            .pImageInfo = nullptr;
-            .pBufferInfo = &bufInfo;
-            .pTexelBufferView = nullptr;
+            .dstSet = a_descSet,
+            .descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+            .dstBinding = m_bindingPoint,
+            .dstArrayElement = 0,
+            .descriptorCount = 1,
+            .pImageInfo = nullptr,
+            .pBufferInfo = &bufInfo,
+            .pTexelBufferView = nullptr
         };
-        VkDescriptorBufferInfo bufferInfo = Vulkan::Initializers::writeDescriptorSet(createInfo);
-        vkUpdateDescriptorSets(device, 1, &bufferInfo, 0, nullptr);
+        VkWriteDescriptorSet descSetInfo = Vulkan::Initializers::writeDescriptorSet(createInfo);
+        vkUpdateDescriptorSets(device, 1, &descSetInfo, 0, nullptr);
     }
 };

@@ -108,4 +108,31 @@ namespace Vulkan::Initializers
 			.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED
 		};
 	}
+
+	[[nodiscard]] constexpr VkSamplerCreateInfo samplerCreateInfo(
+		const VkFilter a_magFilter = VK_FILTER_LINEAR, 
+		const VkFilter a_minFilter = VK_FILTER_LINEAR, 
+		const VkSamplerAddressMode a_addressMode = VK_SAMPLER_ADDRESS_MODE_REPEAT)
+	{
+		return VkSamplerCreateInfo{
+			.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO,
+			.pNext = nullptr,
+			.flags = 0,
+			.magFilter = a_magFilter,
+			.minFilter = a_minFilter,
+			.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR,
+			.addressModeU = a_addressMode,
+			.addressModeV = a_addressMode,
+			.addressModeW = a_addressMode,
+			.mipLodBias = 0.0f,
+			.anisotropyEnable = VK_TRUE,
+			.maxAnisotropy = 16,
+			.compareEnable = VK_FALSE,
+			.compareOp = VK_COMPARE_OP_ALWAYS,
+			.minLod = 0.0f,
+			.maxLod = 0.0f,
+			.borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK,
+			.unnormalizedCoordinates = VK_FALSE
+		};
+	}
 }

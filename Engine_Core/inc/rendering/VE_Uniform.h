@@ -23,5 +23,5 @@ public:
     /*@brief check validity*/
     [[nodiscard]] virtual constexpr bool isValid()const noexcept = 0;
     /*@brief update unifor in pipeline*/
-    virtual void updateShaderVariable() = 0;
+    virtual void updateShaderVariable(const VkDescriptorSet a_descSet) = 0;
 };

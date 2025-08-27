@@ -10,33 +10,35 @@
 /*@brief functions for structure initialisation*/
 namespace Vulkan::Initializers
 {
-	struct DescriptorSetParameters
+	
+	struct WriteDescriptorSetParameters
 	{
-		VkDescriptorSet descriptorSet;
+		VkDescriptorSet dstSet;
 		VkDescriptorType descriptorType;
 		uint32_t dstBinding = 0;
 		uint32_t dstArrayElement = 0;
 		uint32_t descriptorCount = 1;
-		VkDescriptorImageInfo* imgInfo = nullptr;
-		VkDescriptorBufferInfo* bufferInfo = nullptr;
-		VkBufferView* pTexelBufferView = nullptr;
+		const VkDescriptorImageInfo* pImageInfo = nullptr;
+		const VkDescriptorBufferInfo* pBufferInfo = nullptr;
+		const VkBufferView* pTexelBufferView = nullptr;
 	};
 
-	[[nodiscard]] constexpr VkWriteDescriptorSet writeDescriptorSet(const DescriptorSetParameters& params)
+	[[nodiscard]] constexpr VkWriteDescriptorSet writeDescriptorSet(const WriteDescriptorSetParameters& params)
 	{
 		return VkWriteDescriptorSet{
 			.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
 			.pNext = nullptr,
-			.dstSet = params.descriptorSet,
+			.dstSet = params.dstSet,
 			.dstBinding = params.dstBinding,
 			.dstArrayElement = params.dstArrayElement,
 			.descriptorCount = params.descriptorCount,
 			.descriptorType = params.descriptorType,
-			.pImageInfo = params.imgInfo,
-			.pBufferInfo = params.bufferInfo,
+			.pImageInfo = params.pImageInfo,
+			.pBufferInfo = params.pBufferInfo,
 			.pTexelBufferView = params.pTexelBufferView
 		};
 	}
+
 
 	[[nodiscard]] constexpr VkDescriptorBufferInfo descriptorBufferInfo(const VkBuffer a_buffer, const VkDeviceSize a_offset = 0, const VkDeviceSize a_range = VK_WHOLE_SIZE)
 	{
@@ -154,35 +156,6 @@ namespace Vulkan::Initializers
 		.codeSize = a_shaderCode.size(),
 		.pCode = reinterpret_cast<uint32_t*>(a_shaderCode.data()) };
 	}
-
-	struct WriteDescriptorSetParameters
-	{
-		VkDescriptorSet dstSet;
-		VkDescriptorType descriptorType;
-		uint32_t dstBinding = 0;
-		uint32_t dstArrayElement = 0;
-		uint32_t descriptorCount = 1;
-		const VkDescriptorImageInfo* pImageInfo = nullptr;
-		const VkDescriptorBufferInfo* pBufferInfo = nullptr;
-		const VkBufferView* pTexelBufferView = nullptr;
-	};
-
-	[[nodiscard]] constexpr VkWriteDescriptorSet writeDescriptorSet(const WriteDescriptorSetParameters& params)
-	{
-		return VkWriteDescriptorSet{
-			.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
-			.pNext = nullptr,
-			.dstSet = params.dstSet,
-			.dstBinding = params.dstBinding,
-			.dstArrayElement = params.dstArrayElement,
-			.descriptorCount = params.descriptorCount,
-			.descriptorType = params.descriptorType,
-			.pImageInfo = params.pImageInfo,
-			.pBufferInfo = params.pBufferInfo,
-			.pTexelBufferView = params.pTexelBufferView
-		};
-	}
-
 
 	[[nodiscard]] constexpr VkPushConstantRange pushConstantRange(
 		VkShaderStageFlags a_stageFlags,
