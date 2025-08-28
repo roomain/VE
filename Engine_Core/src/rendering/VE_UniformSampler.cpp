@@ -25,15 +25,22 @@ void VE_UniformSampler::cleanup()
 void VE_UniformSampler::updateShaderVariable(const VkDescriptorSet a_descSet)
 {
 	VkDescriptorImageInfo imageInfo{};
-	imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL; // to do read write
+	if (m_usage == UseMode::Input)
+	{
+		imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+		imageInfo.sampler = m_sampler;
+	}
+	else
+	{
+		imageInfo.imageLayout = VK_IMAGE_LAYOUT_GENERAL;
+	}
 	imageInfo.imageView = m_image;
-	imageInfo.sampler = m_sampler;
 
 
 	Vulkan::Initializers::WriteDescriptorSetParameters createInfo
 	{
 		.dstSet = a_descSet,
-		.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+		.descriptorType = (m_usage == UseMode::Input) ? VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER : VK_DESCRIPTOR_TYPE_STORAGE_IMAGE,
 		.dstBinding = m_bindingPoint,
 		.dstArrayElement = 0,
 		.descriptorCount = 1,
@@ -54,14 +61,10 @@ void VE_UniformSampler::operator = (const VkImageView a_other)
 		VkSamplerCreateInfo samplerCreateInfo = Vulkan::Initializers::samplerCreateInfo();
 		vkCreateSampler(m_vkCtxt.m_logicalDevice, &samplerCreateInfo, nullptr, &m_sampler);
 	}
-	else
-	{
-		// todo
-	}
 }
 
 void VE_UniformSampler::setUsage(const UseMode a_mode)
 {
 	VE_Uniform::setUsage(a_mode);
-	// todo
+	// nothing to do yet
 }
