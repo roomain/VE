@@ -57,6 +57,7 @@ public:
 
     void updateShaderVariable(const VkDescriptorSet a_descSet) final
     {
+        // write data to vulkan buffer
 		writeBuffer(m_vkCtxt, m_uniformBuffer, &m_uniformVariable);
         
 
@@ -79,5 +80,11 @@ public:
         };
         VkWriteDescriptorSet descSetInfo = Vulkan::Initializers::writeDescriptorSet(createInfo);
         vkUpdateDescriptorSets(device, 1, &descSetInfo, 0, nullptr);
+    }
+
+    void setUsage(const UseMode a_mode) final
+    {
+        VE_Uniform::setUsage(a_mode);
+        // todo
     }
 };

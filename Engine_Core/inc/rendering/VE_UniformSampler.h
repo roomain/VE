@@ -24,4 +24,5 @@ public:
     void updateShaderVariable(const VkDescriptorSet a_descSet) final;
     void operator = (const VkImageView a_other);
 	VkImageView imageview()const noexcept { return m_image; }
+    void setUsage(const UseMode a_mode) final;
 };

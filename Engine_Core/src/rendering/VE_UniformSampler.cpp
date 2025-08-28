@@ -49,7 +49,19 @@ void VE_UniformSampler::operator = (const VkImageView a_other)
 {
 	m_image = a_other;
 	cleanup();
+	if (m_usage == UseMode::Input)
+	{
+		VkSamplerCreateInfo samplerCreateInfo = Vulkan::Initializers::samplerCreateInfo();
+		vkCreateSampler(m_vkCtxt.m_logicalDevice, &samplerCreateInfo, nullptr, &m_sampler);
+	}
+	else
+	{
+		// todo
+	}
+}
 
-	VkSamplerCreateInfo samplerCreateInfo = Vulkan::Initializers::samplerCreateInfo();
-	vkCreateSampler(m_vkCtxt.m_logicalDevice, &samplerCreateInfo, nullptr, &m_sampler);
+void VE_UniformSampler::setUsage(const UseMode a_mode)
+{
+	VE_Uniform::setUsage(a_mode);
+	// todo
 }

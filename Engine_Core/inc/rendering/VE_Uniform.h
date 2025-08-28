@@ -9,8 +9,15 @@
 /*@brief interface for uniform data*/
 class VE_Uniform
 {
+public:
+    enum class UseMode
+    {
+        Input,  /*!< shader input*/
+        Output  /*!< shader output*/
+    };
 protected:
-    uint32_t m_bindingPoint; /*!< binding id*/
+    uint32_t m_bindingPoint;            /*!< binding id*/
+    UseMode m_usage = UseMode::Input;   /*!< default is input mode*/
 
 public:
     VE_Uniform() = delete;
@@ -24,4 +31,6 @@ public:
     [[nodiscard]] virtual constexpr bool isValid()const noexcept = 0;
     /*@brief update unifor in pipeline*/
     virtual void updateShaderVariable(const VkDescriptorSet a_descSet) = 0;
+    /*@brief set usage mode*/
+    virtual void setUsage(const UseMode a_mode) = 0 { m_usage = a_mode; }
 };
