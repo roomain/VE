@@ -63,16 +63,16 @@ bool VE_PipelineCache::saveCache(const std::string& a_filename)
     {
         size_t cacheSize;
         VK_CHECK_EXCEPT(vkGetPipelineCacheData(m_vkCtxt.m_logicalDevice, m_cache, &cacheSize, nullptr))
-            std::vector<char> cacheData(cacheSize);
+        std::vector<char> cacheData(cacheSize);
         VK_CHECK_EXCEPT(vkGetPipelineCacheData(m_vkCtxt.m_logicalDevice, m_cache, &cacheSize, cacheData.data()))
 
-            if (std::ofstream fileStream(a_filename, std::ios::binary | std::ios::out); fileStream.is_open())
-            {
-                fileStream.write(cacheData.data(), cacheSize);
-                fileStream.flush();
-                fileStream.close();
-                return true;
-            }
+        if (std::ofstream fileStream(a_filename, std::ios::binary | std::ios::out); fileStream.is_open())
+        {
+            fileStream.write(cacheData.data(), cacheSize);
+            fileStream.flush();
+            fileStream.close();
+            return true;
+        }
     }
     return false;
 }
