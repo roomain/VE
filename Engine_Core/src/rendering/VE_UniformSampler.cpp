@@ -19,10 +19,37 @@ void VE_UniformSampler::initialize()
 
 void VE_UniformSampler::cleanup()
 {
-	//todo
+	vkDestroySampler(m_vkCtxt.m_logicalDevice, m_sampler, nullptr);
 }
 
-void VE_UniformSampler::updateShaderVariable()
+void VE_UniformSampler::updateShaderVariable(const VkDescriptorSet a_descSet)
 {
-	//todo
+	VkDescriptorImageInfo imageInfo{};
+	imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL; // to do read write
+	imageInfo.imageView = m_image;
+	imageInfo.sampler = m_sampler;
+
+
+	Vulkan::Initializers::WriteDescriptorSetParameters createInfo
+	{
+		.dstSet = a_descSet,
+		.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+		.dstBinding = m_bindingPoint,
+		.dstArrayElement = 0,
+		.descriptorCount = 1,
+		.pImageInfo = &imageInfo,
+		.pBufferInfo = nullptr,
+		.pTexelBufferView = nullptr
+	};
+	VkWriteDescriptorSet descSetInfo = Vulkan::Initializers::writeDescriptorSet(createInfo);
+	vkUpdateDescriptorSets(m_vkCtxt.m_logicalDevice, 1, &descSetInfo, 0, nullptr);
+}
+
+void VE_UniformSampler::operator = (const VkImageView a_other)
+{
+	m_image = a_other;
+	cleanup();
+
+	VkSamplerCreateInfo samplerCreateInfo = Vulkan::Initializers::samplerCreateInfo();
+	vkCreateSampler(m_vkCtxt.m_logicalDevice, &samplerCreateInfo, nullptr, &m_sampler);
 }
