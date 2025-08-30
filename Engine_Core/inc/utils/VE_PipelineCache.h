@@ -31,7 +31,7 @@ private:
 public:
     VE_PipelineCache() = delete;
     explicit VE_PipelineCache(const VE_DeviceContext& a_ctxt);
-    ~VE_PipelineCache();
+    ~VE_PipelineCache()final;
     bool loadCache(const std::string& a_filename);
     bool saveCache(const std::string& a_filename);
 };

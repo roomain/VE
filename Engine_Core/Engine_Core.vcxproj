@@ -179,6 +179,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClInclude Include="inc\parameters\VE_Parameter.h" />
     <ClInclude Include="inc\parameters\VE_QueueCreateInfo.h" />
     <ClInclude Include="inc\pch.h" />
+    <ClInclude Include="inc\rendering\VE_Pipeline.h" />
     <ClInclude Include="inc\rendering\VE_Shader.h" />
     <ClInclude Include="inc\rendering\VE_Uniform.h" />
     <ClInclude Include="inc\rendering\VE_UniformBuffer.h" />

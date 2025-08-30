@@ -159,6 +159,9 @@
     <ClInclude Include="inc\memory\VulkanImage.h">
       <Filter>Fichiers d%27en-tête\memory</Filter>
     </ClInclude>
+    <ClInclude Include="inc\rendering\VE_Pipeline.h">
+      <Filter>Fichiers d%27en-tête\rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Capabilities\VE_Capabilities.cpp">
