@@ -21,7 +21,10 @@ void VE_Shader::cleanup()
 	for (const auto& shaderInfo : m_shaderStageCreateInfo)
 		vkDestroyShaderModule(m_vkCtxt.m_logicalDevice, shaderInfo.module, nullptr);
 
-	vkDestroyDescriptorSetLayout(m_vkCtxt.m_logicalDevice, m_descriptorSetLayout, nullptr);
+	for(const auto& layout : m_descriptorSetLayouts)
+		vkDestroyDescriptorSetLayout(m_vkCtxt.m_logicalDevice, layout, nullptr);
+
+	m_descriptorSetLayouts.clear();
 	m_shaderStageCreateInfo.clear();
 	m_mpShaderModules.clear();
 }
@@ -49,13 +52,18 @@ void VE_Shader::loadShaderSpirV(const std::string& a_filename, const VkShaderSta
 	}
 }
 
-void VE_Shader::addDescriptorSetBinding(const VkDescriptorSetLayoutBinding& a_binding)
+void VE_Shader::addDescriptorSetBinding(const int a_setIndex, const VkDescriptorSetLayoutBinding& a_binding)
 {
-	m_layoutBindings.emplace_back(a_binding);
+	m_layoutBindingsPerSet.emplace(a_setIndex, a_binding);
 }
 
 void VE_Shader::createDescriptorLayouts()
 {
-	VkDescriptorSetLayoutCreateInfo descriptorLayoutCI = Vulkan::Initializers::descriptorSetLayoutCreateInfo(m_layoutBindings);
-	vkCreateDescriptorSetLayout(m_vkCtxt.m_logicalDevice, &descriptorLayoutCI, nullptr, &m_descriptorSetLayout);
+	for(const auto& [setIndex, bindings] : m_layoutBindingsPerSet)
+	{
+		VkDescriptorSetLayoutCreateInfo descriptorLayoutCI = Vulkan::Initializers::descriptorSetLayoutCreateInfo(bindings);
+		VkDescriptorSetLayout descriptorSetLayout = VK_NULL_HANDLE;
+		vkCreateDescriptorSetLayout(m_vkCtxt.m_logicalDevice, &descriptorLayoutCI, nullptr, &descriptorSetLayout);
+		m_descriptorSetLayouts.push_back(descriptorSetLayout);
+	}
 }

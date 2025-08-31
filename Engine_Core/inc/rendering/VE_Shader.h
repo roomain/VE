@@ -18,8 +18,10 @@ class VE_Shader : public VulkanObject<VE_DeviceContext>
 private:
 	std::vector<VkPipelineShaderStageCreateInfo> m_shaderStageCreateInfo;
     std::unordered_map<VkShaderStageFlagBits, VkShaderModule> m_mpShaderModules;
-    std::vector<VkDescriptorSetLayoutBinding> m_layoutBindings;
-    VkDescriptorSetLayout m_descriptorSetLayout = VK_NULL_HANDLE;
+
+	using DescriptorSetLayoutBindings = std::vector<VkDescriptorSetLayoutBinding>;
+    std::unordered_map<int, DescriptorSetLayoutBindings> m_layoutBindingsPerSet;
+    std::vector<VkDescriptorSetLayout> m_descriptorSetLayouts;
 
 public:
     NOT_COPIABLE(VE_Shader)
@@ -27,8 +29,6 @@ public:
     ~VE_Shader()override;
     void cleanup();
     void loadShaderSpirV(const std::string& a_filename, const VkShaderStageFlagBits a_stage);    
-    void addDescriptorSetBinding(const VkDescriptorSetLayoutBinding& a_binding);
-    //void updateDescriptorUniformBuffer(const VkShaderStageFlags a_shaderFlag, const uint32_t a_bind, const uint32_t a_descriptorCount = 1);
-    //void updateDescriptorStorageBuffer(const VkShaderStageFlags a_shaderFlag, const uint32_t a_bind, const uint32_t a_descriptorCount = 1);
+    void addDescriptorSetBinding(const int a_setIndex, const VkDescriptorSetLayoutBinding& a_binding);
     void createDescriptorLayouts();
 };

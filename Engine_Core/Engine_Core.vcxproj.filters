@@ -212,5 +212,8 @@
     <ClCompile Include="src\memory\VE_Memory.cpp">
       <Filter>Fichiers sources\memory</Filter>
     </ClCompile>
+    <ClCompile Include="src\rendering\VE_Pipeline.cpp">
+      <Filter>Fichiers sources\rendering</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

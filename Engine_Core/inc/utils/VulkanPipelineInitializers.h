@@ -9,6 +9,16 @@
 /*@brief functions for structure initialisation*/
 namespace Vulkan::Initializers
 {
+
+	[[nodiscard]] constexpr VkPushConstantRange pushConstantRange(const VkShaderStageFlags stageFlags, const uint32_t size, const uint32_t offset)
+	{
+		VkPushConstantRange pushConstantRange{};
+		pushConstantRange.stageFlags = stageFlags;
+		pushConstantRange.offset = offset;
+		pushConstantRange.size = size;
+		return pushConstantRange;
+	}
+
     template<typename DescriptorSetContainer>
 	[[nodiscard]] constexpr VkPipelineLayoutCreateInfo pipelineLayoutCreateInfo(
 		const DescriptorSetContainer& a_pSetLayouts)
