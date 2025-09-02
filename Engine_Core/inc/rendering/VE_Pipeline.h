@@ -20,6 +20,17 @@ private:
 
 	VE_Pipeline(const VE_DeviceContext& a_ctxt);
 
+protected:
+	[[nodiscard]] virtual VkPipelineVertexInputStateCreateInfo internalCreateVertexInput() const = 0;
+	[[nodiscard]] virtual VkPipelineInputAssemblyStateCreateInfo internalCreateInputAssembly()const = 0;
+	[[nodiscard]] virtual VkPipelineTessellationStateCreateInfo internalCreateTesselation()const = 0;
+	[[nodiscard]] virtual VkPipelineViewportStateCreateInfo internalCreateViewportState()const = 0;
+	[[nodiscard]] virtual VkPipelineRasterizationStateCreateInfo internalCreateRasterization()const = 0;
+	[[nodiscard]] virtual VkPipelineMultisampleStateCreateInfo internalCreateMultisampleState()const = 0;
+	[[nodiscard]] virtual VkPipelineDepthStencilStateCreateInfo internalCreateDepthStencilState()const = 0;
+	[[nodiscard]] virtual VkPipelineColorBlendStateCreateInfo internalCreateColorBlendState()const = 0;
+	[[nodiscard]] virtual VkPipelineDynamicStateCreateInfo internalCreateDynamicState()const = 0;
+
 public:
 	virtual ~VE_Pipeline();
 	virtual void cleanup();
