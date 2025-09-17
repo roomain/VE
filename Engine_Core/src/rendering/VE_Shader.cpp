@@ -1,7 +1,6 @@
 #include "pch.h"
 #include <fstream>
 #include "rendering/VE_Shader.h"
-#include "utils/VulkanShaderInitializers.h"
 
 
 VE_Shader::VE_Shader(const VE_DeviceContext& a_ctxt) : VulkanObject{ a_ctxt }
@@ -29,9 +28,20 @@ void VE_Shader::cleanup()
 	m_mpShaderModules.clear();
 }
 
-void VE_Shader::loadShaderSpirV(const std::string& a_filename, const VkShaderStageFlagBits a_stage)
+
+std::span<VkPipelineShaderStageCreateInfo> VE_Shader::pipelineShaderStages() noexcept
 {
-	if (std::ifstream fileStream(a_filename, std::ios::binary | std::ios::in | std::ios::ate); fileStream.is_open())
+	return std::span<VkPipelineShaderStageCreateInfo>{m_shaderStageCreateInfo};
+}
+
+std::span<VkDescriptorSetLayout> VE_Shader::pipelineDescriptorSetLayouts() noexcept
+{
+	return std::span<VkDescriptorSetLayout>{m_descriptorSetLayouts};
+}
+
+void VE_Shader::loadShaderSpirV(const std::string_view& a_filename, const VkShaderStageFlagBits a_stage)
+{
+	if (std::ifstream fileStream(std::string(a_filename), std::ios::binary | std::ios::in | std::ios::ate); fileStream.is_open())
 	{
 		const size_t fileSize = fileStream.tellg();
 		fileStream.seekg(0, std::ios::beg);
@@ -54,7 +64,7 @@ void VE_Shader::loadShaderSpirV(const std::string& a_filename, const VkShaderSta
 
 void VE_Shader::addDescriptorSetBinding(const int a_setIndex, const VkDescriptorSetLayoutBinding& a_binding)
 {
-	m_layoutBindingsPerSet.emplace(a_setIndex, a_binding);
+	m_layoutBindingsPerSet[a_setIndex].emplace_back(a_binding);
 }
 
 void VE_Shader::createDescriptorLayouts()

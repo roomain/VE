@@ -6,15 +6,20 @@
 ************************************************/
 #include <vector>
 #include <memory>
+#include <string_view>
 #include <unordered_map>
 #include <vulkan/vulkan.hpp>
 #include "utils/VulkanContext.h"
 #include "notCopiable.h"
 
 /*@brief represents a shader in vulkan engine*/
+/*@brief Usage is :
+*   1 - loadShaderSpirV
+*   2 - addDescriptorSetBinding
+*   3 - createDescriptorLayouts
+*/
 class VE_Shader : public VulkanObject<VE_DeviceContext>
 {
-    friend class VE_Pipeline;
 private:
 	std::vector<VkPipelineShaderStageCreateInfo> m_shaderStageCreateInfo;
     std::unordered_map<VkShaderStageFlagBits, VkShaderModule> m_mpShaderModules;
@@ -28,7 +33,9 @@ public:
     explicit VE_Shader(const VE_DeviceContext& a_ctxt);
     ~VE_Shader()override;
     void cleanup();
-    void loadShaderSpirV(const std::string& a_filename, const VkShaderStageFlagBits a_stage);    
+    [[nodiscard]] std::span<VkPipelineShaderStageCreateInfo> pipelineShaderStages() noexcept;
+    [[nodiscard]] std::span<VkDescriptorSetLayout> pipelineDescriptorSetLayouts() noexcept;
+    void loadShaderSpirV(const std::string_view& a_filename, const VkShaderStageFlagBits a_stage);    
     void addDescriptorSetBinding(const int a_setIndex, const VkDescriptorSetLayoutBinding& a_binding);
     void createDescriptorLayouts();
 };

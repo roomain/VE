@@ -16,7 +16,7 @@ struct VE_AllocationParameter
 {
 	size_t m_size;								/*!< memory size to allocate (in bytes)*/
 	VkBufferUsageFlags m_usage;					/*!< buffer usage flags*/
-	VmaAllocationCreateFlagBits m_allocFlag;	/*!< allocation flag bits*/
+	VmaAllocationCreateFlags m_allocFlag;		/*!< allocation flag bits*/
 };
 
 /*@brief create vulkan buffer in Gpu/Device Memory shared by queues*/

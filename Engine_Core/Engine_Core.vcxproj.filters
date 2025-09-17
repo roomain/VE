@@ -135,9 +135,6 @@
     <ClInclude Include="inc\VE_FwdDecl.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="inc\utils\VE_PipelineCache.h">
-      <Filter>Fichiers d%27en-tête\utils</Filter>
-    </ClInclude>
     <ClInclude Include="inc\rendering\VE_Uniform.h">
       <Filter>Fichiers d%27en-tête\rendering</Filter>
     </ClInclude>
@@ -160,6 +157,9 @@
       <Filter>Fichiers d%27en-tête\memory</Filter>
     </ClInclude>
     <ClInclude Include="inc\rendering\VE_Pipeline.h">
+      <Filter>Fichiers d%27en-tête\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\rendering\VE_GraphicalPipeline.h">
       <Filter>Fichiers d%27en-tête\rendering</Filter>
     </ClInclude>
   </ItemGroup>
@@ -203,9 +203,6 @@
     <ClCompile Include="src\rendering\VE_Shader.cpp">
       <Filter>Fichiers sources\rendering</Filter>
     </ClCompile>
-    <ClCompile Include="src\utils\VE_PipelineCache.cpp">
-      <Filter>Fichiers sources\utils</Filter>
-    </ClCompile>
     <ClCompile Include="src\rendering\VE_UniformSampler.cpp">
       <Filter>Fichiers sources\rendering</Filter>
     </ClCompile>
@@ -213,6 +210,9 @@
       <Filter>Fichiers sources\memory</Filter>
     </ClCompile>
     <ClCompile Include="src\rendering\VE_Pipeline.cpp">
+      <Filter>Fichiers sources\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rendering\VE_GraphicalPipeline.cpp">
       <Filter>Fichiers sources\rendering</Filter>
     </ClCompile>
   </ItemGroup>

@@ -179,12 +179,12 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClInclude Include="inc\parameters\VE_Parameter.h" />
     <ClInclude Include="inc\parameters\VE_QueueCreateInfo.h" />
     <ClInclude Include="inc\pch.h" />
+    <ClInclude Include="inc\rendering\VE_GraphicalPipeline.h" />
     <ClInclude Include="inc\rendering\VE_Pipeline.h" />
     <ClInclude Include="inc\rendering\VE_Shader.h" />
     <ClInclude Include="inc\rendering\VE_Uniform.h" />
     <ClInclude Include="inc\rendering\VE_UniformBuffer.h" />
     <ClInclude Include="inc\rendering\VE_UniformSampler.h" />
-    <ClInclude Include="inc\utils\VE_PipelineCache.h" />
     <ClInclude Include="inc\utils\VulkanBufferInitializers.h" />
     <ClInclude Include="inc\utils\VulkanCmdInitializers.h" />
     <ClInclude Include="inc\utils\VulkanContext.h" />
@@ -212,10 +212,10 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClCompile Include="src\memory\VE_MemoryCallbacks.cpp" />
     <ClCompile Include="src\memory\vmaAllocator.cpp" />
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\rendering\VE_GraphicalPipeline.cpp" />
     <ClCompile Include="src\rendering\VE_Pipeline.cpp" />
     <ClCompile Include="src\rendering\VE_Shader.cpp" />
     <ClCompile Include="src\rendering\VE_UniformSampler.cpp" />
-    <ClCompile Include="src\utils\VE_PipelineCache.cpp" />
     <ClCompile Include="src\VE_Application.cpp" />
     <ClCompile Include="src\VE_Device.cpp" />
     <ClCompile Include="src\VE_GraphicalDevice.cpp" />

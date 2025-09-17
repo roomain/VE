@@ -1,11 +1,20 @@
 #include "pch.h"
+#include <fstream>
 #include "rendering/VE_Pipeline.h"
 #include "utils/VulkanPipelineInitializers.h"
 #include "rendering/VE_Shader.h"
 
-VE_Pipeline::VE_Pipeline(const VE_DeviceContext& a_ctxt) : VulkanObject<VE_DeviceContext>{ a_ctxt }
+VE_Pipeline::VE_Pipeline(const VE_DeviceContext& a_ctxt, const std::string_view& a_cacheFile) : VulkanObject<VE_DeviceContext>{ a_ctxt }
 {
-	//
+    bool bCreateCache = !a_cacheFile.empty() && loadCache(a_cacheFile);
+    if (!bCreateCache)
+    {
+        VkPipelineCacheCreateInfo pipelineCacheCreateInfo{};
+        pipelineCacheCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_CACHE_CREATE_INFO;
+        pipelineCacheCreateInfo.initialDataSize = 0;
+        pipelineCacheCreateInfo.pInitialData = nullptr;
+        VK_CHECK_EXCEPT(vkCreatePipelineCache(m_vkCtxt.m_logicalDevice, &pipelineCacheCreateInfo, nullptr, &m_cache))
+    }
 }
 
 VE_Pipeline::~VE_Pipeline()
@@ -26,47 +35,68 @@ void VE_Pipeline::cleanup()
 		vkDestroyPipeline(m_vkCtxt.m_logicalDevice, m_pipeline, nullptr);
 		m_pipeline = VK_NULL_HANDLE;
 	}
+
+    if (m_cache != VK_NULL_HANDLE)
+    {
+        vkDestroyPipelineCache(m_vkCtxt.m_logicalDevice, m_cache, nullptr);
+        m_cache = VK_NULL_HANDLE;
+    }
 }
 
-void VE_Pipeline::setup(VE_ShaderPtr a_shader)
+
+bool VE_Pipeline::checkCache()const
 {
-	// push constant ranges
-
-	// pipeline layout
-	const VkPipelineLayoutCreateInfo pipelineLayoutCI = Vulkan::Initializers::pipelineLayoutCreateInfo(a_shader->m_descriptorSetLayouts);
-	VK_CHECK_EXCEPT(vkCreatePipelineLayout(m_vkCtxt.m_logicalDevice, &pipelineLayoutCI, nullptr, &m_pipelineLayout));
-
-	const auto vertexInputCI = internalCreateVertexInput();
-	const auto inputAssemblyCI = internalCreateInputAssembly();
-	const auto tesselationCI = internalCreateTesselation();
-	const auto viewportCI = internalCreateViewportState();
-	const auto rasterCI = internalCreateRasterization();
-	const auto multiSampleCI = internalCreateMultisampleState();
-	const auto depthStencilCI = internalCreateDepthStencilState();
-	const auto colorBlendCI = internalCreateColorBlendState();
-	const auto dynamicStateCI = internalCreateDynamicState();
-	
-	// pipeline create info
-	VkGraphicsPipelineCreateInfo pipelineCI = Vulkan::Initializers::createGraphicPipeline(
-		0,
-		a_shader->m_shaderStageCreateInfo,	// VkPipelineShaderStageCreateInfo -> from shader
-		&vertexInputCI,						// vertex input state
-		&inputAssemblyCI,					// input assembly state
-		&tesselationCI,						// tessellation state
-		&viewportCI,						// viewport state
-		&rasterCI,							// rasterization state
-		&multiSampleCI,						// multisample state
-		&depthStencilCI,					// depth stencil state
-		&colorBlendCI,						// color blend state
-		&dynamicStateCI,					// dynamic state
-		m_pipelineLayout,
-		VK_NULL_HANDLE, // render pass
-		0); // subpass
-
-	// todo
+    VkPhysicalDeviceProperties properties;
+    vkGetPhysicalDeviceProperties(m_vkCtxt.m_physicalDevice, &properties);
+    return (properties.vendorID == m_header.vendorID) && (properties.deviceID == m_header.deviceID);
 }
 
-void VE_Pipeline::loadFromCache(const VE_PipelineCache& a_cache)
+bool VE_Pipeline::loadCache(const std::string_view& a_filename)
 {
-	//
+    if (std::ifstream fileStream(std::string(a_filename), std::ios::binary | std::ios::in | std::ios::ate); fileStream.is_open())
+    {
+        const size_t fileSize = fileStream.tellg();
+        fileStream.seekg(0, std::ios::beg);
+
+        if (fileSize > 0)
+        {
+            // check
+            // verify endianess
+            fileStream.read(reinterpret_cast<char*>(&m_header), sizeof(VkPipelineCacheHeader));
+            if (checkCache())
+            {
+                fileStream.seekg(0, std::ios::beg);
+                std::vector<char> cacheData(fileSize);
+                fileStream.read(cacheData.data(), fileSize);
+                VkPipelineCacheCreateInfo pipelineCacheCreateInfo{};
+                pipelineCacheCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_CACHE_CREATE_INFO;
+                pipelineCacheCreateInfo.initialDataSize = cacheData.size();
+                pipelineCacheCreateInfo.pInitialData = cacheData.data();
+                VK_CHECK_LOG(vkCreatePipelineCache(m_vkCtxt.m_logicalDevice, &pipelineCacheCreateInfo, nullptr, &m_cache))
+                return m_cache != VK_NULL_HANDLE;
+            }
+        }
+
+    }
+    return false;
+}
+
+bool VE_Pipeline::saveCache(const std::string_view& a_filename)
+{
+    if (m_cache != VK_NULL_HANDLE)
+    {
+        size_t cacheSize;
+        VK_CHECK_EXCEPT(vkGetPipelineCacheData(m_vkCtxt.m_logicalDevice, m_cache, &cacheSize, nullptr))
+            std::vector<char> cacheData(cacheSize);
+        VK_CHECK_EXCEPT(vkGetPipelineCacheData(m_vkCtxt.m_logicalDevice, m_cache, &cacheSize, cacheData.data()))
+
+            if (std::ofstream fileStream(std::string(a_filename), std::ios::binary | std::ios::out); fileStream.is_open())
+            {
+                fileStream.write(cacheData.data(), cacheSize);
+                fileStream.flush();
+                fileStream.close();
+                return true;
+            }
+    }
+    return false;
 }

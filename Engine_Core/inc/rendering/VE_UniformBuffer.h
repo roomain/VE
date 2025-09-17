@@ -58,8 +58,7 @@ public:
     void updateShaderVariable(const VkDescriptorSet a_descSet) final
     {
         // write data to vulkan buffer
-		writeBuffer(m_vkCtxt, m_uniformBuffer, &m_uniformVariable);
-        
+		writeBuffer(m_vkCtxt, m_uniformBuffer, &m_uniformVariable);        
 
         VkDescriptorBufferInfo bufInfo{
             .buffer = m_uniformBuffer;

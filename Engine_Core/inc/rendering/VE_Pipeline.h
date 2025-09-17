@@ -5,37 +5,41 @@
 * @author Roomain
 ************************************************/
 #include <vector>
+#include <string_view>
 #include <vulkan/vulkan.h>
 #include "utils/VulkanContext.h"
 #include "VE_FwdDecl.h"
-
-class VE_PipelineCache;
 
 /*@brief base class of pipeline*/
 class VE_Pipeline : public VulkanObject<VE_DeviceContext>
 {
 private:
+	struct VkPipelineCacheHeader
+	{
+		uint32_t headerSize = 0;
+		uint32_t headerVersion = 0;
+		uint32_t vendorID = 0;
+		uint32_t deviceID = 0;
+		std::array<uint8_t, 16> pipelineCacheUUID;
+	};
+	VkPipelineCacheHeader m_header;
+
+protected:
+	VkPipelineCache m_cache = VK_NULL_HANDLE;
 	VkPipeline m_pipeline = VK_NULL_HANDLE;					/*!< vulkan pipeline handle*/
 	VkPipelineLayout m_pipelineLayout = VK_NULL_HANDLE;		/*!< vulkla pipeline layout handle*/
 
-	VE_Pipeline(const VE_DeviceContext& a_ctxt);
+	VE_Pipeline(const VE_DeviceContext& a_ctxt, const std::string_view& a_cacheFile = "");
 
-protected:
-	[[nodiscard]] virtual VkPipelineVertexInputStateCreateInfo internalCreateVertexInput() const = 0;
-	[[nodiscard]] virtual VkPipelineInputAssemblyStateCreateInfo internalCreateInputAssembly()const = 0;
-	[[nodiscard]] virtual VkPipelineTessellationStateCreateInfo internalCreateTesselation()const = 0;
-	[[nodiscard]] virtual VkPipelineViewportStateCreateInfo internalCreateViewportState()const = 0;
-	[[nodiscard]] virtual VkPipelineRasterizationStateCreateInfo internalCreateRasterization()const = 0;
-	[[nodiscard]] virtual VkPipelineMultisampleStateCreateInfo internalCreateMultisampleState()const = 0;
-	[[nodiscard]] virtual VkPipelineDepthStencilStateCreateInfo internalCreateDepthStencilState()const = 0;
-	[[nodiscard]] virtual VkPipelineColorBlendStateCreateInfo internalCreateColorBlendState()const = 0;
-	[[nodiscard]] virtual VkPipelineDynamicStateCreateInfo internalCreateDynamicState()const = 0;
+	/*@brief create cache from file*/
+	bool loadCache(const std::string_view& a_filename);
+	bool checkCache()const;
 
 public:
 	virtual ~VE_Pipeline();
 	virtual void cleanup();
-	virtual void setup(VE_ShaderPtr a_shader);
 	[[nodiscard]] constexpr bool isValid()const noexcept { return m_pipeline != VK_NULL_HANDLE; }
-	void loadFromCache(const VE_PipelineCache& a_cache);
+	/*@brief save cache*/
+	bool saveCache(const std::string_view& a_filename);
 };
 
