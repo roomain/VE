@@ -9,6 +9,16 @@
 /*@brief functions for structure initialisation*/
 namespace Vulkan::Initializers
 {
+	template<typename ConstantType>
+	[[nodiscard]] constexpr VkPushConstantRange pushConstant(const VkShaderStageFlags a_stageFlags, const uint32_t a_offset = 0)
+	{
+		return VkPushConstantRange{
+			.stageFlags = a_stageFlags,
+			.offset = a_offset,
+			.size = static_cast<uint32_t>(sizeof(ConstantType))
+		};
+	}
+
     template<typename DescriptorSetContainer>
 	[[nodiscard]] constexpr VkPipelineLayoutCreateInfo pipelineLayoutCreateInfo(
 		const DescriptorSetContainer& a_pSetLayouts)
@@ -82,6 +92,21 @@ namespace Vulkan::Initializers
 		.vertexAttributeDescriptionCount = static_cast<uint32_t>(a_vertexAttributeDescriptions.size()),
 		.pVertexAttributeDescriptions = a_vertexAttributeDescriptions.data() };
 	}
+
+	template<typename VertexInputBindingDescContainer>
+	[[nodiscard]] constexpr VkPipelineVertexInputStateCreateInfo pipelineVertexInputStateCreateInfo(
+		const VertexInputBindingDescContainer& a_vertexBindingDescriptions
+	)
+	{
+		return VkPipelineVertexInputStateCreateInfo{
+		.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO,
+		.pNext = nullptr,
+		.vertexBindingDescriptionCount = static_cast<uint32_t>(a_vertexBindingDescriptions.size()),
+		.pVertexBindingDescriptions = a_vertexBindingDescriptions.data(),
+		.vertexAttributeDescriptionCount = 0,
+		.pVertexAttributeDescriptions = nullptr };
+	}
+
     [[nodiscard]] constexpr VkPipelineInputAssemblyStateCreateInfo pipelineInputAssemblyStateCreateInfo(
 		VkPrimitiveTopology a_topology,
 		VkPipelineInputAssemblyStateCreateFlags a_flags,

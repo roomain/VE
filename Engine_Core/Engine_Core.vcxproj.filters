@@ -49,6 +49,24 @@
     <Filter Include="Fichiers sources\utils">
       <UniqueIdentifier>{511100da-4974-4699-ae73-21da545ab24b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers sources\rendering\curves">
+      <UniqueIdentifier>{2ae00977-4146-45a3-9c2e-6abebabb2c67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\rendering\meshes">
+      <UniqueIdentifier>{44027beb-f41a-4d6e-9e78-48ce712faada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\rendering\ui">
+      <UniqueIdentifier>{6997eb69-cf81-45f8-81ec-ab691ad4875a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\rendering\curves">
+      <UniqueIdentifier>{4703bce2-6fa6-42b2-a5c6-079ba80dec33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\rendering\meshes">
+      <UniqueIdentifier>{7d24d484-8f98-422d-bbe8-7860fffb7dac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\rendering\ui">
+      <UniqueIdentifier>{54e4a8c3-9e48-4206-aa7e-cd07f3d618fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\Capabilities\VE_CapabilitiesVisitor.h">
@@ -162,6 +180,12 @@
     <ClInclude Include="inc\rendering\VE_GraphicalPipeline.h">
       <Filter>Fichiers d%27en-tête\rendering</Filter>
     </ClInclude>
+    <ClInclude Include="inc\rendering\curves\VE_CurvePipeline.h">
+      <Filter>Fichiers d%27en-tête\rendering\curves</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\rendering\VE_VertexTypes.h">
+      <Filter>Fichiers sources\rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Capabilities\VE_Capabilities.cpp">
@@ -214,6 +238,9 @@
     </ClCompile>
     <ClCompile Include="src\rendering\VE_GraphicalPipeline.cpp">
       <Filter>Fichiers sources\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rendering\curves\VE_CurvePipeline.cpp">
+      <Filter>Fichiers sources\rendering\curves</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

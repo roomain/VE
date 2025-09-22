@@ -7,12 +7,12 @@ VE_GraphicalPipeline::VE_GraphicalPipeline(const VE_DeviceContext& a_ctxt, const
 { }
 
 
-bool VE_GraphicalPipeline::setup(const VE_ShaderPtr& a_shader)
+bool VE_GraphicalPipeline::setup(const VE_ShaderPtr& a_shader, const std::span<VkPushConstantRange>& a_pushConst)
 {
-	// push constant ranges
-
 	// pipeline layout
-	const VkPipelineLayoutCreateInfo pipelineLayoutCI = Vulkan::Initializers::pipelineLayoutCreateInfo(a_shader->pipelineDescriptorSetLayouts());
+	VkPipelineLayoutCreateInfo pipelineLayoutCI = Vulkan::Initializers::pipelineLayoutCreateInfo(a_shader->pipelineDescriptorSetLayouts());
+	pipelineLayoutCI.pPushConstantRanges = a_pushConst.data();
+	pipelineLayoutCI.pushConstantRangeCount = static_cast<uint32_t>(a_pushConst.size());
 	VK_CHECK_EXCEPT(vkCreatePipelineLayout(m_vkCtxt.m_logicalDevice, &pipelineLayoutCI, nullptr, &m_pipelineLayout));
 
 	const auto vertexInputCI = internalCreateVertexInput();

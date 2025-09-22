@@ -24,5 +24,5 @@ protected:
 
 public:
 	~VE_GraphicalPipeline() override = default;
-	bool setup(const VE_ShaderPtr& a_shader);
+	bool setup(const VE_ShaderPtr& a_shader, const std::span<VkPushConstantRange>& a_pushConst);
 };
