@@ -8,6 +8,7 @@
 #include "utils/VulkanDefines.h"
 #include "rendering/VE_VertexTypes.h"
 
+
 /*@brief rendering curve pipeline*/
 class VE_CurvePipeline : public VE_GraphicalPipeline
 {
@@ -22,14 +23,6 @@ private:
 	};
 
 
-protected:
-	[[nodiscard]] virtual VkPipelineVertexInputStateCreateInfo internalCreateVertexInput() const override;
-	[[nodiscard]] virtual VkPipelineInputAssemblyStateCreateInfo internalCreateInputAssembly()const override;
-	[[nodiscard]] virtual VkPipelineTessellationStateCreateInfo internalCreateTesselation()const override;
-	[[nodiscard]] virtual VkPipelineViewportStateCreateInfo internalCreateViewportState()const override;
-	[[nodiscard]] virtual VkPipelineRasterizationStateCreateInfo internalCreateRasterization()const override;
-	[[nodiscard]] virtual VkPipelineMultisampleStateCreateInfo internalCreateMultisampleState()const override;
-	[[nodiscard]] virtual VkPipelineDepthStencilStateCreateInfo internalCreateDepthStencilState()const override;
-	[[nodiscard]] virtual VkPipelineColorBlendStateCreateInfo internalCreateColorBlendState()const override;
-	[[nodiscard]] virtual VkPipelineDynamicStateCreateInfo internalCreateDynamicState()const override;
+public:
+	bool setup(const VE_ShaderPtr& a_shader, const PipelineContext& a_renderingCtxt) override;
 };
