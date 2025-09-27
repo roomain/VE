@@ -180,6 +180,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClInclude Include="inc\parameters\VE_QueueCreateInfo.h" />
     <ClInclude Include="inc\pch.h" />
     <ClInclude Include="inc\rendering\curves\VE_CurvePipeline.h" />
+    <ClInclude Include="inc\rendering\meshes\VE_MeshPipeline.h" />
     <ClInclude Include="inc\rendering\VE_GraphicalPipeline.h" />
     <ClInclude Include="inc\rendering\VE_Pipeline.h" />
     <ClInclude Include="inc\rendering\VE_Shader.h" />
@@ -216,6 +217,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClCompile Include="src\memory\vmaAllocator.cpp" />
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\rendering\curves\VE_CurvePipeline.cpp" />
+    <ClCompile Include="src\rendering\meshes\VE_MeshPipeline.cpp" />
     <ClCompile Include="src\rendering\VE_GraphicalPipeline.cpp" />
     <ClCompile Include="src\rendering\VE_Pipeline.cpp" />
     <ClCompile Include="src\rendering\VE_Shader.cpp" />

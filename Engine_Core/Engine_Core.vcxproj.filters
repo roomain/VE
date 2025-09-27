@@ -189,6 +189,9 @@
     <ClInclude Include="inc\rendering\VE_ShadersDatabase.h">
       <Filter>Fichiers d%27en-tête\rendering</Filter>
     </ClInclude>
+    <ClInclude Include="inc\rendering\meshes\VE_MeshPipeline.h">
+      <Filter>Fichiers d%27en-tête\rendering\meshes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Capabilities\VE_Capabilities.cpp">
@@ -247,6 +250,9 @@
     </ClCompile>
     <ClCompile Include="src\rendering\VE_ShadersDatabase.cpp">
       <Filter>Fichiers sources\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rendering\meshes\VE_MeshPipeline.cpp">
+      <Filter>Fichiers sources\rendering\meshes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
