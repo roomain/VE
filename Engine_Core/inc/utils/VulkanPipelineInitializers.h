@@ -146,23 +146,33 @@ namespace Vulkan::Initializers
 
 
 	[[nodiscard]] constexpr VkPipelineColorBlendStateCreateInfo pipelineColorBlendStateCreateInfo(
-		uint32_t a_attachmentCount,
+		const VkBool32 a_blendEnable,
+		const VkLogicOp a_blendOperator,
+		const uint32_t a_attachmentCount,
 		const VkPipelineColorBlendAttachmentState* a_pAttachments)
 	{
 		return VkPipelineColorBlendStateCreateInfo{
 		.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO,
 		.pNext = nullptr,
+		.flags = 0,
+		.logicOpEnable = a_blendEnable,
+		.logicOp = a_blendOperator,
 		.attachmentCount = a_attachmentCount,
 		.pAttachments = a_pAttachments };
 	}
 
 	template<typename PipelinColorBlendAttachContainer>
 	[[nodiscard]] constexpr VkPipelineColorBlendStateCreateInfo pipelineColorBlendStateCreateInfo(
+		const VkBool32 a_blendEnable,
+		const VkLogicOp a_blendOperator,
 		const PipelinColorBlendAttachContainer& a_pAttachments)
 	{
 		return VkPipelineColorBlendStateCreateInfo{
 		.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO,
 		.pNext = nullptr,
+		.flags = 0,
+		.logicOpEnable = a_blendEnable,
+		.logicOp = a_blendOperator,
 		.attachmentCount = static_cast<uint32_t>(a_pAttachments.size()),
 		.pAttachments = a_pAttachments.data() };
 	}

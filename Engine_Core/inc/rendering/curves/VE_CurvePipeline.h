@@ -22,7 +22,6 @@ private:
 		}
 	};
 
-
 public:
 	bool setup(const VE_ShaderPtr& a_shader, const PipelineContext& a_renderingCtxt) override;
 };

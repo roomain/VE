@@ -17,9 +17,9 @@ bool VE_CurvePipeline::setup(const VE_ShaderPtr& a_shader, const PipelineContext
 	const auto tesselationCI = Vulkan::Initializers::pipelineTessellationStateCreateInfo(a_renderingCtxt.m_ctrlPoints);
 	const auto viewportCI = Vulkan::Initializers::pipelineViewportStateCreateInfo(a_renderingCtxt.m_viewportCount, a_renderingCtxt.m_scissorCount);
 	const auto rasterCI = Vulkan::Initializers::pipelineRasterizationStateCreateInfo(RasterizationSettings{.polygonMode = VK_POLYGON_MODE_LINE	} );
-	const auto multiSampleCI = Vulkan::Initializers::pipelineMultisampleStateCreateInfo();//todo
+	const auto multiSampleCI = Vulkan::Initializers::pipelineMultisampleStateCreateInfo(a_renderingCtxt.m_multisample);
 	const auto depthStencilCI = Vulkan::Initializers::pipelineDepthStencilStateCreateInfo(DepthStencilSettings{});
-	const auto colorBlendCI = Vulkan::Initializers::pipelineColorBlendStateCreateInfo();// todo
+	const auto colorBlendCI = Vulkan::Initializers::pipelineColorBlendStateCreateInfo(a_renderingCtxt.m_blendEnable, a_renderingCtxt.m_blendOperator, a_renderingCtxt.m_colorAttachments);// todo
 
 	const auto dynamicStateCI = Vulkan::Initializers::pipelineDynamicStateCreateInfo(a_renderingCtxt.m_dynStates);
 

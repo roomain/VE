@@ -183,6 +183,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClInclude Include="inc\rendering\VE_GraphicalPipeline.h" />
     <ClInclude Include="inc\rendering\VE_Pipeline.h" />
     <ClInclude Include="inc\rendering\VE_Shader.h" />
+    <ClInclude Include="inc\rendering\VE_ShadersDatabase.h" />
     <ClInclude Include="inc\rendering\VE_Uniform.h" />
     <ClInclude Include="inc\rendering\VE_UniformBuffer.h" />
     <ClInclude Include="inc\rendering\VE_UniformSampler.h" />
@@ -218,6 +219,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClCompile Include="src\rendering\VE_GraphicalPipeline.cpp" />
     <ClCompile Include="src\rendering\VE_Pipeline.cpp" />
     <ClCompile Include="src\rendering\VE_Shader.cpp" />
+    <ClCompile Include="src\rendering\VE_ShadersDatabase.cpp" />
     <ClCompile Include="src\rendering\VE_UniformSampler.cpp" />
     <ClCompile Include="src\VE_Application.cpp" />
     <ClCompile Include="src\VE_Device.cpp" />

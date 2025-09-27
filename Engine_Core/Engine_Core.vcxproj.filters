@@ -186,6 +186,9 @@
     <ClInclude Include="inc\rendering\VE_VertexTypes.h">
       <Filter>Fichiers sources\rendering</Filter>
     </ClInclude>
+    <ClInclude Include="inc\rendering\VE_ShadersDatabase.h">
+      <Filter>Fichiers d%27en-tête\rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Capabilities\VE_Capabilities.cpp">
@@ -241,6 +244,9 @@
     </ClCompile>
     <ClCompile Include="src\rendering\curves\VE_CurvePipeline.cpp">
       <Filter>Fichiers sources\rendering\curves</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rendering\VE_ShadersDatabase.cpp">
+      <Filter>Fichiers sources\rendering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
