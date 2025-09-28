@@ -27,7 +27,7 @@ bool VE_MeshPipeline::setup(const VE_ShaderPtr& a_shader, const PipelineContext&
 	const auto rasterCI = Vulkan::Initializers::pipelineRasterizationStateCreateInfo(RasterizationSettings{ .polygonMode = VK_POLYGON_MODE_FILL });
 	const auto multiSampleCI = Vulkan::Initializers::pipelineMultisampleStateCreateInfo(a_renderingCtxt.m_multisample);
 	const auto depthStencilCI = Vulkan::Initializers::pipelineDepthStencilStateCreateInfo(DepthStencilSettings{});
-	const auto colorBlendCI = Vulkan::Initializers::pipelineColorBlendStateCreateInfo(a_renderingCtxt.m_blendEnable, a_renderingCtxt.m_blendOperator, a_renderingCtxt.m_colorAttachments);// todo
+	const auto colorBlendCI = Vulkan::Initializers::pipelineColorBlendStateCreateInfo(a_renderingCtxt.m_blendEnable, a_renderingCtxt.m_blendOperator, a_renderingCtxt.m_colorAttachments);
 
 	const auto dynamicStateCI = Vulkan::Initializers::pipelineDynamicStateCreateInfo(a_renderingCtxt.m_dynStates);
 
@@ -45,8 +45,8 @@ bool VE_MeshPipeline::setup(const VE_ShaderPtr& a_shader, const PipelineContext&
 		&colorBlendCI,						// color blend state
 		&dynamicStateCI,					// dynamic state
 		m_pipelineLayout,
-		VK_NULL_HANDLE, // render pass
-		0); // subpass
+		VK_NULL_HANDLE,						// render pass
+		0);									// subpass
 
 	vkCreateGraphicsPipelines(m_vkCtxt.m_logicalDevice, m_cache, 1,
 		&pipelineCI, nullptr, &m_pipeline);
