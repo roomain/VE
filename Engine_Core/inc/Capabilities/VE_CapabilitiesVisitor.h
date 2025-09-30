@@ -30,27 +30,27 @@ private:
 	static std::string versionToString(const unsigned int a_version);
 
 	template<typename SizeType>
-	static void memorySize(const SizeType& a_size, float& a_computedSize, std::string& a_unit)
+	static void memorySize(const SizeType& a_size, double& a_computedSize, std::string& a_unit)
 	{
-		static constexpr float kilo = 1024;
-		static constexpr float mega = 1024 * kilo;
-		static constexpr float giga = 1024 * mega;
+		static constexpr double kilo = 1024;
+		static constexpr double mega = 1024 * kilo;
+		static constexpr double giga = 1024 * mega;
 
-		if (a_computedSize = a_size / giga; a_computedSize > 0)
+		if (a_computedSize = static_cast<double>(a_size) / giga; a_computedSize > 0.01)
 		{
 			a_unit = "Go";
 		}
-		else if (a_computedSize = a_size / giga; a_computedSize > 0)
+		else if (a_computedSize = static_cast<double>(a_size) / giga; a_computedSize > 0.01)
 		{
 			a_unit = "Mo";
 		}
-		else if (a_computedSize = a_size / giga; a_computedSize > 0)
+		else if (a_computedSize = static_cast<double>(a_size) / kilo; a_computedSize > 0.01)
 		{
 			a_unit = "Ko";
 		}
 		else
 		{
-			a_computedSize = static_cast<float>(a_size);
+			a_computedSize = static_cast<double>(a_size);
 			a_unit = "o";
 		}
 	}
@@ -58,10 +58,10 @@ private:
 	template<typename SizeType>
 	static std::string memorySize(const SizeType& a_size)
 	{
-		float size;
+		double formalizedSize;
 		std::string unit;
-		VE_CapabilitiesVisitor::memorySize(a_size, size, unit);
-		return std::format("{0} {1}", size, unit).c_str();
+		VE_CapabilitiesVisitor::memorySize(a_size, formalizedSize, unit);
+		return std::format("{} {}", formalizedSize, unit).c_str();
 	}
 
 	void visit(const VkPhysicalDeviceLimits& a_limits);
