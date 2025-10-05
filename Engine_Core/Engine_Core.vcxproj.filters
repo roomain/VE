@@ -192,6 +192,9 @@
     <ClInclude Include="inc\rendering\meshes\VE_MeshPipeline.h">
       <Filter>Fichiers d%27en-tête\rendering\meshes</Filter>
     </ClInclude>
+    <ClInclude Include="inc\rendering\VE_RenderingCtx.h">
+      <Filter>Fichiers d%27en-tête\rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Capabilities\VE_Capabilities.cpp">
@@ -253,6 +256,9 @@
     </ClCompile>
     <ClCompile Include="src\rendering\meshes\VE_MeshPipeline.cpp">
       <Filter>Fichiers sources\rendering\meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rendering\VE_RenderingCtx.cpp">
+      <Filter>Fichiers sources\rendering</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

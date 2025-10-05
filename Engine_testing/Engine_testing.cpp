@@ -14,6 +14,7 @@
 #include "glfw_events.h"
 #include "VE_GraphicalDevice.h"
 #include "VE_QueueFamily.h"
+#include "rendering/VE_RenderingCtx.h"
 
 void loadConfiguration()
 {
@@ -90,8 +91,9 @@ int main()
 	auto device = app.createGraphicalDevice(&deviceChoice, deviceParameters);
 #pragma warning(push)
 #pragma warning( disable : 4189 )// because unsed local variable
-	const auto swapchain = device->createNewSwapChain();
-	const auto queue = device->createQueue(VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_TRANSFER_BIT);
+	VE_RenderingCtx renderingCtx(device);
+	//const auto swapchain = device->createNewSwapChain();
+	//const auto queue = device->createQueue(VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_TRANSFER_BIT);
 	//VulkanBuffer buffer;
 	//device->createStagingBuffer(50 * sizeof(int), buffer);
 	//unsigned int numImages = swapchain->swapBufferCount();

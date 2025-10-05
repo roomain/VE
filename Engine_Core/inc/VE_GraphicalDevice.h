@@ -15,6 +15,7 @@ class VE_SwapChain;
 class VE_CORE_LIB VE_GraphicalDevice : public VE_Device
 {
 	friend class VE_Application;
+	friend class VE_RenderingCtx;
 private:
 	std::shared_ptr<VE_SwapChain> m_swapChain;	/*!< rendering swapchain*/
 	int32_t m_presentationQueueIndex = -1;		/*!< presentation queue index*/
@@ -23,9 +24,9 @@ private:
 	explicit VE_GraphicalDevice(const VE_DeviceContext& a_context, const std::vector<int>& a_queueFamilies, 
 		VkSurfaceKHR a_surface, const int a_presentQueueIndex);
 
+	[[nodiscard]] std::shared_ptr<VE_SwapChain> createNewSwapChain();
 public:
 	virtual ~VE_GraphicalDevice()override;
-	[[nodiscard]] std::shared_ptr<VE_SwapChain> createNewSwapChain();
 	[[nodiscard]] std::shared_ptr<VE_SwapChain> swapChain()const;
 };
 #pragma warning(pop)
