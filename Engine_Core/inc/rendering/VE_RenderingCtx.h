@@ -27,6 +27,11 @@ public:
 
 	explicit VE_RenderingCtx(VE_GraphicalDevicePtr a_device);
 	VE_RenderingCtx(VE_RenderingCtx&& a_other) noexcept = default;
+
+	[[nodiscard]] inline VE_GraphicalDevicePtr device()const
+	{
+		return m_device;
+	}
 };
 
 #pragma warning(pop)

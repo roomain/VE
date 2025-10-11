@@ -67,6 +67,12 @@
     <Filter Include="Fichiers d%27en-tête\rendering\ui">
       <UniqueIdentifier>{54e4a8c3-9e48-4206-aa7e-cd07f3d618fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers sources\rendering\components">
+      <UniqueIdentifier>{e3259668-97c7-40a2-ba62-e27333eed405}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\rendering\components">
+      <UniqueIdentifier>{92b927a2-587c-49e0-905e-01dd228d9378}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\Capabilities\VE_CapabilitiesVisitor.h">
@@ -194,6 +200,9 @@
     </ClInclude>
     <ClInclude Include="inc\rendering\VE_RenderingCtx.h">
       <Filter>Fichiers d%27en-tête\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\rendering\components\VE_Component.h">
+      <Filter>Fichiers d%27en-tête\rendering\components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

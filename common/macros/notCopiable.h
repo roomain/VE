@@ -1,6 +1,6 @@
 #pragma once
 /***********************************************
-* @headerfile logData.h
+* @headerfile notCopiable.h
 * @date 16 / 08 / 2024
 * @author Roomain
 ************************************************/
