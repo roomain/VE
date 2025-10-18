@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <OCC_DIR Condition="exists('D:\libraries\OCCT')">D:\libraries\OCCT</OCC_DIR>
+    <OCC_DIR Condition="exists('C:\libraries\OCCT">C:\libraries\OCCT</OCC_DIR>
+    <OCC_SLN_DIR>$(OCC_DIR)\VS2022\win64\vc14</OCC_SLN_DIR>
+    <OCC_INC>$(OCC_DIR)\VS2022\inc</OCC_INC>
+    <OCC_LIB Condition="'$(Configuration)' == 'Debug'">$(OCC_SLN_DIR)\libd</OCC_LIB>
+    <OCC_LIB Condition="'$(Configuration)' == 'Release'">$(OCC_SLN_DIR)\lib</OCC_LIB>
+    <OCC_BIN Condition="'$(Configuration)' == 'Debug'">$(OCC_SLN_DIR)\bind</OCC_BIN>
+    <OCC_BIN Condition="'$(Configuration)' == 'Release'">$(OCC_SLN_DIR)\bin</OCC_BIN>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(OCC_INC);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(OCC_LIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command></Command>
+    </PostBuildEvent>    
+    <PreBuildEvent>
+      <Command>copy /Y $(OCC_BIN)\*.dll $(OutDir) </Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="OCC_DIR">
+      <Value>$(OCC_DIR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="OCC_SLN_DIR">
+      <Value>$(OCC_SLN_DIR)</Value>
+    </BuildMacro>
+    <BuildMacro Include="OCC_INC">
+      <Value>$(OCC_INC)</Value>
+    </BuildMacro>
+    <BuildMacro Include="OCC_LIB">
+      <Value>$(OCC_LIB)</Value>
+    </BuildMacro>
+    <BuildMacro Include="OCC_BIN">
+      <Value>$(OCC_BIN)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
