@@ -189,9 +189,6 @@
     <ClInclude Include="inc\rendering\curves\VE_CurvePipeline.h">
       <Filter>Fichiers d%27en-tête\rendering\curves</Filter>
     </ClInclude>
-    <ClInclude Include="inc\rendering\VE_VertexTypes.h">
-      <Filter>Fichiers sources\rendering</Filter>
-    </ClInclude>
     <ClInclude Include="inc\rendering\VE_ShadersDatabase.h">
       <Filter>Fichiers d%27en-tête\rendering</Filter>
     </ClInclude>
@@ -203,6 +200,9 @@
     </ClInclude>
     <ClInclude Include="inc\rendering\components\VE_Component.h">
       <Filter>Fichiers d%27en-tête\rendering\components</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\rendering\VE_VertexTypes.h">
+      <Filter>Fichiers d%27en-tête\rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
