@@ -22,3 +22,10 @@ struct VE_MeshVertex
 };
 
 static constexpr uint32_t MeshVertexSize = sizeof(VE_MeshVertex);
+
+template<typename VertexType>
+struct VE_Shape
+{
+    std::vector<VertexType> m_vertexBuffer; /*!< mesh vertex buffer data*/
+    std::vector<int> m_indexBuffer;         /*!< mesh index buffer data*/
+};

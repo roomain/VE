@@ -31,3 +31,14 @@ public:
 	~VE_GraphicalPipeline() override = default;
 	virtual bool setup(const VE_ShaderPtr& a_shader, const PipelineContext& a_renderingCtxt) = 0;
 };
+
+template<typename Type> requires std::is_base_of_v<VE_GraphicalPipeline, Type>
+class SharedPipeline : public std::shared_ptr<Type>
+{
+};
+
+#define DECLARE_PIPELINE(pipeline) \
+static SharedPipeline<pipeline> s_pipeline;
+
+#define IMPL_PIPELINE(pipeline, classname) \
+SharedPipeline<pipeline> classname::s_pipeline = std::make_shared<pipeline>;

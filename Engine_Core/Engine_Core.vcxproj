@@ -180,7 +180,9 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClInclude Include="inc\parameters\VE_QueueCreateInfo.h" />
     <ClInclude Include="inc\pch.h" />
     <ClInclude Include="inc\rendering\components\VE_Component.h" />
+    <ClInclude Include="inc\rendering\components\VE_MeshComponent.h" />
     <ClInclude Include="inc\rendering\curves\VE_CurvePipeline.h" />
+    <ClInclude Include="inc\rendering\VE_RenderGraph.h" />
     <ClInclude Include="inc\rendering\meshes\VE_MeshPipeline.h" />
     <ClInclude Include="inc\rendering\VE_GraphicalPipeline.h" />
     <ClInclude Include="inc\rendering\VE_Pipeline.h" />
