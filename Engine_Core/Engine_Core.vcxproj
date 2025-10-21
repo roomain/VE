@@ -220,6 +220,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClCompile Include="src\memory\VE_MemoryCallbacks.cpp" />
     <ClCompile Include="src\memory\vmaAllocator.cpp" />
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\rendering\components\VE_MeshComponent.cpp" />
     <ClCompile Include="src\rendering\pipelines\VE_CurvePipeline.cpp" />
     <ClCompile Include="src\rendering\pipelines\VE_MeshPipeline.cpp" />
     <ClCompile Include="src\rendering\pipelines\VE_GraphicalPipeline.cpp" />

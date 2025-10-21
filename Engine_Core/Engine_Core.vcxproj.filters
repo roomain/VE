@@ -275,5 +275,8 @@
     <ClCompile Include="src\rendering\VE_RenderingCtx.cpp">
       <Filter>Fichiers sources\rendering</Filter>
     </ClCompile>
+    <ClCompile Include="src\rendering\components\VE_MeshComponent.cpp">
+      <Filter>Fichiers sources\rendering\components</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

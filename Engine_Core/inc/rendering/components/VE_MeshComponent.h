@@ -4,12 +4,17 @@
 * @date 19 / 10 / 2025
 * @author Roomain
 ************************************************/
+#include <memory>
 #include "rendering/components/VE_Component.h"
+#include "rendering/pipelines/VE_GraphicalPipeline.h"
 
+class VE_MeshPipeline;
 class VE_RenderGraph;
 
 class VE_MeshComponent : public VE_Component
 {
+    DECLARE_PIPELINE(VE_MeshPipeline)
+
 private:
     VkBuffer m_vertexBuffer = VK_NULL_HANDLE;    /*!< mesh vertex contains vertex and normals*/
     VkBuffer m_indexBuffer = VK_NULL_HANDLE;     /*!< mesh index buffer */
