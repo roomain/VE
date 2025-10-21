@@ -4,7 +4,7 @@
 * @date 27 / 09 / 2025
 * @author Roomain
 ************************************************/
-#include "rendering/VE_GraphicalPipeline.h"
+#include "rendering/pipelines/VE_GraphicalPipeline.h"
 #include "utils/VulkanDefines.h"
 #include "rendering/VE_VertexTypes.h"
 

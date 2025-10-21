@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "rendering/VE_Shader.h"
-#include "rendering/curves/VE_CurvePipeline.h"
+#include "rendering/pipelines/VE_CurvePipeline.h"
 
 
 bool VE_CurvePipeline::setup(const VE_ShaderPtr& a_shader, const PipelineContext& a_renderingCtxt)

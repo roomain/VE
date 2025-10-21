@@ -5,11 +5,13 @@
 * @author Roomain
 ************************************************/
 #include <memory>
+#include <unordered_map>
 #include <vulkan/vulkan.hpp>
 #include "utils/VulkanContext.h"
 #include "rendering/components/VE_Component.h"
 
 class VE_GraphicalPipeline;
+
 
 class VE_RenderGraph : public VulkanObject<VE_DeviceContext>
 {

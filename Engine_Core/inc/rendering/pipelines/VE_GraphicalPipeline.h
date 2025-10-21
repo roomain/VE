@@ -5,6 +5,9 @@
 * @author Roomain
 ************************************************/
 #include <vector>
+#include <type_traits>
+#include <concepts>
+#include "notCopiable.h"
 #include "rendering/VE_Pipeline.h"
 
 
@@ -32,13 +35,35 @@ public:
 	virtual bool setup(const VE_ShaderPtr& a_shader, const PipelineContext& a_renderingCtxt) = 0;
 };
 
+
+/*@brief specific shared pointer accepting only graphical pipeline*/
 template<typename Type> requires std::is_base_of_v<VE_GraphicalPipeline, Type>
 class SharedPipeline : public std::shared_ptr<Type>
 {
+public:
+	NOT_COPIABLE(SharedPipeline)
+	explicit SharedPipeline(std::shared_ptr<Type>&& a_pointer)noexcept : std::shared_ptr<Type>(a_pointer) {}
 };
 
+
+template<typename T, typename Base>
+concept IsPointerOf = requires {
+	typename T::element_type;
+}&& std::derived_from<typename T::element_type, Base>;
+
+
+template<typename T>
+concept HasPipeline = requires{
+	{ T::GetPipeline() } -> IsPointerOf<VE_GraphicalPipeline>;
+};
+
+
 #define DECLARE_PIPELINE(pipeline) \
-static SharedPipeline<pipeline> s_pipeline;
+private:\
+	static SharedPipeline<pipeline> s_pipeline;\
+public: \
+	static SharedPipeline<pipeline> GetPipeline(){ return s_pipeline; }
+
 
 #define IMPL_PIPELINE(pipeline, classname) \
-SharedPipeline<pipeline> classname::s_pipeline = std::make_shared<pipeline>;
+SharedPipeline<pipeline> classname::s_pipeline = std::make_shared<pipeline>();
