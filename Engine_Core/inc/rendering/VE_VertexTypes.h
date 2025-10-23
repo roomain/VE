@@ -23,9 +23,10 @@ struct VE_MeshVertex
 
 static constexpr uint32_t MeshVertexSize = sizeof(VE_MeshVertex);
 
+/*@brief shape cpu data to trans to vulkan*/
 template<typename VertexType>
 struct VE_Shape
 {
     std::vector<VertexType> m_vertexBuffer; /*!< mesh vertex buffer data*/
-    std::vector<int> m_indexBuffer;         /*!< mesh index buffer data*/
+    std::vector<uint32_t> m_indexBuffer;         /*!< mesh index buffer data*/
 };

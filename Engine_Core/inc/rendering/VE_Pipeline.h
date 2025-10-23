@@ -43,3 +43,5 @@ public:
 	bool saveCache(const std::string_view& a_filename);
 };
 
+#define IMPL_PIPELINE_FILE(classname) \
+	static const inline std::string_view s_cacheFile = std::string(#classname) + ".cache";

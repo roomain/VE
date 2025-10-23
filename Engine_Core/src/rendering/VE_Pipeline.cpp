@@ -1,5 +1,7 @@
 #include "pch.h"
 #include <fstream>
+#include <format>
+#include <filesystem>
 #include "rendering/VE_Pipeline.h"
 #include "utils/VulkanPipelineInitializers.h"
 #include "rendering/VE_Shader.h"
@@ -53,7 +55,18 @@ bool VE_Pipeline::checkCache()const
 
 bool VE_Pipeline::loadCache(const std::string_view& a_filename)
 {
-    if (std::ifstream fileStream(std::string(a_filename), std::ios::binary | std::ios::in | std::ios::ate); fileStream.is_open())
+    auto current = std::filesystem::current_path();
+    const std::string strCurrent = current.generic_string() + "/pipeline";
+    std::filesystem::path path(strCurrent);
+    if (!std::filesystem::exists(path))
+    {
+        Logger::error(std::format("Folder does not exist: {}", strCurrent));
+        return false;
+    }
+
+    std::string outputFile = path.generic_string() + "/" + std::string(a_filename);
+
+    if (std::ifstream fileStream(outputFile, std::ios::binary | std::ios::in | std::ios::ate); fileStream.is_open())
     {
         const size_t fileSize = fileStream.tellg();
         fileStream.seekg(0, std::ios::beg);
@@ -87,16 +100,30 @@ bool VE_Pipeline::saveCache(const std::string_view& a_filename)
     {
         size_t cacheSize;
         VK_CHECK_EXCEPT(vkGetPipelineCacheData(m_vkCtxt.m_logicalDevice, m_cache, &cacheSize, nullptr))
-            std::vector<char> cacheData(cacheSize);
+        std::vector<char> cacheData(cacheSize);
         VK_CHECK_EXCEPT(vkGetPipelineCacheData(m_vkCtxt.m_logicalDevice, m_cache, &cacheSize, cacheData.data()))
 
-            if (std::ofstream fileStream(std::string(a_filename), std::ios::binary | std::ios::out); fileStream.is_open())
+        auto current = std::filesystem::current_path();
+        const std::string strCurrent = current.generic_string() + "/pipeline";
+        std::filesystem::path path(strCurrent);
+        if (!std::filesystem::exists(path))
+        {
+            if (!std::filesystem::create_directory(path))
             {
-                fileStream.write(cacheData.data(), cacheSize);
-                fileStream.flush();
-                fileStream.close();
-                return true;
+                Logger::error(std::format("Can't create folder: {}", strCurrent));
+                return false;
             }
+        }
+
+        std::string outputFile = path.generic_string() + "/" + std::string(a_filename);
+
+        if (std::ofstream fileStream(std::string(a_filename), std::ios::binary | std::ios::out); fileStream.is_open())
+        {
+            fileStream.write(cacheData.data(), cacheSize);
+            fileStream.flush();
+            fileStream.close();
+            return true;
+        }
     }
     return false;
 }

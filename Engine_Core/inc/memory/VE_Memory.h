@@ -28,6 +28,18 @@ struct VE_AllocationParameter
 /*@brief create temporary buffer before sending to Gpu*/
 [[nodiscard]] VulkanBuffer allocateStagingBuffer(const VE_DeviceContext& a_context, const size_t& a_bufferByteSize);
 
+template<typename Type>
+[[nodiscard]] VulkanBuffer AllocateAndWriteStagingBuffer(const VE_DeviceContext& a_context, const std::vector<Type>& inputData)
+{
+	const size_t memSize = inputData.size() * sizeof(Type);
+	VulkanBuffer staging = allocateStagingBuffer(a_context, memSize);
+	void* vulkanStageBuffer = nullptr;
+	VK_CHECK_EXCEPT(vmaMapMemory(a_context.m_memAllocator, staging.m_Alloc, &vulkanStageBuffer))
+	memcpy(vulkanStageBuffer, inputData.data(), memSize);
+	vmaUnmapMemory(a_context.m_memAllocator, staging.m_Alloc);
+	return staging;
+}
+
 /*@brief release buffer*/
 void releaseBuffer(const VE_DeviceContext& a_context, VulkanBuffer& a_buffer);
 

@@ -12,8 +12,8 @@
 
 class VE_GraphicalPipeline;
 
-
-class VE_RenderGraph : public VulkanObject<VE_DeviceContext>
+/*@brief Manage rendering in multiple threads*/
+class VE_RenderGraph //: public VulkanObject<VE_DeviceContext>
 {
 private:
     std::unordered_map<uint32_t, std::shared_ptr<VE_GraphicalPipeline>> m_registeredPipelines;          /*!< pipelines per Id*/
@@ -21,10 +21,13 @@ private:
 
     struct CommandThread
     {
-        std::thread m_thread;
-        VkCommandBuffer m_cmdBuffer;
+        std::thread m_thread;                   /*!< working thread*/
+        VkCommandBuffer m_cmdBuffer;            /*!< command buffer used in the thread*/
+        std::vector<uint32_t> m_pipelinesIds;   /*!< pipelines to process*/
     };
     std::vector<CommandThread> m_commandThreadPool;                                                       /*!< threads working on different command buffers*/
 
+public:
+    [[nodiscard]] bool registerComponent(const std::shared_ptr<VE_Component>& a_component);
     // todo
 };

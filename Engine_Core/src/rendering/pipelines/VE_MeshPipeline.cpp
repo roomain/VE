@@ -4,8 +4,8 @@
 
 
 
-VE_MeshPipeline::VE_MeshPipeline(const VE_DeviceContext& a_ctxt, const std::string_view& a_cacheFile) :
-	VE_GraphicalPipeline(a_ctxt, a_cacheFile)
+VE_MeshPipeline::VE_MeshPipeline(const VE_DeviceContext& a_ctxt) :
+	VE_GraphicalPipeline(a_ctxt, VE_MeshPipeline::s_cacheFile)
 {
 	//
 }

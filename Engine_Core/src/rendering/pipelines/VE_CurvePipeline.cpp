@@ -2,6 +2,11 @@
 #include "rendering/VE_Shader.h"
 #include "rendering/pipelines/VE_CurvePipeline.h"
 
+VE_CurvePipeline::VE_CurvePipeline(const VE_DeviceContext& a_ctxt) :
+	VE_GraphicalPipeline(a_ctxt, VE_CurvePipeline::s_cacheFile)
+{
+	//
+}
 
 bool VE_CurvePipeline::setup(const VE_ShaderPtr& a_shader, const PipelineContext& a_renderingCtxt)
 {

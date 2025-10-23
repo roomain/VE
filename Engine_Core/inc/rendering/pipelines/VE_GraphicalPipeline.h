@@ -7,6 +7,7 @@
 #include <vector>
 #include <type_traits>
 #include <concepts>
+#include <utility>
 #include "notCopiable.h"
 #include "rendering/VE_Pipeline.h"
 
@@ -27,10 +28,8 @@ struct PipelineContext
 /*@brief base class of graphica pipeline*/
 class VE_GraphicalPipeline : public VE_Pipeline
 {
-protected:
-	explicit VE_GraphicalPipeline(const VE_DeviceContext& a_ctxt, const std::string_view& a_cacheFile);
-
-public:
+public:explicit 
+	VE_GraphicalPipeline(const VE_DeviceContext& a_ctxt, const std::string_view& a_cacheFile);
 	~VE_GraphicalPipeline() override = default;
 	virtual bool setup(const VE_ShaderPtr& a_shader, const PipelineContext& a_renderingCtxt) = 0;
 };
@@ -41,8 +40,8 @@ template<typename Type> requires std::is_base_of_v<VE_GraphicalPipeline, Type>
 class SharedPipeline : public std::shared_ptr<Type>
 {
 public:
-	NOT_COPIABLE(SharedPipeline)
-	explicit SharedPipeline(std::shared_ptr<Type>&& a_pointer)noexcept : std::shared_ptr<Type>(a_pointer) {}
+	SharedPipeline() = default;
+	SharedPipeline(std::shared_ptr<Type>&& a_pointer)noexcept : std::shared_ptr<Type>(std::move(a_pointer)) {}
 };
 
 
@@ -58,7 +57,7 @@ concept HasPipeline = requires{
 };
 
 
-#define DECLARE_PIPELINE(pipeline) \
+/*#define DECLARE_PIPELINE(pipeline) \
 private:\
 	static SharedPipeline<pipeline> s_pipeline;\
 public: \
@@ -66,4 +65,4 @@ public: \
 
 
 #define IMPL_PIPELINE(pipeline, classname) \
-SharedPipeline<pipeline> classname::s_pipeline = std::make_shared<pipeline>();
+SharedPipeline<pipeline> classname::s_pipeline = std::make_shared<pipeline>();*/

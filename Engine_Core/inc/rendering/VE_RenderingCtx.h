@@ -12,15 +12,12 @@
 #pragma warning( disable : 4251 )
 /*@brief base class for a rendering context,
 * it contains all vulkan class for a rendering
-* The context is used for one thread
 */
 class VE_CORE_LIB VE_RenderingCtx
 {
 private:
 	VE_GraphicalDevicePtr m_device;		/*!< rendering vulkan device*/
 	VE_SwapChainPtr m_swapChain;		/*!< swapchain for rendering*/
-
-	VkCommandBuffer m_cmdBuffer = VK_NULL_HANDLE; /*!< command buffer for the rendering context*/
 
 public:
 	NOT_COPIABLE(VE_RenderingCtx)
@@ -32,7 +29,6 @@ public:
 	{
 		return m_device;
 	}
-	[[nodiscard]] inline VkCommandBuffer commandBuffer() { return m_cmdBuffer; }
 };
 
 #pragma warning(pop)

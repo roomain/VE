@@ -5,30 +5,38 @@
 * @author Roomain
 ************************************************/
 #include <memory>
+#include "rendering/VE_VertexTypes.h"
 #include "rendering/components/VE_Component.h"
-#include "rendering/pipelines/VE_GraphicalPipeline.h"
+//#include "rendering/pipelines/VE_GraphicalPipeline.h"
+#include "rendering/pipelines/VE_MeshPipeline.h"
 
-class VE_MeshPipeline;
 class VE_RenderGraph;
 
-class VE_MeshComponent : public VE_Component
+
+/*@brief represents a static mesh component*/
+class VE_StaticMeshComponent : public VE_Component
 {
-    DECLARE_PIPELINE(VE_MeshPipeline)
+    //DECLARE_PIPELINE(VE_MeshPipeline)
 
 private:
-    VkBuffer m_vertexBuffer = VK_NULL_HANDLE;    /*!< mesh vertex contains vertex and normals*/
-    VkBuffer m_indexBuffer = VK_NULL_HANDLE;     /*!< mesh index buffer */
+    VkBuffer m_vertexBuffer = VK_NULL_HANDLE;   /*!< vulkan buffer mesh vertex contains vertex and normals*/
+    VkBuffer m_indexBuffer = VK_NULL_HANDLE;    /*!< vulkan buffer mesh index buffer */
+    uint32_t m_indexCount = 0;                  /*!< number of elements in index buffer*/
+    /*@brief mesh cpu data to transfer to vulkan and cleared after*/
+    VE_Shape<VE_MeshVertex> m_cpuStaticMesh;
 
-    // todo
+    [[nodiscard]] constexpr bool isInputMeshValid()const noexcept
+    {
+        return !m_cpuStaticMesh.m_vertexBuffer.empty();
+    }
 
 protected:
     /*@brief write rendering commands*/
-    virtual void writeCommands(VkCommandBuffer& a_cmdBuffer)const = 0;
+    virtual void writeCommands(const VE_DeviceContext& a_vkCtx, VkCommandBuffer& a_cmdBuffer)const override;
 
     /*@brief update call each frame by parent component*/
-    virtual void update(const float a_elapsed) = 0;
+    virtual void update(const float /*a_elapsed*/) override;
 
 public:
-    /*@brief register component to render scene*/
-    [[nodiscard]] bool registerComponent(VE_RenderGraph& a_graph) override;
+    // todo
 };

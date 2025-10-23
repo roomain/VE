@@ -23,5 +23,7 @@ private:
 	};
 
 public:
+	IMPL_PIPELINE_FILE(VE_CurvePipeline);
+	explicit VE_CurvePipeline(const VE_DeviceContext& a_ctxt);
 	bool setup(const VE_ShaderPtr& a_shader, const PipelineContext& a_renderingCtxt) override;
 };
