@@ -16,7 +16,7 @@ using TaskPtr = std::shared_ptr<TGroupedTaskInstance<DataType>>;
 /*@brief Manage a group of tasks working on same data type and
 * wait for all task completion
 */
-template<typename DataType, typename TaskType> requires 
+template<typename DataType, typename TaskType = TGroupedTaskInstance<DataType>> requires
 std::is_base_of_v<TGroupedTaskInstance<DataType>, TaskType>
 class TGroupedTaskManager
 {
