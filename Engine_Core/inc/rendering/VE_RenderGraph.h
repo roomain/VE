@@ -13,9 +13,10 @@
 
 class VE_GraphicalPipeline;
 
+
 /*@brief Manage rendering in multiple threads*/
-class VE_RenderGraph //: public VulkanObject<VE_DeviceContext>, 
-    public TGroupedTaskManager<VE_DeviceContext>
+class VE_RenderGraph : public VulkanObject<VE_DeviceContext>, 
+    public TGroupedTaskManager<>
 {
 private:
     struct PipelineUsage
