@@ -29,13 +29,12 @@ protected:
 	VkPipeline m_pipeline = VK_NULL_HANDLE;					/*!< vulkan pipeline handle*/
 	VkPipelineLayout m_pipelineLayout = VK_NULL_HANDLE;		/*!< vulkla pipeline layout handle*/
 
-	VE_Pipeline(const VE_DeviceContext& a_ctxt, const std::string_view& a_cacheFile = "");
-
 	/*@brief create cache from file*/
 	bool loadCache(const std::string_view& a_filename);
 	bool checkCache()const;
 
 public:
+	explicit VE_Pipeline(const VE_DeviceContext& a_ctxt, const std::string_view& a_cacheFile = "");
 	virtual ~VE_Pipeline();
 	virtual void cleanup();
 	[[nodiscard]] constexpr bool isValid()const noexcept { return m_pipeline != VK_NULL_HANDLE; }

@@ -134,7 +134,7 @@
     </Link>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)scripts
-reflectGen.py -i $(ProjectDir)inc\parameters -q
+reflectGen.py -i $(ProjectDir)inc\parameters $(ProjectDir)inc\rendering\pipelines -q
 </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -160,7 +160,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     </Link>
     <PreBuildEvent>
       <Command>cd $(SolutionDir)scripts
-reflectGen.py -i $(ProjectDir)inc\parameters -q
+reflectGen.py -i $(ProjectDir)inc\parameters $(ProjectDir)inc\rendering\pipelines -q
 </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -181,6 +181,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClInclude Include="inc\pch.h" />
     <ClInclude Include="inc\rendering\components\VE_Component.h" />
     <ClInclude Include="inc\rendering\components\VE_MeshComponent.h" />
+    <ClInclude Include="inc\rendering\pipelines\VE_GraphicalPipelineCtx.h" />
     <ClInclude Include="inc\rendering\VE_RenderGraph.h" />
     <ClInclude Include="inc\rendering\pipelines\VE_MeshPipeline.h" />
     <ClInclude Include="inc\rendering\pipelines\VE_GraphicalPipeline.h" />
@@ -225,6 +226,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters -q
     <ClCompile Include="src\rendering\pipelines\VE_MeshPipeline.cpp" />
     <ClCompile Include="src\rendering\pipelines\VE_GraphicalPipeline.cpp" />
     <ClCompile Include="src\rendering\VE_Pipeline.cpp" />
+    <ClCompile Include="src\rendering\VE_RenderGraph.cpp" />
     <ClCompile Include="src\rendering\VE_RenderingCtx.cpp" />
     <ClCompile Include="src\rendering\VE_Shader.cpp" />
     <ClCompile Include="src\rendering\VE_ShadersDatabase.cpp" />

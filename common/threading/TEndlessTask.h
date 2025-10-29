@@ -17,7 +17,7 @@ using InOutTask = std::function<void(InOutData&)>;
 * @brief template class for endless task
 * sharing data with another asynchronous thread
 */
-template<typename SharedData, typename Task> requires std::is_same_v<Task, InOutTask>
+template<typename SharedData, typename Task> requires std::is_same_v<Task, InOutTask<SharedData>>
 class TEndlessTask
 {
 private:
@@ -58,13 +58,13 @@ public:
         set(a_input);
     }
 
-    void set(SharedData&& a_input)
+    void set(SharedData&& a_input)noexcept
     {
         std::scoped_lock lock(m_accessProtect);
         m_input = a_input
     }
 
-    void operator = (SharedData&& a_input)
+    void operator = (SharedData&& a_input)noexcept
     {
         set(a_input);
     }

@@ -10,7 +10,7 @@ VE_MeshPipeline::VE_MeshPipeline(const VE_DeviceContext& a_ctxt) :
 	//
 }
 
-bool VE_MeshPipeline::setup(const VE_ShaderPtr& a_shader, const PipelineContext& a_renderingCtxt)
+bool VE_MeshPipeline::setup(const VE_ShaderPtr& a_shader, const VE_GraphicalPipelineCtx& a_renderingCtxt)
 {
 	// pipeline layout
 	VkPipelineLayoutCreateInfo pipelineLayoutCI = Vulkan::Initializers::pipelineLayoutCreateInfo(a_shader->pipelineDescriptorSetLayouts());

@@ -3,6 +3,7 @@ from pathlib import Path
 import re
 import os
 import datetime
+import time
 import utils.parsingTools as tools
 
 global IsQuiet
@@ -168,12 +169,17 @@ class HeaderParser :
 
 def parseArg(searchPath):
     index = 0
+    isPath = False
     global IsQuiet
     for arg in sys.argv:
         if arg.lower() == "-q" :
             IsQuiet = True
+            isPath = False
         elif arg.lower() == "-i" and len(sys.argv) > index + 1:
-            searchPath.append(sys.argv[index + 1])
+            isPath = True
+        elif isPath :
+            searchPath.append(sys.argv[index])
+
         index = index + 1
 
 
@@ -189,20 +195,44 @@ print("Parse header files to generate deserialize functions")
 if len(sys.argv) > 1:
     searchPath = []
     parseArg(searchPath)
+
+    #performance
+    fileCounter = 0
+    perfStartTimer = time.perf_counter()
+    totalTime = 0.0
+    parsingTime = 0.0
+    genTime = 0.0
+    
     for path in searchPath :
         if not IsQuiet :
             print("Parse headers from {}".format(path))
 
         headers = []
+
         #process input headers
         for filePath in Path(path).rglob('*.h'):
             parser = HeaderParser(filePath)
             parser.processHeader()
             headers.append(parser)
             parser.stats()
+            fileCounter = fileCounter + 1
 
+        perfEndParseTimer = time.perf_counter()
         #generate output headers
         for generator in headers:
             generator.generateHeader()
+        
+        perfEndTimer = time.perf_counter()
+        
+        totalTime = totalTime + (perfEndTimer - perfStartTimer) * 1000
+        parsingTime = parsingTime + (perfEndParseTimer - perfStartTimer) * 1000
+        genTime = genTime + (perfEndTimer - perfEndParseTimer) * 1000
+
 else:
     print("Missing path argument")
+
+
+print("Stats:")
+print(f"Total time: {totalTime:.1f} ms")
+print(f"Parsing time: {parsingTime:.1f} ms")
+print(f"Generate time: {genTime:.1f} ms\n")

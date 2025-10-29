@@ -27,5 +27,5 @@ public:
 
 	explicit VE_MeshPipeline(const VE_DeviceContext& a_ctxt);
 	~VE_MeshPipeline() override = default;
-	virtual bool setup(const VE_ShaderPtr& a_shader, const PipelineContext& a_renderingCtxt) override;
+	virtual bool setup(const VE_ShaderPtr& a_shader, const VE_GraphicalPipelineCtx& a_renderingCtxt) override;
 };

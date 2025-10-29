@@ -8,7 +8,7 @@ VE_CurvePipeline::VE_CurvePipeline(const VE_DeviceContext& a_ctxt) :
 	//
 }
 
-bool VE_CurvePipeline::setup(const VE_ShaderPtr& a_shader, const PipelineContext& a_renderingCtxt)
+bool VE_CurvePipeline::setup(const VE_ShaderPtr& a_shader, const VE_GraphicalPipelineCtx& a_renderingCtxt)
 {
 	// pipeline layout
 	VkPipelineLayoutCreateInfo pipelineLayoutCI = Vulkan::Initializers::pipelineLayoutCreateInfo(a_shader->pipelineDescriptorSetLayouts());

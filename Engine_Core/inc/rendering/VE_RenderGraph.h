@@ -8,17 +8,26 @@
 #include <unordered_map>
 #include <vulkan/vulkan.hpp>
 #include "utils/VulkanContext.h"
+#include "TGroupedTaskManager.h"
 #include "rendering/components/VE_Component.h"
 
 class VE_GraphicalPipeline;
 
 /*@brief Manage rendering in multiple threads*/
-class VE_RenderGraph //: public VulkanObject<VE_DeviceContext>
+class VE_RenderGraph //: public VulkanObject<VE_DeviceContext>, 
+    public TGroupedTaskManager<VE_DeviceContext>
 {
 private:
-    std::unordered_map<uint32_t, std::shared_ptr<VE_GraphicalPipeline>> m_registeredPipelines;          /*!< pipelines per Id*/
+    struct PipelineUsage
+    {
+        std::shared_ptr<VE_GraphicalPipeline> m_pipeline;
+        uint32_t m_usageCount = 0;
+    };
+
+    std::unordered_map<uint32_t, PipelineUsage> m_registeredPipelines;          /*!< pipelines per Id*/
     std::unordered_map<uint32_t, std::vector<std::weak_ptr<VE_Component>>> m_componentByPipelineId;     /*!< components per pipeline id (component rendereing use associated pipeline)*/
 
+    /*add specific command buffer for edited objects*/
     struct CommandThread
     {
         std::thread m_thread;                   /*!< working thread*/
