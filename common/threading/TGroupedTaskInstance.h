@@ -12,9 +12,6 @@
 template<typename Type>
 using TTaskProcess = std::function<void(const Type&)>;
 
-template<typename DataType>
-class TGroupedTaskManager;
-
 /*@brief Base class for task. GroupedTask is designed to 
 * accomplish same action in parallel on different data. 
 * Group of task is synchronised to be sure they're all
@@ -23,8 +20,6 @@ class TGroupedTaskManager;
 template<typename Data>
 class TGroupedTaskInstance
 {
-    friend class TGroupedTaskManager<Data>;
-
 protected:
     Data m_workedData;                /*!< working data in thread*/
 
@@ -53,9 +48,10 @@ private:
         }
     }
 
-    TGroupedTaskInstance() = default;
 
 public:
+    TGroupedTaskInstance() = delete;
+    TGroupedTaskInstance(TaskSynchroPtr a_pSynchro) : m_pSynchro{ a_pSynchro } {}
     
     void setData(Data&& a_workingData)
     {

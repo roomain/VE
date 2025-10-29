@@ -5,20 +5,25 @@
 * @author Roomain
 ************************************************/
 #include <memory>
+#include <type_traits>
 #include "TGroupedTaskInstance.h"
 #include "TaskSynchro.h"
 
 template<typename DataType>
 using TaskPtr = std::shared_ptr<TGroupedTaskInstance<DataType>>;
 
+
 /*@brief Manage a group of tasks working on same data type and
 * wait for all task completion
 */
-template<typename DataType>
+template<typename DataType, typename TaskType> requires 
+std::is_base_of_v<TGroupedTaskInstance<DataType>, TaskType>
 class TGroupedTaskManager
 {
 protected:
-    std::vector<TaskPtr<DataType>> m_vTask; /*!< taskList executed in parallel*/
+    using TaskPtr = std::shared_ptr<TaskType>;
+
+    std::vector<TaskPtr> m_vTask; /*!< taskList executed in parallel*/
     TaskSynchroPtr m_pSynchro;              /*!< task synchro*/
 
     /*@brief create tasks but no process function attributed*/
@@ -29,8 +34,7 @@ protected:
         for (auto& task : m_vTask)
         {
             // because ctor is private
-            task = TaskPtr<DataType>(new TGroupedTaskInstance<DataType>());
-            task->setSync(m_pSynchro);
+            task = std::make_shared<TaskType>(m_pSynchro);
         }
     }
 
