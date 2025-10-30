@@ -24,10 +24,11 @@ protected:
     Data m_workedData;                /*!< working data in thread*/
 
 private:
-    std::atomic_bool m_isRunning;   /*!< flag is working*/
-    std::thread m_thread;           /*!< working thread*/
-    TTaskProcess<Data> m_process;   /*!< process callback*/
-    TaskSynchroPtr m_pSynchro;      /*!< task synchro*/
+    std::atomic_bool m_isRunning = false;   /*!< flag indicates thread is working*/
+    std::atomic_bool m_standby = false;     /*!< standby mode*/
+    std::thread m_thread;                   /*!< working thread*/
+    TTaskProcess<Data> m_process;           /*!< process callback*/
+    TaskSynchroPtr m_pSynchro;              /*!< task synchro*/
 
     void run()
     {
@@ -36,7 +37,7 @@ private:
             std::mutex protectCond;
             while(m_isRunning)
             {
-                m_pSynchro->waitForStart(std::move(protectCond));
+                m_pSynchro->waitForStart(protectCond, m_standby);
 
                 if(m_isRunning)
                 {
@@ -51,7 +52,7 @@ private:
 
 public:
     TGroupedTaskInstance() = delete;
-    TGroupedTaskInstance(TaskSynchroPtr a_pSynchro) : m_pSynchro{ a_pSynchro } {}
+    explicit TGroupedTaskInstance(TaskSynchroPtr a_pSynchro) : m_pSynchro{ a_pSynchro } {}
     
     void setData(Data&& a_workingData)
     {
@@ -66,9 +67,20 @@ public:
     inline void start() 
     { 
         m_isRunning = true;
-        m_thread = std::move(std::thread(std::bind_front(&TGroupedTaskInstance<Data>::run, this)));
+        m_thread = std::thread(std::bind_front(&TGroupedTaskInstance<Data>::run, this));
     }
-    inline void stop() { m_isRunning = false; }
+    
+    inline void stop() 
+    { 
+        m_isRunning = false; 
+        m_standby = false;
+    }
+
+    void setStandBy(const bool a_standby)
+    {
+        m_standby = a_standby;
+    }
+
     inline void setSync(TaskSynchroPtr a_condCb)
     {
         m_pSynchro = a_condCb;
