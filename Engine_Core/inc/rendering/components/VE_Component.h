@@ -24,6 +24,7 @@ class VE_RenderGraph;
 class VE_Component
 {
 	friend class VE_Actor;
+	friend class VE_RenderGraphTask;
 protected:
 	
 	bool m_bEnabled = true;					/*!< indicate if write command and update are allowed*/

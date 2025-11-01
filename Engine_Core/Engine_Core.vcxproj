@@ -187,6 +187,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters $(ProjectDir)inc\rendering\pipeline
     <ClInclude Include="inc\rendering\pipelines\VE_GraphicalPipeline.h" />
     <ClInclude Include="inc\rendering\pipelines\VE_CurvePipeline.h" />
     <ClInclude Include="inc\rendering\VE_Pipeline.h" />
+    <ClInclude Include="inc\rendering\VE_RenderGraphTask.h" />
     <ClInclude Include="inc\rendering\VE_RenderingCtx.h" />
     <ClInclude Include="inc\rendering\VE_Shader.h" />
     <ClInclude Include="inc\rendering\VE_ShadersDatabase.h" />
@@ -227,6 +228,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters $(ProjectDir)inc\rendering\pipeline
     <ClCompile Include="src\rendering\pipelines\VE_GraphicalPipeline.cpp" />
     <ClCompile Include="src\rendering\VE_Pipeline.cpp" />
     <ClCompile Include="src\rendering\VE_RenderGraph.cpp" />
+    <ClCompile Include="src\rendering\VE_RenderGraphTask.cpp" />
     <ClCompile Include="src\rendering\VE_RenderingCtx.cpp" />
     <ClCompile Include="src\rendering\VE_Shader.cpp" />
     <ClCompile Include="src\rendering\VE_ShadersDatabase.cpp" />

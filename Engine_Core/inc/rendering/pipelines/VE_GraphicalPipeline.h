@@ -13,7 +13,6 @@
 #include "rendering/pipelineS/VE_GraphicalPipelineCtx.h"
 
 
-
 /*@brief base class of graphica pipeline*/
 class VE_GraphicalPipeline : public VE_Pipeline
 {

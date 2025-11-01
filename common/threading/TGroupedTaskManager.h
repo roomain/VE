@@ -66,8 +66,8 @@ protected:
         unsetAllStandby();
 
         m_vIndexStandby.erase(std::remove_if(m_vIndexStandby.begin(), m_vIndexStandby.end(),
-            [&](int x) {
-                return std::find(m_vIndexToStop.cbegin(), m_vIndexToStop.cend(), x) != m_vIndexToStop.cend();
+            [&](const unsigned a_index) {
+                return std::any_of(m_vIndexToStop.cbegin(), m_vIndexToStop.cend(), a_index);
             }),
             m_vIndexStandby.end()
         );

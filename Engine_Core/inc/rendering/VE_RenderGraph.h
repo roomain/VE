@@ -9,14 +9,17 @@
 #include <vulkan/vulkan.hpp>
 #include "utils/VulkanContext.h"
 #include "TGroupedTaskManager.h"
+#include "rendering/VE_RenderGraphTask.h"
 #include "rendering/components/VE_Component.h"
 
 class VE_GraphicalPipeline;
 
 
+
+
 /*@brief Manage rendering in multiple threads*/
 class VE_RenderGraph : public VulkanObject<VE_DeviceContext>, 
-    public TGroupedTaskManager<>
+    public TGroupedTaskManager<VE_GraphData, VE_RenderGraphTask>
 {
 private:
     struct PipelineUsage

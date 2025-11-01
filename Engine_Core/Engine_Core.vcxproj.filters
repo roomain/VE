@@ -213,6 +213,9 @@
     <ClInclude Include="inc\rendering\pipelines\VE_GraphicalPipelineCtx.h">
       <Filter>Fichiers d%27en-tête\rendering\pipelines</Filter>
     </ClInclude>
+    <ClInclude Include="inc\rendering\VE_RenderGraphTask.h">
+      <Filter>Fichiers d%27en-tête\rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Capabilities\VE_Capabilities.cpp">
@@ -282,6 +285,9 @@
       <Filter>Fichiers sources\rendering\components</Filter>
     </ClCompile>
     <ClCompile Include="src\rendering\VE_RenderGraph.cpp">
+      <Filter>Fichiers sources\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rendering\VE_RenderGraphTask.cpp">
       <Filter>Fichiers sources\rendering</Filter>
     </ClCompile>
   </ItemGroup>
