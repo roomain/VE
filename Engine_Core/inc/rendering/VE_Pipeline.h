@@ -28,6 +28,7 @@ protected:
 	VkPipelineCache m_cache = VK_NULL_HANDLE;
 	VkPipeline m_pipeline = VK_NULL_HANDLE;					/*!< vulkan pipeline handle*/
 	VkPipelineLayout m_pipelineLayout = VK_NULL_HANDLE;		/*!< vulkla pipeline layout handle*/
+	VkPipelineBindPoint m_bindingPoint = VK_PIPELINE_BIND_POINT_COMPUTE;
 
 	/*@brief create cache from file*/
 	bool loadCache(const std::string_view& a_filename);
@@ -40,6 +41,7 @@ public:
 	[[nodiscard]] constexpr bool isValid()const noexcept { return m_pipeline != VK_NULL_HANDLE; }
 	/*@brief save cache*/
 	bool saveCache(const std::string_view& a_filename);
+	void bind(VkCommandBuffer& a_cmdBuffer);
 };
 
 #define IMPL_PIPELINE_FILE(classname) \

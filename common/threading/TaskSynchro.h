@@ -45,7 +45,7 @@ public:
     //---------------------------------------------------------------
     // task part
     //---------------------------------------------------------------
-    void waitForStart(std::mutex&& a_localProtect, const bool& a_externalCond = true)
+    void waitForStart(std::mutex& a_localProtect, const bool& a_externalCond = true)
     {
         std::unique_lock lock(a_localProtect);
         m_startConditionVar.wait(lock, [&] {return a_externalCond && m_start; });

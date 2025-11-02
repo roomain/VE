@@ -21,6 +21,7 @@ VE_Pipeline::VE_Pipeline(const VE_DeviceContext& a_ctxt, const std::string_view&
 
 VE_Pipeline::~VE_Pipeline()
 {
+    m_bindingPoint = VK_PIPELINE_BIND_POINT_COMPUTE;
 	cleanup();
 }
 
@@ -126,4 +127,9 @@ bool VE_Pipeline::saveCache(const std::string_view& a_filename)
         }
     }
     return false;
+}
+
+void VE_Pipeline::bind(VkCommandBuffer& a_cmdBuffer)
+{
+    vkCmdBindPipeline(a_cmdBuffer, m_bindingPoint, m_pipeline);
 }
