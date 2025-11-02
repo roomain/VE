@@ -216,6 +216,9 @@
     <ClInclude Include="inc\rendering\VE_RenderGraphTask.h">
       <Filter>Fichiers d%27en-tête\rendering</Filter>
     </ClInclude>
+    <ClInclude Include="inc\rendering\components\VE_RenderComponent.h">
+      <Filter>Fichiers d%27en-tête\rendering\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Capabilities\VE_Capabilities.cpp">
