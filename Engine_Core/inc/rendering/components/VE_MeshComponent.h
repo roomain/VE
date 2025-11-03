@@ -7,14 +7,13 @@
 #include <memory>
 #include "rendering/VE_VertexTypes.h"
 #include "rendering/components/VE_Component.h"
-//#include "rendering/pipelines/VE_GraphicalPipeline.h"
 #include "rendering/pipelines/VE_MeshPipeline.h"
 
 class VE_RenderGraph;
 
 
 /*@brief represents a static mesh component*/
-class VE_StaticMeshComponent : public VE_Component
+class VE_StaticMeshComponent : public VE_Component<VE_MeshPipeline>
 {
     //DECLARE_PIPELINE(VE_MeshPipeline)
 

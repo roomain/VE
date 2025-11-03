@@ -10,7 +10,7 @@
 #include "utils/VulkanContext.h"
 #include "TGroupedTaskManager.h"
 #include "rendering/VE_RenderGraphTask.h"
-#include "rendering/components/VE_Component.h"
+#include "rendering/components/VE_IComponent.h"
 
 /*@brief Manage rendering in multiple threads*/
 class VE_RenderGraph : public VulkanObject<VE_DeviceContext>, 
@@ -22,6 +22,6 @@ private:
 public:
     VE_RenderGraph();
     ~VE_RenderGraph();
-    [[nodiscard]] bool registerComponent(const std::shared_ptr<VE_Component>& a_component);
+    [[nodiscard]] bool registerComponent(const std::shared_ptr<VE_IComponent>& a_component);
     // todo
 };

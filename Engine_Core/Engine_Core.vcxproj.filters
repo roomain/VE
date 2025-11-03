@@ -198,7 +198,7 @@
     <ClInclude Include="inc\rendering\VE_RenderingCtx.h">
       <Filter>Fichiers d%27en-tête\rendering</Filter>
     </ClInclude>
-    <ClInclude Include="inc\rendering\components\VE_Component.h">
+    <ClInclude Include="inc\rendering\components\VE_IComponent.h">
       <Filter>Fichiers d%27en-tête\rendering\components</Filter>
     </ClInclude>
     <ClInclude Include="inc\rendering\VE_VertexTypes.h">
@@ -216,7 +216,7 @@
     <ClInclude Include="inc\rendering\VE_RenderGraphTask.h">
       <Filter>Fichiers d%27en-tête\rendering</Filter>
     </ClInclude>
-    <ClInclude Include="inc\rendering\components\VE_RenderComponent.h">
+    <ClInclude Include="inc\rendering\components\VE_Component.h">
       <Filter>Fichiers d%27en-tête\rendering\components</Filter>
     </ClInclude>
   </ItemGroup>

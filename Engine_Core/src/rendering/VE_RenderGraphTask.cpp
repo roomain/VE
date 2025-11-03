@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "rendering/pipelines/VE_GraphicalPipeline.h"
 #include "rendering/VE_RenderGraphTask.h"
-#include "rendering/components/VE_Component.h"
+#include "rendering/components/VE_IComponent.h"
 #include "utils/VulkanCmdInitializers.h"
 
 

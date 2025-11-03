@@ -11,10 +11,10 @@
 #include "utils/VulkanContext.h"
 
 class VE_GraphicalPipeline;
-class VE_Component;
+class VE_IComponent;
 
 using VE_GraphicalPipelinePtr = std::shared_ptr<VE_GraphicalPipeline>;
-using VectorOfWkComponents = std::vector<std::weak_ptr<VE_Component>>;
+using VectorOfWkComponents = std::vector<std::weak_ptr<VE_IComponent>>;
 
 struct VE_GraphData
 {

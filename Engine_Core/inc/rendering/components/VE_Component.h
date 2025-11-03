@@ -1,49 +1,30 @@
 #pragma once
 /***********************************************
-* @headerfile VE_GraphicalDevice.h
-* @date 07 / 10 / 2025
+* @headerfile VE_Component.h
+* @date 30 / 08 / 2025
 * @author Roomain
 ************************************************/
 #include <memory>
-#include <vector>
-#include <vulkan/vulkan.hpp>
-#include "iterators.h"
+#include <type_traits>
+#include "rendering/components/VE_IComponent.h"
+#include "rendering/pipelines/VE_GraphicalPipeline.h"
 
-class VE_Component;
-using VE_ComponentPtr = std::shared_ptr<VE_Component>;
-using VE_ComponentWPtr = std::weak_ptr<VE_Component>;
-
-class VE_RenderGraph;
-
-
-
-/*@brief Base class for component (component of an actor)
-* A component contains specific part used to render
-* an object
-*/
-class VE_Component
+/*@brief base class for renderable class*/
+template<typename Pipeline> requires std::is_base_of_v<VE_GraphicalPipeline, Pipeline>
+class VE_Component : public VE_IComponent
 {
-	friend class VE_Actor;
 	friend class VE_RenderGraphTask;
-protected:
-	
-	bool m_bEnabled = true;					/*!< indicate if write command and update are allowed*/
-	bool m_bRenderEnable = true;			/*!< indicate if write command is enabled*/
-
-	VE_ComponentWPtr m_parent;				/*!< parent component*/
-	std::vector<VE_ComponentPtr> m_children;/*!< children components*/
-
-	/*@brief write rendering commands*/
-	virtual void writeCommands(const VE_DeviceContext& a_vkCtx, VkCommandBuffer& a_cmdBuffer)const = 0;
-
-	/*@brief update call each frame by parent component*/
-	virtual void update(const float a_elapsed) = 0;
+private:
+	static std::shared_ptr<Pipeline> s_pipeline;
 
 public:
-	VE_Component() = default;
-	[[nodiscard]] inline VE_ComponentWPtr parent()const { return m_parent; }
-	[[nodiscard]] constexpr size_t childCount()const { return m_children.size(); }
-	[[nodiscard]] inline VE_ComponentPtr childAt(const int a_index)const { return m_children.at(a_index); }
-	[[nodiscard]] virtual constexpr bool isInvalid()const noexcept = 0;
-	DEFINE_ALL_ITER(std::vector<VE_ComponentPtr>, m_children);
+	std::shared_ptr<VE_GraphicalPipeline> pipeline()const final
+	{
+		return s_pipeline;
+	}
+
+	void createPipeline(const VE_DeviceContext& a_ctxt) final
+	{
+		VE_Component<Pipeline>::s_pipeline = std::make_shared<Pipeline>(a_ctxt);
+	}
 };
