@@ -27,11 +27,13 @@ class VE_IComponent
 	friend class VE_RenderGraphTask;
 protected:
 	
-	bool m_bEnabled = true;					/*!< indicate if write command and update are allowed*/
-	bool m_bRenderEnable = true;			/*!< indicate if write command is enabled*/
+	bool m_bEnabled = true;						/*!< indicate if write command and update are allowed*/
+	bool m_bRenderEnable = true;				/*!< indicate if write command is enabled*/
 
-	VE_IComponentWPtr m_parent;				/*!< parent component*/
-	std::vector<VE_IComponentPtr> m_children;/*!< children components*/
+	VE_IComponentWPtr m_parent;					/*!< parent component*/
+	std::vector<VE_IComponentPtr> m_children;	/*!< children components*/
+
+
 
 	/*@brief write rendering commands*/
 	virtual void writeCommands(const VE_DeviceContext& a_vkCtx, VkCommandBuffer& a_cmdBuffer)const = 0;

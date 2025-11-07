@@ -73,6 +73,12 @@
     <Filter Include="Fichiers d%27en-tête\rendering\components">
       <UniqueIdentifier>{92b927a2-587c-49e0-905e-01dd228d9378}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Math">
+      <UniqueIdentifier>{14a9ef14-82ce-4232-95ff-3d2452da4172}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Math">
+      <UniqueIdentifier>{fae3ee44-d6e3-4cac-a340-c89843df5926}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\Capabilities\VE_CapabilitiesVisitor.h">
@@ -218,6 +224,9 @@
     </ClInclude>
     <ClInclude Include="inc\rendering\components\VE_Component.h">
       <Filter>Fichiers d%27en-tête\rendering\components</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Math\VE_Transformation.h">
+      <Filter>Fichiers d%27en-tête\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

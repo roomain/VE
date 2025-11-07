@@ -171,6 +171,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters $(ProjectDir)inc\rendering\pipeline
     <ClInclude Include="inc\Capabilities\VE_Capabilities.h" />
     <ClInclude Include="inc\core_globals.h" />
     <ClInclude Include="inc\framework.h" />
+    <ClInclude Include="inc\Math\VE_Transformation.h" />
     <ClInclude Include="inc\memory\VE_Memory.h" />
     <ClInclude Include="inc\memory\VE_MemoryCallbacks.h" />
     <ClInclude Include="inc\memory\VE_Mem_alloc.h" />
