@@ -13,7 +13,7 @@ class VE_Transformation
 private:
     glm::dmat4 m_transform;     /*!< local transformation*/
 
-    VE_Transformation(glm::dmat4&& a_transform)noexcept : m_transform{ m_transform } {}
+    VE_Transformation(glm::dmat4&& a_transform)noexcept : m_transform{ a_transform } {}
 
 public:
     VE_Transformation() : m_transform{ glm::identity< glm::dmat4>() }{}
