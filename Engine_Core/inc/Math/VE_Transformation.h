@@ -52,9 +52,15 @@ public:
         m_transform = glm::recompose(a_scale, rotation, translation, skew, perspective);
     }
 
-    void setQuaternion(const glm::dquat& a_quaternion)const
+    void setQuaternion(const glm::dquat& a_quaternion)
     {
-        //
+        glm::dvec3 translation;
+        glm::dvec3 scale;
+        glm::dquat rotation;
+        glm::dvec3 skew;
+        glm::dvec4 perspective;
+        glm::decompose(m_transform, scale, rotation, translation, skew, perspective);
+        m_transform = glm::recompose(scale, a_quaternion, translation, skew, perspective);
     }
 
     [[nodiscard]] glm::dvec3 position()const
@@ -64,7 +70,13 @@ public:
 
     [[nodiscard]] glm::dvec3 rotation()const
     {
-        //
+        glm::dvec3 translation;
+        glm::dvec3 scale;
+        glm::dquat rotation;
+        glm::dvec3 skew;
+        glm::dvec4 perspective;
+        glm::decompose(m_transform, scale, rotation, translation, skew, perspective);
+        return glm::eulerAngles(rotation);
     }
 
     [[nodiscard]] glm::dvec3 scale()const
