@@ -32,12 +32,24 @@ public:
 
     void setRotation(const glm::dvec3& a_axisAngles)
     {
-        //
+        glm::dvec3 translation;
+        glm::dvec3 scale;
+        glm::dquat rotation;
+        glm::dvec3 skew;
+        glm::dvec4 perspective;
+        glm::decompose(m_transform, scale, rotation, translation, skew, perspective);
+        m_transform = glm::recompose(scale, glm::dquat(a_axisAngles), translation, skew, perspective);
     }
 
     void setScale(const glm::dvec3& a_scale)
     {
-        //
+        glm::dvec3 translation;
+        glm::dvec3 scale;
+        glm::dquat rotation;
+        glm::dvec3 skew;
+        glm::dvec4 perspective;
+        glm::decompose(m_transform, scale, rotation, translation, skew, perspective);
+        m_transform = glm::recompose(a_scale, rotation, translation, skew, perspective);
     }
 
     void setQuaternion(const glm::dquat& a_quaternion)const
@@ -57,12 +69,24 @@ public:
 
     [[nodiscard]] glm::dvec3 scale()const
     {
-        //
+        glm::dvec3 translation;
+        glm::dvec3 scale;
+        glm::dquat rotation;
+        glm::dvec3 skew;
+        glm::dvec4 perspective;
+        glm::decompose(m_transform, scale, rotation, translation, skew, perspective);
+        return scale;
     }
 
     [[nodiscard]] glm::dquat quaternion()const
-    {
-        //
+    {        
+        glm::dvec3 translation;
+        glm::dvec3 scale;
+        glm::dquat rotation;
+        glm::dvec3 skew;
+        glm::dvec4 perspective;
+        glm::decompose(m_transform, scale, rotation, translation, skew, perspective);
+        return rotation;
     }
 
     inline void rotateAround(const double& a_angle, const glm::dvec3& a_axis, const glm::dvec3& a_position)
