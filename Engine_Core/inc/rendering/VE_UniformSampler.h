@@ -17,6 +17,7 @@ private:
     explicit VE_UniformSampler(const uint32_t a_bindingPoint, const VE_DeviceContext& a_ctxt);
 
 public:
+    VE_UniformSampler() = delete;
     ~VE_UniformSampler() final;
     [[nodiscard]] constexpr bool isValid()const noexcept final { return m_image != VK_NULL_HANDLE; }
     void initialize()final;
