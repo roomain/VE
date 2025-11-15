@@ -33,10 +33,11 @@ protected:
 	VE_IComponentWPtr m_parent;					/*!< parent component*/
 	std::vector<VE_IComponentPtr> m_children;	/*!< children components*/
 
-
+	/*@brief get device context*/
+	const virtual VE_DeviceContext& context()const = 0;
 
 	/*@brief write rendering commands*/
-	virtual void writeCommands(const VE_DeviceContext& a_vkCtx, VkCommandBuffer& a_cmdBuffer)const = 0;
+	virtual void writeCommands(VkCommandBuffer& a_cmdBuffer) = 0;
 
 	/*@brief update call each frame by parent component*/
 	virtual void update(const float a_elapsed) = 0;

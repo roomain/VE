@@ -18,7 +18,7 @@ class TVariable
 {
 protected:
     Type m_data;                        /*!< encapsulate data*/
-    std::set<Affect<Type>> m_callbacks;  /*!< affectation callback*/
+    std::set<Affect<Type>> m_callbacks; /*!< affectation callback*/
 
     void callbacks()const
     {

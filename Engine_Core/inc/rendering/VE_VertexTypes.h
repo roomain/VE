@@ -27,6 +27,16 @@ static constexpr uint32_t MeshVertexSize = sizeof(VE_MeshVertex);
 template<typename VertexType>
 struct VE_Shape
 {
-    std::vector<VertexType> m_vertexBuffer; /*!< mesh vertex buffer data*/
-    std::vector<uint32_t> m_indexBuffer;         /*!< mesh index buffer data*/
+    std::vector<VertexType> m_vertexBuffer;     /*!< mesh vertex buffer data*/
+    std::vector<uint32_t> m_indexBuffer;        /*!< mesh index buffer data*/
+
+    constexpr size_t vertexBufferMemorySize()const
+    {
+        return m_vertexBuffer.size() * sizeof(VertexType);
+    }
+
+    constexpr size_t indexBufferMemorySize()const
+    {
+        return m_indexBuffer.size() * sizeof(uint32_t);
+    }
 };

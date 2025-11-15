@@ -17,6 +17,9 @@ class VE_Component : public VE_IComponent
 private:
 	static std::shared_ptr<Pipeline> s_pipeline;
 
+protected:
+	/*@brief get device context static pielin must be created*/
+	const VE_DeviceContext& context()const final { return s_pipeline->context(); }
 public:
 	std::shared_ptr<VE_GraphicalPipeline> pipeline()const final
 	{
