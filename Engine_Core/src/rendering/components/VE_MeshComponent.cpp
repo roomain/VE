@@ -9,8 +9,8 @@ void VE_StaticMeshComponent::writeCommands(VkCommandBuffer& a_cmdBuffer)
 {
 	if (m_vertexBuffer.m_buffer != VK_NULL_HANDLE && m_indexBuffer.m_buffer != VK_NULL_HANDLE)
 	{
-		static const std::array<VkDeviceSize, 1> s_size = { 0 };
-		vkCmdBindVertexBuffers(a_cmdBuffer, 0, 1, &m_vertexBuffer.m_buffer, s_size.data());
+		static constexpr VkDeviceSize s_size = 0;
+		vkCmdBindVertexBuffers(a_cmdBuffer, 0, 1, &m_vertexBuffer.m_buffer, &s_size);
 		vkCmdBindIndexBuffer(a_cmdBuffer, m_indexBuffer.m_buffer, 0, VK_INDEX_TYPE_UINT32);
 		vkCmdDrawIndexed(a_cmdBuffer, m_indexCount, 1, 0, 0, 0);
 	}
