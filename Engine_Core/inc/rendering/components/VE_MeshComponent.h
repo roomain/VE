@@ -12,16 +12,15 @@
 
 class VE_RenderGraph;
 
-
 /*@brief represents a static mesh component*/
 class VE_StaticMeshComponent : public VE_Component<VE_MeshPipeline>
 {
     //DECLARE_PIPELINE(VE_MeshPipeline)
 
 private:
-    VulkanBuffer m_vertexBuffer;   /*!< vulkan buffer mesh vertex contains vertex and normals*/
-    VulkanBuffer m_indexBuffer;    /*!< vulkan buffer mesh index buffer */
-    uint32_t m_indexCount = 0;                  /*!< number of elements in index buffer*/
+    VE_MeshData m_meshData;     /*!< vulkan GPU memory mesh data*/
+    VE_StagingMesh m_staging;   /*!< staging mesh data*/
+
     /*@brief mesh cpu data to transfer to vulkan and cleared after*/
     VE_Shape<VE_MeshVertex> m_cpuStaticMesh;
 
@@ -30,13 +29,23 @@ private:
         return !m_cpuStaticMesh.m_vertexBuffer.empty();
     }
 
+    /*@brief transfer index buffer to gpu*/
+    void transfertIndexBuffer(const VE_DeviceContext& a_ctx, VkCommandBuffer& a_cmdBuffer);
+
+    /*@brief transfer vertex buffer to gpu*/
+    void transfertVertexBuffer(const VE_DeviceContext& a_ctx, VkCommandBuffer& a_cmdBuffer);
+
+    /*@brief release buffers*/
+    void releaseBuffers();
+
 protected:
     /*@brief write rendering commands*/
-    virtual void writeCommands(VkCommandBuffer& a_cmdBuffer) override;
+    void writeCommands(VkCommandBuffer& a_cmdBuffer) override;
 
     /*@brief update call each frame by parent component*/
-    virtual void update(const float /*a_elapsed*/) override;
+    void update(const float /*a_elapsed*/) override;
 
 public:
+    void setMeshData(const VE_Shape<VE_MeshVertex>& a_meshData);
     // todo
 };

@@ -32,7 +32,7 @@
 #include "utils/VulkanImageInitializers.h"
 #include "utils/VulkanShaderInitializers.h"
 
-#include "memory/VE_Memory.h"
+#include "memory/Memory.h"
 
 #include "VE_Device.h"
 #include "VE_Application.h"
