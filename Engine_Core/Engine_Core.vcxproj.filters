@@ -204,9 +204,6 @@
     <ClInclude Include="inc\rendering\VE_RenderGraph.h">
       <Filter>Fichiers d%27en-tête\rendering</Filter>
     </ClInclude>
-    <ClInclude Include="inc\rendering\components\VE_MeshComponent.h">
-      <Filter>Fichiers d%27en-tête\rendering\components</Filter>
-    </ClInclude>
     <ClInclude Include="inc\rendering\pipelines\VE_GraphicalPipelineCtx.h">
       <Filter>Fichiers d%27en-tête\rendering\pipelines</Filter>
     </ClInclude>
@@ -286,9 +283,6 @@
     </ClCompile>
     <ClCompile Include="src\rendering\VE_RenderingCtx.cpp">
       <Filter>Fichiers sources\rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="src\rendering\components\VE_MeshComponent.cpp">
-      <Filter>Fichiers sources\rendering\components</Filter>
     </ClCompile>
     <ClCompile Include="src\rendering\VE_RenderGraph.cpp">
       <Filter>Fichiers sources\rendering</Filter>

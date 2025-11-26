@@ -9,7 +9,6 @@
 #include "vulkan/vulkan.hpp"
 #include "utils/VulkanContext.h"
 #include "VE_QueueFamily.h"
-#include "memory/VulkanBuffer.h"
 #include "core_globals.h"
 
 struct VE_Buffer; // forward declaration

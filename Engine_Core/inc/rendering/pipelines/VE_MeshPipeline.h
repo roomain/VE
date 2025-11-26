@@ -16,7 +16,7 @@ protected:
 		VkVertexInputBindingDescription
 		{
 			.binding = 0,
-			.stride = MeshVertexSize,
+			.stride = VertexNormalSize,
 			.inputRate = VK_VERTEX_INPUT_RATE_VERTEX
 		}
 	};

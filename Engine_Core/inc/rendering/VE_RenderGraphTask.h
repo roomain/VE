@@ -35,8 +35,8 @@ private:
 public:
     void setCmdBufferUsage(VkCommandBufferUsageFlags a_usageFlag) { m_usageFlag = a_usageFlag; }
     void setCmdBuffer(VkCommandBuffer a_cmdBuffer) { m_cmdBuffer = a_cmdBuffer; }
-    void process(const VE_GraphData& a_data);
+    void process(VE_GraphData& a_data);
 };
 
 
-void taskCallback(const std::shared_ptr<VE_RenderGraphTask>& a_task, const VE_GraphData& a_data);
+void taskCallback(const std::shared_ptr<VE_RenderGraphTask>& a_task, VE_GraphData& a_data);

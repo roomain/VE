@@ -34,7 +34,7 @@ namespace Vulkan::Memory
     void writeStagingBuffer(const VE_DeviceContext& a_context, Buffer& a_stagingBuffer, const Container<Type>& inputData, const StagingCopyParameter& a_parameters)
     {
         VK_CHECK_EXCEPT(vmaCopyMemoryToAllocation(a_context.m_memAllocator, a_parameters.data(inputData.data()), 
-            staging.m_Alloc, a_parameters.destinationOffset(), a_parameters.memorySize(inputData)))
+            a_stagingBuffer.m_Alloc, a_parameters.destinationOffset(), a_parameters.memorySize(inputData)))
     }
 
     /*@brief write cpu data to staging memory*/
@@ -42,7 +42,7 @@ namespace Vulkan::Memory
     void writeStagingBuffer(const VE_DeviceContext& a_context, Buffer& a_stagingBuffer, const Type& inputData)
     {
         const size_t memSize = sizeof(Type);
-        VK_CHECK_EXCEPT(vmaCopyMemoryToAllocation(a_context.m_memAllocator, &inputData, staging.m_Alloc, 0, memSize))
+        VK_CHECK_EXCEPT(vmaCopyMemoryToAllocation(a_context.m_memAllocator, &inputData, a_stagingBuffer.m_Alloc, 0, memSize))
     }
     
 
@@ -54,25 +54,25 @@ namespace Vulkan::Memory
     void copyToGpu(const TransferParameter& a_staging, const VE_DeviceContext& a_ctx, VkCommandBuffer& a_cmdBuffer, Buffer& a_gpuBuffer)
     {
         // create GPU device buffers
-        const VE_AllocationParameter allocParam{
-            .m_size = a_staging.m_buffer.m_memorySize,
+        const AllocationParameter allocParam{
+            .m_size = a_staging.m_stagingBuffer.m_memorySize,
             .m_usage = VK_BUFFER_USAGE_TRANSFER_DST_BIT | BufferFlag,
             .m_allocFlag = 0
         };
 
         // allocate gpu memory
         a_gpuBuffer = allocateBuffer(a_ctx, allocParam);
-        a_gpuBuffer.m_memorySize = a_staging.m_buffer.m_memorySize;
+        a_gpuBuffer.m_memorySize = a_staging.m_stagingBuffer.m_memorySize;
 
         // copy buffer
         const VkBufferCopy bufferRegion
         {
             .srcOffset = a_staging.m_srcOffset,
             .dstOffset = a_staging.m_destOffset,
-            .size = a_staging.m_buffer.m_memorySize,
+            .size = a_staging.m_stagingBuffer.m_memorySize,
         };
 
-        vkCmdCopyBuffer(a_cmdBuffer, a_staging.m_buffer, a_gpuBuffer.m_buffer, 1, &bufferRegion);
+        vkCmdCopyBuffer(a_cmdBuffer, a_staging.m_stagingBuffer.m_buffer, a_gpuBuffer.m_buffer, 1, &bufferRegion);
     }
 
     

@@ -4,39 +4,23 @@
 * @date 22 / 09 / 2025
 * @author Roomain
 ************************************************/
+#include <vector>
 #include "glm/glm.hpp"
 
-struct VE_CurveVertex
+struct VE_VertexTangent
 {
     glm::vec3 m_vertex;
     glm::vec3 m_tangent;
 };
 
-static constexpr uint32_t CurveVertexSize = sizeof(VE_CurveVertex);
+static constexpr uint32_t VertexTangentSize = sizeof(VE_VertexTangent);
 
 
-struct VE_MeshVertex
+struct VE_VertexNormal
 {
     glm::vec3 m_vertex;
     glm::vec3 m_normal;
 };
 
-static constexpr uint32_t MeshVertexSize = sizeof(VE_MeshVertex);
+static constexpr uint32_t VertexNormalSize = sizeof(VE_VertexNormal);
 
-/*@brief shape cpu data to trans to vulkan*/
-template<typename VertexType>
-struct VE_Shape
-{
-    std::vector<VertexType> m_vertexBuffer;     /*!< mesh vertex buffer data*/
-    std::vector<uint32_t> m_indexBuffer;        /*!< mesh index buffer data*/
-
-    constexpr size_t vertexBufferMemorySize()const
-    {
-        return m_vertexBuffer.size() * sizeof(VertexType);
-    }
-
-    constexpr size_t indexBufferMemorySize()const
-    {
-        return m_indexBuffer.size() * sizeof(uint32_t);
-    }
-};

@@ -20,7 +20,7 @@ private:
     VE_GraphData m_renderGraph;
 
 public:
-    VE_RenderGraph();
+    VE_RenderGraph(const VE_DeviceContext& a_ctxt);
     ~VE_RenderGraph();
     [[nodiscard]] bool registerComponent(const std::shared_ptr<VE_IComponent>& a_component);
     // todo

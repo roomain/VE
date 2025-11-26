@@ -17,7 +17,7 @@ private:
 		VkVertexInputBindingDescription
 		{
 			.binding = 0,
-			.stride = CurveVertexSize,
+			.stride = VertexTangentSize,
 			.inputRate = VK_VERTEX_INPUT_RATE_VERTEX
 		}
 	};

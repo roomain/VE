@@ -38,7 +38,7 @@ namespace Vulkan::Memory
 	/*@brief parameters for transfer staging memory to Gpu/Device memory*/
 	struct TransferParameter
 	{
-		VulkanBuffer m_buffer;			/*!< buffer handle to transfer*/
+		Buffer m_stagingBuffer;				/*!< buffer handle to transfer*/
 		uint32_t m_srcOffset = 0;		/*!< source offset*/
 		uint32_t m_destOffset = 0;		/*!< destionation offset*/
 	};

@@ -6,7 +6,6 @@
 ************************************************/
 #include "rendering/VE_Uniform.h"
 #include "utils/VulkanContext.h"
-#include "memory/VulkanImage.h"
 
 class VE_UniformSampler : public VE_Uniform, public VulkanObject<VE_DeviceContext>
 {

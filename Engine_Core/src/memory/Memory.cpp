@@ -32,7 +32,7 @@ namespace Vulkan::Memory
             &bufAllocCreateInfo,
             &buffer.m_buffer,
             &buffer.m_Alloc,
-            &buffer.m_AllocInfo))
+            nullptr))
 
             buffer.m_memorySize = a_allocParameters.m_size;
         return buffer;
@@ -60,7 +60,7 @@ namespace Vulkan::Memory
             &stagingBufAllocCreateInfo,
             &stagingBuffer.m_buffer,
             &stagingBuffer.m_Alloc,
-            &stagingBuffer.m_AllocInfo))
+            nullptr))
 
             stagingBuffer.m_memorySize = a_bufferByteSize;
         return stagingBuffer;
@@ -75,8 +75,8 @@ namespace Vulkan::Memory
             .usage = VMA_MEMORY_USAGE_AUTO
         };
 
-        VK_CHECK_EXCEPT(vmaCreateImage(a_context.m_memAllocator, &a_imageCreateInfo, &alloCreateInfo, &image.m_image, &image.m_Alloc, &image.m_AllocInfo))
-            return image;
+        VK_CHECK_EXCEPT(vmaCreateImage(a_context.m_memAllocator, &a_imageCreateInfo, &alloCreateInfo, &image.m_image, &image.m_Alloc, nullptr))
+        return image;
     }
 
     Image allocateImage(const VE_DeviceContext& a_context, const VkImageCreateInfo& a_imageCreateInfo)
@@ -88,8 +88,8 @@ namespace Vulkan::Memory
             .usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE
         };
 
-        VK_CHECK_EXCEPT(vmaCreateImage(a_context.m_memAllocator, &a_imageCreateInfo, &alloCreateInfo, &image.m_image, &image.m_Alloc, &image.m_AllocInfo))
-            return image;
+        VK_CHECK_EXCEPT(vmaCreateImage(a_context.m_memAllocator, &a_imageCreateInfo, &alloCreateInfo, &image.m_image, &image.m_Alloc, nullptr))
+        return image;
     }
 
 
