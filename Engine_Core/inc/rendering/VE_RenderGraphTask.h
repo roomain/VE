@@ -33,10 +33,8 @@ private:
     std::vector<uint32_t> m_pipelineIds;            /*!< Ids of pipeline to process*/
 
 public:
+    explicit VE_RenderGraphTask(TaskSynchroPtr a_pSynchro);
     void setCmdBufferUsage(VkCommandBufferUsageFlags a_usageFlag) { m_usageFlag = a_usageFlag; }
     void setCmdBuffer(VkCommandBuffer a_cmdBuffer) { m_cmdBuffer = a_cmdBuffer; }
     void process(VE_GraphData& a_data);
 };
-
-
-void taskCallback(const std::shared_ptr<VE_RenderGraphTask>& a_task, VE_GraphData& a_data);

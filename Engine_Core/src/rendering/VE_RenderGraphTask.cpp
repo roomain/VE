@@ -5,6 +5,10 @@
 #include "rendering/components/VE_IComponent.h"
 #include "utils/VulkanCmdInitializers.h"
 
+VE_RenderGraphTask::VE_RenderGraphTask(TaskSynchroPtr a_pSynchro) : TGroupedTaskInstance<VE_GraphData>{ a_pSynchro }
+{
+    setCallback(std::bind_front(&VE_RenderGraphTask::process, this));
+}
 
 void VE_RenderGraphTask::process(VE_GraphData& a_data)
 {
@@ -24,7 +28,7 @@ void VE_RenderGraphTask::process(VE_GraphData& a_data)
         {
             if (auto component = weakCmp.lock())
             {
-                if (component->m_bRenderEnable)
+                if (component->hasFlag<RenderingFlagBit::IS_RENDERING>())
                     component->writeCommands(m_cmdBuffer);
             }
             else
@@ -44,9 +48,4 @@ void VE_RenderGraphTask::process(VE_GraphData& a_data)
         }
     }
     vkEndCommandBuffer(m_cmdBuffer);
-}
-
-void taskCallback(const std::shared_ptr<VE_RenderGraphTask>& a_task, VE_GraphData& a_data)
-{
-    a_task->process(a_data);
 }

@@ -19,6 +19,7 @@ class VE_RenderGraph : public VulkanObject<VE_DeviceContext>,
 private:
     VE_GraphData m_renderGraph;
 
+
 public:
     VE_RenderGraph(const VE_DeviceContext& a_ctxt);
     ~VE_RenderGraph();

@@ -8,6 +8,8 @@
 #include <vector>
 #include <vulkan/vulkan.hpp>
 #include "iterators.h"
+#include "bitOperators.h"
+#include "TPreviousCurrent.h"
 
 class VE_IComponent;
 using VE_IComponentPtr = std::shared_ptr<VE_IComponent>;
@@ -16,6 +18,12 @@ using VE_IComponentWPtr = std::weak_ptr<VE_IComponent>;
 class VE_GraphicalPipeline;
 struct VE_DeviceContext;
 
+enum class RenderingFlagBit
+{
+	IS_DISABLED = 0,		/*!< indicates component is disabled*/
+	IS_RENDERING = 1,		/*!< indicates component is rendered*/
+	IS_EDITABLE = 1 << 1	/*!< indicates component is edited*/
+};
 
 /*@brief interface class for component (component of an actor)
 * A component contains specific part used to render
@@ -25,10 +33,12 @@ class VE_IComponent
 {
 	friend class VE_Actor;
 	friend class VE_RenderGraphTask;
+	friend class VE_RenderGraph;
+
 protected:
 	
-	bool m_bEnabled = true;						/*!< indicate if write command and update are allowed*/
-	bool m_bRenderEnable = true;				/*!< indicate if write command is enabled*/
+	TPreviousCurrent<RenderingFlagBit> m_renderFlag = TPreviousCurrent(RenderingFlagBit::IS_DISABLED);	/*!< indicate how component is rendering*/
+	
 
 	VE_IComponentWPtr m_parent;					/*!< parent component*/
 	std::vector<VE_IComponentPtr> m_children;	/*!< children components*/
@@ -44,6 +54,7 @@ protected:
 
 	/*@brief get pipeline of component class*/
 	virtual std::shared_ptr<VE_GraphicalPipeline> pipeline()const = 0;
+
 	/*@brief create the pipeline of component class*/
 	virtual void createPipeline(const VE_DeviceContext& a_ctxt) = 0;
 
@@ -53,5 +64,9 @@ public:
 	[[nodiscard]] constexpr size_t childCount()const { return m_children.size(); }
 	[[nodiscard]] inline VE_IComponentPtr childAt(const int a_index)const { return m_children.at(a_index); }
 	[[nodiscard]] virtual constexpr bool isInvalid()const noexcept = 0;
+	[[nodiscard]] inline TPreviousCurrent<RenderingFlagBit> renderingFlags()const { return m_renderFlag; }
+	void setRenderFlag(const RenderingFlagBit a_renderFlag) { m_renderFlag = a_renderFlag; }
+	template<RenderingFlagBit Flag>
+	[[nodiscard]] constexpr bool hasFlag()const { return (m_renderFlag.current() & Flag) == Flag; }
 	DEFINE_ALL_ITER(std::vector<VE_IComponentPtr>, m_children);
 };

@@ -26,10 +26,10 @@ class TGroupedTaskManager
 protected:
     using TaskPtr = std::shared_ptr<TaskType>;
 
-    std::vector<TaskPtr> m_vTask;                /*!< taskList executed in parallel*/
-    TaskSynchroPtr m_pSynchro;                   /*!< task synchro*/
-    std::vector<unsigned int> m_vIndexToStop;    /*!< indexes of task to stop*/
-    std::vector<unsigned int> m_vIndexStandby; /*!< indexes of task standby*/
+    std::vector<TaskPtr> m_vTask;               /*!< taskList executed in parallel*/
+    TaskSynchroPtr m_pSynchro;                  /*!< task synchro*/
+    std::vector<unsigned int> m_vIndexToStop;   /*!< indexes of task to stop*/
+    std::vector<unsigned int> m_vIndexStandby;  /*!< indexes of task standby*/
 
     /*@brief create tasks but no process function attributed*/
     void createTasks(const int a_taskCount)

@@ -13,14 +13,13 @@
 template<typename Pipeline> requires std::is_base_of_v<VE_GraphicalPipeline, Pipeline>
 class VE_Component : public VE_IComponent
 {
-	friend class VE_RenderGraphTask;
 private:
 	static std::shared_ptr<Pipeline> s_pipeline;
 
 protected:
 	/*@brief get device context static pielin must be created*/
 	const VE_DeviceContext& context()const final { return s_pipeline->context(); }
-public:
+
 	std::shared_ptr<VE_GraphicalPipeline> pipeline()const final
 	{
 		return s_pipeline;
@@ -28,6 +27,7 @@ public:
 
 	void createPipeline(const VE_DeviceContext& a_ctxt) final
 	{
-		VE_Component<Pipeline>::s_pipeline = std::make_shared<Pipeline>(a_ctxt);
+		if(!s_pipeline)
+			VE_Component<Pipeline>::s_pipeline = std::make_shared<Pipeline>(a_ctxt);
 	}
 };

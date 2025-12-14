@@ -10,7 +10,7 @@
 #include "TaskSynchro.h"
 
 template<typename Type>
-using TTaskProcess = std::function<void(const Type&)>;
+using TTaskProcess = std::function<void(Type&)>;
 
 /*@brief Base class for task. GroupedTask is designed to 
 * accomplish same action in parallel on different data. 
