@@ -21,7 +21,7 @@ template<typename Data>
 class TGroupedTaskInstance
 {
 protected:
-    Data m_workedData;                /*!< working data in thread*/
+    Data m_workedData;                      /*!< working data in thread*/
 
 private:
     std::atomic_bool m_isRunning = false;   /*!< flag indicates thread is working*/

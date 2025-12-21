@@ -189,6 +189,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters $(ProjectDir)inc\rendering\pipeline
     <ClInclude Include="inc\rendering\VE_Pipeline.h" />
     <ClInclude Include="inc\rendering\VE_RenderGraphTask.h" />
     <ClInclude Include="inc\rendering\VE_RenderingCtx.h" />
+    <ClInclude Include="inc\rendering\VE_RenderingScene.h" />
     <ClInclude Include="inc\rendering\VE_Shader.h" />
     <ClInclude Include="inc\rendering\VE_ShadersDatabase.h" />
     <ClInclude Include="inc\rendering\VE_Uniform.h" />

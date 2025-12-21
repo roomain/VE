@@ -33,7 +33,9 @@ class VE_IComponent
 {
 	friend class VE_Actor;
 	friend class VE_RenderGraphTask;
+	friend class VE_RenderGraphEditTask;
 	friend class VE_RenderGraph;
+	friend class VE_RenderingScene;
 
 protected:
 	
@@ -65,7 +67,8 @@ public:
 	[[nodiscard]] inline VE_IComponentPtr childAt(const int a_index)const { return m_children.at(a_index); }
 	[[nodiscard]] virtual constexpr bool isInvalid()const noexcept = 0;
 	[[nodiscard]] inline TPreviousCurrent<RenderingFlagBit> renderingFlags()const { return m_renderFlag; }
-	void setRenderFlag(const RenderingFlagBit a_renderFlag) { m_renderFlag = a_renderFlag; }
+	void setRenderFlag(const RenderingFlagBit a_renderFlag) { m_renderFlag = m_renderFlag.current() | a_renderFlag; }
+	void removeRenderFlag(const RenderingFlagBit a_renderFlag) { m_renderFlag = m_renderFlag.current() & ~a_renderFlag; }
 	template<RenderingFlagBit Flag>
 	[[nodiscard]] constexpr bool hasFlag()const { return (m_renderFlag.current() & Flag) == Flag; }
 	DEFINE_ALL_ITER(std::vector<VE_IComponentPtr>, m_children);

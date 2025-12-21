@@ -6,35 +6,47 @@
 ************************************************/
 #include <memory>
 #include <unordered_map>
+#include <vector>
+#include <list>
 #include <vulkan/vulkan.hpp>
 #include "TGroupedTaskInstance.h"
 #include "utils/VulkanContext.h"
-
-class VE_GraphicalPipeline;
-class VE_IComponent;
-
-using VE_GraphicalPipelinePtr = std::shared_ptr<VE_GraphicalPipeline>;
-using VectorOfWkComponents = std::vector<std::weak_ptr<VE_IComponent>>;
-
-struct VE_GraphData
-{
-    VE_DeviceContext m_renderCtx;
-    std::unordered_map<uint32_t, VE_GraphicalPipelinePtr> m_registeredPipelines;/*!< pipelines per Id*/
-    std::unordered_map<uint32_t, VectorOfWkComponents> m_componentByPipelineId; /*!< components per pipeline id (component rendereing use associated pipeline)*/
-};
+#include "rendering/VE_RenderingScene.h"
 
 class VE_RenderGraph;
 
-class VE_RenderGraphTask : public TGroupedTaskInstance<VE_GraphData>
+/*@brief interface for rendering task*/
+class VE_IRenderGraphTask : public TGroupedTaskInstance<VE_RenderingScenePtr>
 {
-private:
-    VkCommandBufferUsageFlags m_usageFlag = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
-    VkCommandBuffer m_cmdBuffer = VK_NULL_HANDLE;   /*!< command buffer managed by task manager*/
-    std::vector<uint32_t> m_pipelineIds;            /*!< Ids of pipeline to process*/
+protected:
+    VkCommandBuffer m_cmdBuffer = VK_NULL_HANDLE;       /*!< command buffer managed by task manager*/
+    bool m_noRendering = true;                          /*! indicate if no rendering eg no data to process*/
 
 public:
-    explicit VE_RenderGraphTask(TaskSynchroPtr a_pSynchro);
-    void setCmdBufferUsage(VkCommandBufferUsageFlags a_usageFlag) { m_usageFlag = a_usageFlag; }
+    explicit VE_IRenderGraphTask(TaskSynchroPtr a_pSynchro);
+    virtual ~VE_IRenderGraphTask() = default;
     void setCmdBuffer(VkCommandBuffer a_cmdBuffer) { m_cmdBuffer = a_cmdBuffer; }
-    void process(VE_GraphData& a_data);
+    [[nodiscard]] bool noRendering()const { return m_noRendering; }
+    virtual void process(const VE_RenderingScenePtr& a_data) = 0;
+};
+
+class VE_RenderGraphTask : public VE_IRenderGraphTask
+{
+private:
+    std::vector<VE_GraphicalPipelinePtr> m_pipelineToRender; /*!< list of pipelines to process*/
+
+public:
+    using VE_IRenderGraphTask::VE_IRenderGraphTask;
+    ~VE_RenderGraphTask()override = default;
+    void process(const VE_RenderingScenePtr& a_data) override;
+    constexpr std::vector<VE_GraphicalPipelinePtr>::const_iterator cbegin()const { return m_pipelineToRender.cbegin(); }
+    constexpr std::vector<VE_GraphicalPipelinePtr>::const_iterator cend()const { return m_pipelineToRender.cend(); }
+};
+
+class VE_RenderGraphEditTask : public VE_IRenderGraphTask
+{
+public:
+    using VE_IRenderGraphTask::VE_IRenderGraphTask;
+    ~VE_RenderGraphEditTask()override = default;
+    void process(const VE_RenderingScenePtr& a_data) final;
 };

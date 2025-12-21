@@ -32,16 +32,29 @@ protected:
     std::vector<unsigned int> m_vIndexStandby;  /*!< indexes of task standby*/
 
     /*@brief create tasks but no process function attributed*/
+    template<typename TaskSubType> requires std::is_base_of_v<TaskType, TaskSubType>
     void createTasks(const int a_taskCount)
     {
-        m_vTask.resize(a_taskCount);
-        m_pSynchro = std::make_shared<TaskSynchro>(a_taskCount + 1);
+        size_t numTasks = 0;
+        if (m_pSynchro)
+        {
+            numTasks = m_vTask.size();
+            m_vTask.resize(a_taskCount + numTasks);
+            m_pSynchro->resetBarrier(numTasks + a_taskCount +1);
+        }
+        else
+        {
+            m_vTask.resize(a_taskCount);
+            m_pSynchro = std::make_shared<TaskSynchro>(a_taskCount + 1);
+        }
 
-        for (auto& task : m_vTask)
-            task = std::make_shared<TaskType>(m_pSynchro);
+        std::for_each(m_vTask.begin() + numTasks, m_vTask.end(), [](auto& task) { task = std::make_shared<TaskSubType>(m_pSynchro); });
     }
 
-    /*@brief call when all task are completed*/
+    /*@brief call when tasks will start*/
+    virtual void startProcess() = 0;
+
+    /*@brief call when all tasks are completed*/
     virtual void finishProcess() = 0;
 
     void processTasks()
@@ -177,16 +190,22 @@ public:
 
     void process()
     {
-        // set standby
+        // set task to standby in standby mode
         setStandby();
 
+        // set task to stop in stop mode
         stopTasks();
 
+        // callback when process will start
+        startProcess();
+
+        // process active tasks
         processTasks();
 
-        // set remove
+        // remove tasks
         releaseTasks();
 
+        // callback when all process are finished
         finishProcess();
     }
 };
