@@ -8,12 +8,16 @@
 #include <unordered_map>
 #include <vector>
 #include <list>
+#include <functional>
 #include <vulkan/vulkan.hpp>
 #include "TGroupedTaskInstance.h"
 #include "utils/VulkanContext.h"
 #include "rendering/VE_RenderingScene.h"
+#include "OnlyOneTime.h"
 
 class VE_RenderGraph;
+
+using InitBufferAction = std::function<void()>;
 
 /*@brief interface for rendering task*/
 class VE_IRenderGraphTask : public TGroupedTaskInstance<VE_RenderingScenePtr>
@@ -34,6 +38,7 @@ class VE_RenderGraphTask : public VE_IRenderGraphTask
 {
 private:
     std::vector<VE_GraphicalPipelinePtr> m_pipelineToRender; /*!< list of pipelines to process*/
+    void process(PipelineDatabase& a_pipelineData, OnlyOneTime<InitBufferAction>& a_bufferInit);
 
 public:
     using VE_IRenderGraphTask::VE_IRenderGraphTask;

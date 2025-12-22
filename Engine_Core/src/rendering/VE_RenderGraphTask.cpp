@@ -10,7 +10,35 @@ VE_IRenderGraphTask::VE_IRenderGraphTask(TaskSynchroPtr a_pSynchro) : TGroupedTa
     setCallback(std::bind_front(&VE_IRenderGraphTask::process, this));
 }
 
+void VE_RenderGraphTask::process(PipelineDatabase& a_pipelineData, OnlyOneTime<InitBufferAction>& a_bufferInit)
+{
+    uint32_t indexToRemove = 0;
+    std::vector<uint32_t> listToRemove;
+    for (const auto& componentWkPtr : a_pipelineData.components)
+    {
+        if (auto cmpPtr = componentWkPtr.lock())
+        {
+            if (cmpPtr->hasFlag<RenderingFlagBit::IS_RENDERING>() && !cmpPtr->hasFlag<RenderingFlagBit::IS_EDITABLE>())
+            {
+                a_bufferInit();
+                cmpPtr->writeCommands(m_cmdBuffer);
+            }
+        }
+        else
+        {
+            listToRemove.emplace_back(indexToRemove);
+        }
+        ++indexToRemove;
+    }
 
+    uint32_t offset = 0;
+    for (const auto index : listToRemove)
+    {
+        a_pipelineData.components.erase(
+            a_pipelineData.components.begin() + (index - offset));
+        offset++;
+    }
+}
 
 void VE_RenderGraphTask::process(const VE_RenderingScenePtr& a_data)
 {
@@ -20,37 +48,42 @@ void VE_RenderGraphTask::process(const VE_RenderingScenePtr& a_data)
         return;
     
     VkCommandBufferBeginInfo cmbBeginInfo = Vulkan::Initializers::commandBufferBeginInfo(0, nullptr);
-    
-    vkResetCommandBuffer(m_cmdBuffer, 0);
-    vkBeginCommandBuffer(m_cmdBuffer, &cmbBeginInfo);
-    for (auto pipeline : m_pipelineToRender)
-    {
-        uint32_t index = 0;
-        std::vector<uint32_t> removed; // indices of released components 
-        a_data->forEach(pipeline, [this, &index, &removed](const auto& a_cmpWptr)
-            {
-                if (auto component = a_cmpWptr.lock())
-                {
-                    component->pipeline()->bind(m_cmdBuffer);
-                    if (component->hasFlag<RenderingFlagBit::IS_RENDERING>())
-                    {
-                        m_noRendering = false;
-                        component->writeCommands(m_cmdBuffer);
-                    }
-                    else
-                    {
-                        // add released component to remove list
-                        removed.emplace_back(index);
-                    }
-                    ++index;
-                }
-            });
 
-        // erase release components
-        if(!removed.empty())
-            a_data->remove(pipeline, removed);
+    m_noRendering = true;
+    OnlyOneTime<InitBufferAction> initBuffer{
+        [this, &cmbBeginInfo]()
+        {
+            m_noRendering = false;
+            vkResetCommandBuffer(m_cmdBuffer, 0);
+            vkBeginCommandBuffer(m_cmdBuffer, &cmbBeginInfo);
+        }
+    };
+
+    if (m_pipelineToRender.empty())
+    {
+        // do all pipelines
+        for (auto&[pipeline, data] : a_data->componentsPerPipeline)
+        {
+            if (data.bUpdated)
+            {
+                process(data, initBuffer);
+            }
+        }
     }
-    vkEndCommandBuffer(m_cmdBuffer);
+    else
+    {
+        for (auto pipeline : m_pipelineToRender)
+        {
+            if (auto pipelineDataIter = a_data->componentsPerPipeline.find(pipeline);
+                pipelineDataIter != a_data->componentsPerPipeline.end() && pipelineDataIter->second.bUpdated)
+            {
+                process(pipelineDataIter->second, initBuffer);
+            }
+        }
+    }
+
+    if(initBuffer.isExecuted())
+        vkEndCommandBuffer(m_cmdBuffer);
 }
 
 void VE_RenderGraphEditTask::process(const VE_RenderingScenePtr& a_data)
@@ -60,19 +93,30 @@ void VE_RenderGraphEditTask::process(const VE_RenderingScenePtr& a_data)
         return;
 
     VkCommandBufferBeginInfo cmbBeginInfo = Vulkan::Initializers::commandBufferBeginInfo(0, nullptr);
-    vkBeginCommandBuffer(m_cmdBuffer, &cmbBeginInfo);
+    
 
-    a_data->forEachEdit([this](const auto& a_cmpWptr)
+    OnlyOneTime<InitBufferAction> initBuffer{
+        [this, &cmbBeginInfo]()
         {
-            if (auto component = a_cmpWptr.lock())
+            m_noRendering = false;
+            vkResetCommandBuffer(m_cmdBuffer, 0);
+            vkBeginCommandBuffer(m_cmdBuffer, &cmbBeginInfo);
+        }
+    };
+
+    for (const auto& componentWk : a_data->editedComponent)
+    {
+        if (auto component = componentWk.lock())
+        {
+            component->pipeline()->bind(m_cmdBuffer);
+            if (component->hasFlag<RenderingFlagBit::IS_RENDERING>() && component->hasFlag<RenderingFlagBit::IS_EDITABLE>())
             {
-                component->pipeline()->bind(m_cmdBuffer);
-                if (component->hasFlag<RenderingFlagBit::IS_RENDERING>())
-                {
-                    m_noRendering = false;
-                    component->writeCommands(m_cmdBuffer);
-                }
+                initBuffer();
+                component->writeCommands(m_cmdBuffer);
             }
-        });
-    vkEndCommandBuffer(m_cmdBuffer);
+        }
+    }
+
+    if (initBuffer.isExecuted())
+        vkEndCommandBuffer(m_cmdBuffer);
 }

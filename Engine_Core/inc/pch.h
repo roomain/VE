@@ -11,7 +11,6 @@
 #include "framework.h"
 
 #include "logger.h"
-#include "bitOperators.h"
 #include "string_utils.h"
 
 #include "parameters/VE_Parameter.h"

@@ -32,10 +32,10 @@ enum class RenderingFlagBit
 class VE_IComponent
 {
 	friend class VE_Actor;
+	friend struct VE_RenderingScene;
 	friend class VE_RenderGraphTask;
 	friend class VE_RenderGraphEditTask;
 	friend class VE_RenderGraph;
-	friend class VE_RenderingScene;
 
 protected:
 	
@@ -62,6 +62,7 @@ protected:
 
 public:
 	VE_IComponent() = default;
+	virtual ~VE_IComponent() = default;
 	[[nodiscard]] inline VE_IComponentWPtr parent()const { return m_parent; }
 	[[nodiscard]] constexpr size_t childCount()const { return m_children.size(); }
 	[[nodiscard]] inline VE_IComponentPtr childAt(const int a_index)const { return m_children.at(a_index); }
