@@ -16,6 +16,7 @@
 struct RenderGraphConfiguration
 {
     const VkQueue renderQueue;  /*!< queue used for rendering*/
+    // todo
 };
 
 /*@brief Manage rendering in multiple threads*/
@@ -28,6 +29,7 @@ private:
     VE_RenderingScenePtr m_renderScene;                 /*!< data shared between tasks*/
     VkSubmitInfo m_submitInfo;                          /*!< submit information*/
     VkCommandBuffer m_mainCmdBuffer = VK_NULL_HANDLE;   /*!< command buffer managed by task manager*/
+    std::vector<VkCommandBuffer> m_activeBuffer;        /*!< active command buffer*/
 
 protected:
     void startProcess() override;
@@ -36,7 +38,7 @@ protected:
 public:
     VE_RenderGraph() = delete;
     explicit VE_RenderGraph(const VE_DeviceContext& a_ctxt, const VkQueue a_renderQueue);
-    [[nodiscard]] bool registerComponent(const std::shared_ptr<VE_IComponent>& a_component);
+    [[nodiscard]] bool registerComponent(const std::shared_ptr<VE_IComponent>& a_component)const;
 
     /*@brief */
     //void setupTasks(const uint32_t)

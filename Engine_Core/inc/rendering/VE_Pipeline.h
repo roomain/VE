@@ -5,6 +5,8 @@
 * @author Roomain
 ************************************************/
 #include <vector>
+#include <mutex>
+#include <utility>
 #include <string_view>
 #include <vulkan/vulkan.h>
 #include "utils/VulkanContext.h"
@@ -23,9 +25,10 @@ private:
 		std::array<uint8_t, 16> pipelineCacheUUID;
 	};
 	VkPipelineCacheHeader m_header;
+	std::mutex m_protection;								/*!< pipeline working protection*/
 
 protected:
-	VkPipelineCache m_cache = VK_NULL_HANDLE;
+	VkPipelineCache m_cache = VK_NULL_HANDLE;				/*!< pipeline cache*/
 	VkPipeline m_pipeline = VK_NULL_HANDLE;					/*!< vulkan pipeline handle*/
 	VkPipelineLayout m_pipelineLayout = VK_NULL_HANDLE;		/*!< vulkla pipeline layout handle*/
 	VkPipelineBindPoint m_bindingPoint = VK_PIPELINE_BIND_POINT_COMPUTE;
@@ -36,12 +39,20 @@ protected:
 
 public:
 	explicit VE_Pipeline(const VE_DeviceContext& a_ctxt, const std::string_view& a_cacheFile = "");
-	virtual ~VE_Pipeline();
+	virtual ~VE_Pipeline()override;
 	virtual void cleanup();
 	[[nodiscard]] constexpr bool isValid()const noexcept { return m_pipeline != VK_NULL_HANDLE; }
 	/*@brief save cache*/
 	bool saveCache(const std::string_view& a_filename);
 	void bind(VkCommandBuffer& a_cmdBuffer);
+
+#pragma warning(push)
+#pragma warning( disable : 4172)
+	[[nodiscard]] constexpr std::scoped_lock<std::mutex>&& scopeLock()noexcept 
+	{ 
+		return std::move(std::scoped_lock<std::mutex>(m_protection)); 
+	}
+#pragma warning(pop)
 };
 
 #define IMPL_PIPELINE_FILE(classname) \

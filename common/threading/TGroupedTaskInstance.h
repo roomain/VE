@@ -81,6 +81,11 @@ public:
         m_standby = a_standby;
     }
 
+    [[nodiscard]] bool isStandBy()const
+    {
+        return m_standby;
+    }
+
     inline void setSync(TaskSynchroPtr a_condCb)
     {
         m_pSynchro = a_condCb;

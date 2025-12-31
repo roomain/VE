@@ -13,7 +13,7 @@
 #include "TGroupedTaskInstance.h"
 #include "utils/VulkanContext.h"
 #include "rendering/VE_RenderingScene.h"
-#include "OnlyOneTime.h"
+#include "TOnlyOneTime.h"
 
 class VE_RenderGraph;
 
@@ -32,20 +32,22 @@ public:
     void setCmdBuffer(VkCommandBuffer a_cmdBuffer) { m_cmdBuffer = a_cmdBuffer; }
     [[nodiscard]] bool noRendering()const { return m_noRendering; }
     virtual void process(const VE_RenderingScenePtr& a_data) = 0;
+    [[nodiscard]] VkCommandBuffer commandBuffer()const { return m_cmdBuffer; }
 };
 
 class VE_RenderGraphTask : public VE_IRenderGraphTask
 {
 private:
-    std::vector<VE_GraphicalPipelinePtr> m_pipelineToRender; /*!< list of pipelines to process*/
-    void process(PipelineDatabase& a_pipelineData, OnlyOneTime<InitBufferAction>& a_bufferInit);
+    std::vector<VE_PipelinePtr> m_pipelineToProcess; /*!< list of pipelines to process*/
+    bool processComponent(VE_IComponentWPtr& a_component, TOnlyOneTime<InitBufferAction>& a_bufferInit);
+    void clean(const VE_RenderingScenePtr& a_renderingScene, const VE_PipelinePtr a_pipeline, const std::vector<uint32_t>& listToRemove)const;
 
 public:
     using VE_IRenderGraphTask::VE_IRenderGraphTask;
     ~VE_RenderGraphTask()override = default;
-    void process(const VE_RenderingScenePtr& a_data) override;
-    constexpr std::vector<VE_GraphicalPipelinePtr>::const_iterator cbegin()const { return m_pipelineToRender.cbegin(); }
-    constexpr std::vector<VE_GraphicalPipelinePtr>::const_iterator cend()const { return m_pipelineToRender.cend(); }
+    void process(const VE_RenderingScenePtr& a_renderingScene) override;
+    constexpr std::vector<VE_PipelinePtr>::const_iterator cbegin()const { return m_pipelineToProcess.cbegin(); }
+    constexpr std::vector<VE_PipelinePtr>::const_iterator cend()const { return m_pipelineToProcess.cend(); }
 };
 
 class VE_RenderGraphEditTask : public VE_IRenderGraphTask
@@ -53,5 +55,5 @@ class VE_RenderGraphEditTask : public VE_IRenderGraphTask
 public:
     using VE_IRenderGraphTask::VE_IRenderGraphTask;
     ~VE_RenderGraphEditTask()override = default;
-    void process(const VE_RenderingScenePtr& a_data) final;
+    void process(const VE_RenderingScenePtr& a_renderingScene) final;
 };

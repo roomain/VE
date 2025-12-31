@@ -12,20 +12,15 @@
 #include <vulkan/vulkan.hpp>
 #include "rendering/components/VE_IComponent.h"
 #include "utils/VulkanContext.h"
+#include "VE_Pipeline.h"
+#include "TDatabase.h"
 
-using VE_GraphicalPipelinePtr = std::shared_ptr<VE_GraphicalPipeline>;
+using VE_PipelinePtr = std::shared_ptr<VE_Pipeline>;
 using VE_IComponentWPtr = std::weak_ptr<VE_IComponent>;
 using VE_IComponentPtr = std::shared_ptr<VE_IComponent>;
 using VectorOfWkComponents = std::vector<VE_IComponentWPtr>;
 
-struct PipelineDatabase
-{
-    bool bUpdated = false;          /*!< indicate if components list is modified*/
-    VectorOfWkComponents components;/*!< list of components sharing the same pipeline*/
-};
-
-using ComponentsDatabase = std::unordered_map<VE_GraphicalPipelinePtr, PipelineDatabase>;
-using ComponentCallback = std::function<void(const VE_IComponentPtr&)>;
+using ComponentsDatabase = TDatabase<VE_PipelinePtr, bool, VE_IComponentWPtr>;
 
 /*
 * Scene components are rendered by multiple command buffers in multiple tasks
@@ -38,43 +33,60 @@ using ComponentCallback = std::function<void(const VE_IComponentPtr&)>;
 /*@brief regroup all rendering component in scene*/
 struct VE_RenderingScene
 {
-    VE_DeviceContext renderCtx;
+    std::mutex renderingProtect;                /*!< mutex to synchronise rendering/select component */
+
     /*An edited component is not in m_ComponentsPerPipeline*/
-    ComponentsDatabase componentsPerPipeline; /*!< rendering components per pipeline*/
-    VectorOfWkComponents editedComponent;     /*!< components in edition mode*/
+    ComponentsDatabase componentsPerPipeline;   /*!< rendering components per pipeline*/
+    VectorOfWkComponents editedComponent;       /*!< components in edition mode*/
 
-    inline bool hasEditComponent()const { return editedComponent.empty(); }
-    inline void editComponent(const VE_IComponentWPtr& a_editComponent)
+#pragma region Slots
+#pragma warning(push)
+#pragma warning( disable : 4100 4189)
+    inline void onRenderFlagChanged(const VE_IComponent* a_component, [[maybe_unused]]const RenderingFlagBit, [[maybe_unused]] const RenderingFlagBit)
     {
-        a_editComponent.lock()->setRenderFlag(RenderingFlagBit::IS_EDITABLE);
-        editedComponent.emplace_back(a_editComponent);
-    }
-
-    inline void editComponents(const VectorOfWkComponents& a_editComponent)
-    {
-        for(const auto& component : a_editComponent)
+        if (auto pipeline = a_component->pipeline(); a_component->isRegistered() && pipeline)
         {
-            editComponent(component);
+            auto&& lock = pipeline->scopeLock();
+            componentsPerPipeline.updateColumnData(pipeline, true);
         }
     }
 
-    inline void unEditComponent(const VE_IComponentWPtr& a_editComponent)
+    inline void onInvalidate(const VE_IComponent* a_component)
     {
-        const auto componentPtr = a_editComponent.lock();
-        componentPtr->removeRenderFlag(RenderingFlagBit::IS_EDITABLE);
-        editedComponent.erase(std::ranges::find_if(editedComponent, 
-            [&componentPtr](const auto& a_comp) { return a_comp.lock() == componentPtr; }));
-        auto pipeline = componentPtr->pipeline();
-        componentsPerPipeline.at(pipeline).bUpdated = true;
-
+        if (auto pipeline = a_component->pipeline(); a_component->isRegistered() && pipeline)
+        {
+            auto&& lock = pipeline->scopeLock();
+            componentsPerPipeline.updateColumnData(pipeline, true);
+        }
     }
 
-    inline void unEditComponents(const VectorOfWkComponents& a_editComponent)
+    inline void onSelect(VE_IComponent* a_component, bool a_selected)
     {
-        for(const auto& component : a_editComponent)
+        if (auto pipeline = a_component->pipeline(); a_component->isRegistered() && pipeline)
         {
-            unEditComponent(component);
+            auto&& lock = pipeline->scopeLock();
+            componentsPerPipeline.updateColumnData(pipeline, true);
+            std::scoped_lock selectLock(renderingProtect);
+            if (a_selected)
+            {
+                editedComponent.emplace_back(a_component->weak_from_this());
+            }
+            else if(auto iter = std::ranges::find_if(editedComponent, [a_component](auto&& a_comp)
+                {
+                    return a_comp.lock().get() == a_component;
+                }); iter != editedComponent.end())
+            {
+                editedComponent.erase(iter);
+            }
+
         }
+    }
+#pragma warning(pop)
+
+#pragma region
+    inline bool hasEditComponent()const 
+    {
+        return editedComponent.empty(); 
     }
 };
 
