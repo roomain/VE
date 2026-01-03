@@ -6,41 +6,35 @@
 ************************************************/
 #include <memory>
 #include <unordered_map>
+#include <functional>
 #include <vulkan/vulkan.hpp>
+#include "VE_FwdDecl.h"
 #include "utils/VulkanContext.h"
 #include "TGroupedTaskManager.h"
 #include "rendering/VE_RenderGraphTask.h"
 #include "rendering/components/VE_IComponent.h"
 #include "rendering/VE_RenderingScene.h"
 
-struct RenderGraphConfiguration
-{
-    const VkQueue renderQueue;  /*!< queue used for rendering*/
-    // todo
-};
+using CmdBufferGenerator = std::function<VkCommandBuffer()>;
 
 /*@brief Manage rendering in multiple threads*/
-class VE_RenderGraph : public VulkanObject<VE_DeviceContext>, 
-    public TGroupedTaskManager<VE_RenderingScenePtr, VE_IRenderGraphTask>
+class VE_RenderGraph : public TGroupedTaskManager<VE_RenderingScenePtr, VE_IRenderGraphTask>
 {
 private:
-    static constexpr unsigned int m_editTaskIndex = 0;  /*!< index of edit task*/
-    VkQueue m_renderQueue;                              /*!< render queue*/
-    VE_RenderingScenePtr m_renderScene;                 /*!< data shared between tasks*/
-    VkSubmitInfo m_submitInfo;                          /*!< submit information*/
+    bool bHasEditTask = false;                          /*!< has an edition task in position 0*/
+    VkQueue m_renderQueue = VK_NULL_HANDLE;             /*!< render queue*/
+    VkSubmitInfo m_submitInfo{};                        /*!< submit information*/
     VkCommandBuffer m_mainCmdBuffer = VK_NULL_HANDLE;   /*!< command buffer managed by task manager*/
-    std::vector<VkCommandBuffer> m_activeBuffer;        /*!< active command buffer*/
+    std::vector<VkCommandBuffer> m_activeBuffer;        /*!< buffer used for rendering*/
 
 protected:
     void startProcess() override;
     void finishProcess() override;
 
 public:
-    VE_RenderGraph() = delete;
-    explicit VE_RenderGraph(const VE_DeviceContext& a_ctxt, const VkQueue a_renderQueue);
-    [[nodiscard]] bool registerComponent(const std::shared_ptr<VE_IComponent>& a_component)const;
-
-    /*@brief */
-    //void setupTasks(const uint32_t)
-    // todo
+    VE_RenderGraph() = default;
+    ~VE_RenderGraph() override = default;
+    void setup(VkQueue a_queue, VkCommandBuffer a_mainCmd);
+    [[nodiscard]] bool setEditTask(const VE_TaskParameters a_taskParameters);
+    [[nodiscard]] bool addTasks(const std::vector<VE_TaskParametersEx>& a_tasksParameters);
 };

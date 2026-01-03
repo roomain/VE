@@ -54,50 +54,6 @@ VE_Device::~VE_Device()
 	vkDestroyDevice(m_vkCtxt.m_logicalDevice, nullptr);
 }
 
-void VE_Device::createCommandBuffers(const VkQueueFlags a_flag, const VkCommandBufferLevel a_cmdLevel, const uint32_t a_numBuffers, std::vector<VkCommandBuffer>& a_buffers)
-{
-	// find queue
-	if (auto iter = std::ranges::find_if(m_queues, [a_flag](const auto& a_queueFam)
-		{
-			return (a_queueFam.familyFlag() & a_flag) == a_flag;
-		}); iter != m_queues.cend())
-	{
-		VkCommandBufferAllocateInfo info = Vulkan::Initializers::commandBufferCreateInfo(
-			iter->commandPool(),
-			a_cmdLevel,
-			a_numBuffers
-		);
-		a_buffers.resize(a_numBuffers);
-		vkAllocateCommandBuffers(m_vkCtxt.m_logicalDevice, &info, a_buffers.data());
-	}
-	else
-	{
-		Logger::error(std::format("Can't create command buffer with queue flags {}", 
-			Flag<VkQueueFlagBits>::to_string(a_flag)));
-	}
-}
-
-void VE_Device::createCommandBuffer(const VkQueueFlags a_flag, const VkCommandBufferLevel a_cmdLevel, VkCommandBuffer& a_buffer)
-{
-	// find queue
-	if (auto iter = std::ranges::find_if(m_queues, [a_flag](const auto& a_queueFam)
-		{
-			return (a_queueFam.familyFlag() & a_flag) == a_flag;
-		}); iter != m_queues.cend())
-	{
-		VkCommandBufferAllocateInfo info = Vulkan::Initializers::commandBufferCreateInfo(
-			iter->commandPool(),
-			a_cmdLevel,
-			1
-		);
-		vkAllocateCommandBuffers(m_vkCtxt.m_logicalDevice, &info, &a_buffer);
-	}
-	else
-	{
-		Logger::error(std::format("Can't create command buffer with queue flags {}",
-			Flag<VkQueueFlagBits>::to_string(a_flag)));
-	}
-}
 
 VkQueue VE_Device::createQueue(const VkQueueFlags a_flag)
 {

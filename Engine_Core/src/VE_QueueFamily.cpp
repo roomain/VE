@@ -3,6 +3,32 @@
 #include "VE_Application.h"
 #include "utils/VulkanCmdInitializers.h"
 
+VE_CommandBuffer::VE_CommandBuffer(VkCommandBuffer a_cmdBuffer, VkCommandPool a_cmdPool, const VE_DeviceContext& a_ctxt) :
+	VulkanObject<VE_DeviceContext>(a_ctxt), m_cmdBuffer{ a_cmdBuffer }, m_cmdPool{ a_cmdPool }
+{
+	//
+}
+
+VE_CommandBuffer::~VE_CommandBuffer()
+{
+	vkFreeCommandBuffers(m_vkCtxt.m_logicalDevice, m_cmdPool, 1, &m_cmdBuffer);
+}
+
+VE_CommandBufferPool::VE_CommandBufferPool(VkCommandPool a_cmdPool, const VkCommandBufferLevel a_level, const uint32_t a_bufferCount, const VE_DeviceContext& a_ctxt) :
+	VulkanObject<VE_DeviceContext>(a_ctxt), m_cmdPool{ a_cmdPool }
+{
+	m_cmdBuffers.reserve(a_bufferCount);
+	VkCommandBufferAllocateInfo allocInfo = Vulkan::Initializers::commandBufferCreateInfo(a_cmdPool, a_level, a_bufferCount);
+	vkAllocateCommandBuffers(m_vkCtxt.m_logicalDevice, &allocInfo, m_cmdBuffers.data());
+}
+
+VE_CommandBufferPool::~VE_CommandBufferPool()
+{
+	vkFreeCommandBuffers(m_vkCtxt.m_logicalDevice, m_cmdPool, bufferCount(), m_cmdBuffers.data());
+}
+
+//---------------------------------------------------------------------------------------------------------
+
 VE_QueueFamily::VE_QueueFamily(const uint32_t a_queueFamilyIndex, const VE_DeviceContext& a_ctxt) :
 	VulkanObject<VE_DeviceContext>(a_ctxt), m_familyIndex{ a_queueFamilyIndex }
 {
@@ -15,9 +41,6 @@ VE_QueueFamily::~VE_QueueFamily()
 {
 	for (auto& fence : m_waitFences)
 		vkDestroyFence(m_vkCtxt.m_logicalDevice, fence, nullptr);
-
-	vkFreeCommandBuffers(m_vkCtxt.m_logicalDevice, m_commandPool, 
-		static_cast<uint32_t>(m_commandBuffers.size()), m_commandBuffers.data());
 
 	vkDestroyCommandPool(m_vkCtxt.m_logicalDevice, m_commandPool, nullptr);
 }
@@ -89,38 +112,15 @@ uint32_t VE_QueueFamily::numFences()const
 	return static_cast<uint32_t>(m_waitFences.size());
 }
 
-void VE_QueueFamily::releaseCommandBuffers(CmbBufferConst_Iter a_begin, CmbBufferConst_Iter a_end)
+VE_CommandBuffer VE_QueueFamily::createCommandBuffer(const VkCommandBufferLevel a_level)
 {
-	auto startIndex = std::distance(m_commandBuffers.cbegin(), a_begin);
-	auto size = std::distance(a_begin, a_end);
-
-	vkFreeCommandBuffers(m_vkCtxt.m_logicalDevice, m_commandPool,
-		static_cast<uint32_t>(size), m_commandBuffers.data() + startIndex);
-}
-
-VkCommandBuffer VE_QueueFamily::createCommandBuffer(const VkCommandBufferLevel a_level)
-{
-	VkCommandBufferAllocateInfo allocInfo = Vulkan::Initializers::commandBufferCreateInfo(m_commandPool, a_level, 1);
+	VkCommandBufferAllocateInfo allocInfo = Vulkan::Initializers::commandBufferCreateInfo(commandPool(), a_level, 1);
 	VkCommandBuffer cmdBuffer;
 	vkAllocateCommandBuffers(m_vkCtxt.m_logicalDevice, &allocInfo, &cmdBuffer);
-	m_commandBuffers.emplace_back(cmdBuffer);
-	return cmdBuffer;
+	return VE_CommandBuffer{ cmdBuffer, commandPool(), m_vkCtxt };
 }
 
-void VE_QueueFamily::createCommandBuffer(const VkCommandBufferLevel a_level, const uint32_t a_count)
+VE_CommandBufferPool VE_QueueFamily::createCommandBuffer(const VkCommandBufferLevel a_level, const uint32_t a_count)
 {
-	size_t numCmd = m_commandBuffers.size();
-	m_commandBuffers.insert(m_commandBuffers.end(), a_count, VK_NULL_HANDLE);
-	VkCommandBufferAllocateInfo allocInfo = Vulkan::Initializers::commandBufferCreateInfo(m_commandPool, a_level, 1);
-	vkAllocateCommandBuffers(m_vkCtxt.m_logicalDevice, &allocInfo, m_commandBuffers.data() + numCmd);
-}
-
-VkCommandBuffer VE_QueueFamily::getCommandBuffer(const uint32_t a_index)
-{
-	return m_commandBuffers[a_index];
-}
-
-uint32_t VE_QueueFamily::numCommandBuffer()const
-{
-	return static_cast<uint32_t>(m_commandBuffers.size());
+	return VE_CommandBufferPool{ commandPool(), a_level, a_count, m_vkCtxt };
 }

@@ -19,6 +19,17 @@ class VE_RenderGraph;
 
 using InitBufferAction = std::function<void()>;
 
+struct VE_TaskParameters
+{
+    VE_RenderingScenePtr sharedData;
+    VkCommandBuffer workingBuffer;
+};
+
+struct VE_TaskParametersEx : public VE_TaskParameters
+{
+    std::vector<VE_PipelinePtr> workingPipelines;
+};
+
 /*@brief interface for rendering task*/
 class VE_IRenderGraphTask : public TGroupedTaskInstance<VE_RenderingScenePtr>
 {
@@ -28,6 +39,7 @@ protected:
 
 public:
     explicit VE_IRenderGraphTask(TaskSynchroPtr a_pSynchro);
+    explicit VE_IRenderGraphTask(TaskSynchroPtr a_synchro, const VE_TaskParameters& a_parameters);
     virtual ~VE_IRenderGraphTask() = default;
     void setCmdBuffer(VkCommandBuffer a_cmdBuffer) { m_cmdBuffer = a_cmdBuffer; }
     [[nodiscard]] bool noRendering()const { return m_noRendering; }
@@ -44,6 +56,7 @@ private:
 
 public:
     using VE_IRenderGraphTask::VE_IRenderGraphTask;
+    explicit VE_RenderGraphTask(TaskSynchroPtr a_synchro, const VE_TaskParametersEx& a_parameters);
     ~VE_RenderGraphTask()override = default;
     void process(const VE_RenderingScenePtr& a_renderingScene) override;
     constexpr std::vector<VE_PipelinePtr>::const_iterator cbegin()const { return m_pipelineToProcess.cbegin(); }

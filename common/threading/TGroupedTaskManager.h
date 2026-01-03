@@ -32,8 +32,8 @@ protected:
     std::vector<unsigned int> m_vIndexStandby;  /*!< indexes of task standby*/
 
     /*@brief create tasks but no process function attributed*/
-    template<typename TaskSubType> requires std::is_base_of_v<TaskType, TaskSubType>
-    void createTasks(const int a_taskCount)
+    template<typename TaskSubType, typename ...Args> requires std::is_base_of_v<TaskType, TaskSubType>
+    void createTasks(const unsigned int a_taskCount, Args... a_args)
     {
         size_t numTasks = 0;
         if (m_pSynchro)
@@ -47,8 +47,44 @@ protected:
             m_vTask.resize(a_taskCount);
             m_pSynchro = std::make_shared<TaskSynchro>(a_taskCount + 1);
         }
+    
+        std::for_each(m_vTask.begin() + numTasks, m_vTask.end(), [&a_args..., this](auto& task) { task = std::make_shared<TaskSubType>(m_pSynchro, a_args...); });
+    }
 
-        std::for_each(m_vTask.begin() + numTasks, m_vTask.end(), [](auto& task) { task = std::make_shared<TaskSubType>(m_pSynchro); });
+    template<typename TaskSubType, typename ...Args> requires std::is_base_of_v<TaskType, TaskSubType>
+    void insertTask(Args... a_args)
+    {
+        if (m_pSynchro)
+        {
+            size_t numTasks = m_vTask.size() + 1;
+            m_pSynchro->resetBarrier(numTasks + 1);
+            m_vTask.insert(m_vTask.begin(), std::make_shared<TaskSubType>(m_pSynchro, a_args...));
+
+        }
+        else
+        {
+            m_pSynchro = std::make_shared<TaskSynchro>(1 + 1);
+            m_vTask.emplace_back(std::make_shared<TaskSubType>(m_pSynchro, a_args...));
+        }
+    }
+
+
+    template<typename TaskSubType, typename Arg> requires std::is_base_of_v<TaskType, TaskSubType>
+    void createTasks(const std::vector<Arg>& a_args)
+    {
+        size_t numTasks = 0;
+        if (m_pSynchro)
+        {
+            numTasks = m_vTask.size();
+            m_pSynchro->resetBarrier(numTasks + a_args.size() + 1);
+        }
+        else
+        {
+            m_pSynchro = std::make_shared<TaskSynchro>(a_args.size() + 1);
+        }
+
+        for(const auto& argument : a_args)
+            m_vTask.emplace_back(std::make_shared<TaskSubType>(m_pSynchro, argument));
     }
 
     /*@brief call when tasks will start*/
@@ -120,7 +156,7 @@ protected:
 
 public:
 
-    ~TGroupedTaskManager()
+    virtual ~TGroupedTaskManager()
     {
         m_vIndexToStop.clear();
         // release all stand by

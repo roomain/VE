@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "VE_GraphicalDevice.h"
 #include "rendering/VE_RenderingCtx.h"
+#include "VE_GraphicalDevice.h"
 
-VE_RenderingCtx::VE_RenderingCtx(VE_GraphicalDevicePtr a_device) : m_device{ a_device }
+VE_RenderingCtx::VE_RenderingCtx(VE_GraphicalDevicePtr a_device)
 {
-	m_swapChain = m_device->createNewSwapChain();
+	m_swapChain = a_device->createNewSwapChain();
 	// test
 #pragma warning(push)
 #pragma warning( disable : 4189 )// because unsed local variable

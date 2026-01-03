@@ -6,6 +6,7 @@
 ************************************************/
 #include "VE_FwdDecl.h"
 #include "notCopiable.h"
+#include "VE_RenderGraph.h"
 #include "core_globals.h"
 
 #pragma warning(push)
@@ -19,16 +20,21 @@ private:
 	VE_GraphicalDevicePtr m_device;		/*!< rendering vulkan device*/
 	VE_SwapChainPtr m_swapChain;		/*!< swapchain for rendering*/
 
+	VE_RenderGraph m_renderGraph;		/*!< multithread rendering*/
+	VE_RenderingScenePtr m_renderScene;	/*!< data shared between tasks*/
+
 public:
 	NOT_COPIABLE(VE_RenderingCtx)
 	VE_RenderingCtx() = delete;
 	explicit VE_RenderingCtx(VE_GraphicalDevicePtr a_device);
 	VE_RenderingCtx(VE_RenderingCtx&& a_other) noexcept = default;
-
 	[[nodiscard]] inline VE_GraphicalDevicePtr device()const
 	{
 		return m_device;
 	}
+
+	// todo setup render Graph width  precharged pipelines
+	// void registerPipelines()
 };
 
 #pragma warning(pop)

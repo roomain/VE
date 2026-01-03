@@ -14,7 +14,7 @@ class VE_Shader;
 class VE_Uniform;
 class VE_Pipeline;
 class VE_SwapChain;
-struct VE_Buffer;
+class VE_CommandBuffer;
 
 /*shared pointers*/
 using VE_DevicePtr = std::shared_ptr<VE_Device>;

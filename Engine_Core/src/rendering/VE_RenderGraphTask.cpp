@@ -10,6 +10,17 @@ VE_IRenderGraphTask::VE_IRenderGraphTask(TaskSynchroPtr a_pSynchro) : TGroupedTa
     setCallback(std::bind_front(&VE_IRenderGraphTask::process, this));
 }
 
+VE_IRenderGraphTask::VE_IRenderGraphTask(TaskSynchroPtr a_synchro, const VE_TaskParameters& a_parameters) : VE_IRenderGraphTask{ a_synchro }
+{
+    m_cmdBuffer = a_parameters.workingBuffer;
+    setData(a_parameters.sharedData);
+}
+
+VE_RenderGraphTask::VE_RenderGraphTask(TaskSynchroPtr a_synchro, const VE_TaskParametersEx& a_parameters) : VE_IRenderGraphTask{ a_synchro, a_parameters }
+{
+    m_pipelineToProcess = a_parameters.workingPipelines;
+}
+
 bool VE_RenderGraphTask::processComponent(VE_IComponentWPtr& a_component, TOnlyOneTime<InitBufferAction>& a_bufferInit)
 {
     
@@ -58,7 +69,7 @@ void VE_RenderGraphTask::process(const VE_RenderingScenePtr& a_renderingScene)
     if (m_pipelineToProcess.empty())
     {
         // do all pipelines
-        a_renderingScene->componentsPerPipeline.for_all([&, this](auto& a_pipeline, auto& a_componentList)
+        a_renderingScene->componentsPerPipeline.for_all([&](auto& a_pipeline, auto& a_componentList)
             {
                 uint32_t indexToRemove = 0;
                 std::vector<uint32_t> listToRemove;
@@ -82,7 +93,7 @@ void VE_RenderGraphTask::process(const VE_RenderingScenePtr& a_renderingScene)
             uint32_t indexToRemove = 0;
             std::vector<uint32_t> listToRemove;
             auto&& lock = pipeline->scopeLock();
-            a_renderingScene->componentsPerPipeline.for_each(pipeline, [&, this](auto& a_component)
+            a_renderingScene->componentsPerPipeline.for_each(pipeline, [&](auto& a_component)
                 {
                     if (processComponent(a_component, initBuffer))
                         listToRemove.emplace_back(indexToRemove);
