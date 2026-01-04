@@ -36,8 +36,6 @@ enum class RenderingFlagBit
 */
 class VE_IComponent : public std::enable_shared_from_this<VE_IComponent>
 {
-	friend class VE_Actor;
-	friend struct VE_RenderingScene;
 	friend class VE_RenderGraphTask;
 	friend class VE_RenderGraphEditTask;
 	friend class VE_RenderingCtx;
@@ -59,9 +57,6 @@ protected:
 	/*@brief update call each frame by parent component*/
 	virtual void update(const float a_elapsed) = 0;
 
-	/*@brief get pipeline of component class*/
-	virtual std::shared_ptr<VE_Pipeline> pipeline()const = 0;
-
 	/*@brief create the pipeline of component class*/
 	virtual std::shared_ptr<VE_Pipeline> createPipeline(const VE_DeviceContext& a_ctxt) = 0;
 
@@ -72,6 +67,9 @@ protected:
 #pragma endregion
 
 public:
+	/*@brief get pipeline of component class*/
+	virtual std::shared_ptr<VE_Pipeline> pipeline()const = 0;
+
 #pragma region Coms	
 	using FlagChange = TCallable<const VE_IComponent*, const RenderingFlagBit, const RenderingFlagBit>;
 	FlagChange OnFlagChange;						/*!< broadcast when flag change*/

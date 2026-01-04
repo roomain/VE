@@ -20,15 +20,16 @@ protected:
 	/*@brief get device context static pielin must be created*/
 	const VE_DeviceContext& context()const final { return s_pipeline->context(); }
 
-	std::shared_ptr<VE_GraphicalPipeline> pipeline()const final
-	{
-		return s_pipeline;
-	}
-
 	std::shared_ptr<VE_Pipeline> createPipeline(const VE_DeviceContext& a_ctxt) final
 	{
 		if(!s_pipeline)
 			VE_Component<Pipeline>::s_pipeline = std::make_shared<Pipeline>(a_ctxt);
+		return s_pipeline;
+	}
+
+public:
+	std::shared_ptr<VE_GraphicalPipeline> pipeline()const final
+	{
 		return s_pipeline;
 	}
 };
