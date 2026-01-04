@@ -21,6 +21,23 @@ VE_RenderGraphTask::VE_RenderGraphTask(TaskSynchroPtr a_synchro, const VE_TaskPa
     m_pipelineToProcess = a_parameters.workingPipelines;
 }
 
+void VE_RenderGraphTask::addPipelineToProcess(const VE_PipelinePtr& a_pipeline)
+{
+    std::scoped_lock lock(m_pipelineListProtect);
+    m_pipelineToProcess.emplace_back(a_pipeline);
+}
+void VE_RenderGraphTask::addPipelinesToProcess(const std::vector<VE_PipelinePtr>& a_pipelines)
+{
+    std::scoped_lock lock(m_pipelineListProtect);
+    m_pipelineToProcess.insert(m_pipelineToProcess.end(), a_pipelines.cbegin(), a_pipelines.cend());
+}
+
+void VE_RenderGraphTask::clearPipelinesToProcess()
+{
+    std::scoped_lock lock(m_pipelineListProtect);
+    m_pipelineToProcess.clear();
+}
+
 bool VE_RenderGraphTask::processComponent(VE_IComponentWPtr& a_component, TOnlyOneTime<InitBufferAction>& a_bufferInit)
 {
     
@@ -50,6 +67,7 @@ void VE_RenderGraphTask::clean(const VE_RenderingScenePtr& a_renderingScene, con
 #pragma warning( disable : 4100 4189)
 void VE_RenderGraphTask::process(const VE_RenderingScenePtr& a_renderingScene)
 {
+    std::scoped_lock lockPipelineList(m_pipelineListProtect);
     // todo if no change only flush
     if (m_cmdBuffer == VK_NULL_HANDLE)
         return;

@@ -7,6 +7,7 @@
 #include <memory>
 #include <unordered_map>
 #include <vector>
+#include <mutex>
 #include <list>
 #include <functional>
 #include <vulkan/vulkan.hpp>
@@ -50,6 +51,7 @@ public:
 class VE_RenderGraphTask : public VE_IRenderGraphTask
 {
 private:
+	mutable std::mutex m_pipelineListProtect;                /*!< protect pipeline list*/
     std::vector<VE_PipelinePtr> m_pipelineToProcess; /*!< list of pipelines to process*/
     bool processComponent(VE_IComponentWPtr& a_component, TOnlyOneTime<InitBufferAction>& a_bufferInit);
     void clean(const VE_RenderingScenePtr& a_renderingScene, const VE_PipelinePtr a_pipeline, const std::vector<uint32_t>& listToRemove)const;
@@ -58,6 +60,14 @@ public:
     using VE_IRenderGraphTask::VE_IRenderGraphTask;
     explicit VE_RenderGraphTask(TaskSynchroPtr a_synchro, const VE_TaskParametersEx& a_parameters);
     ~VE_RenderGraphTask()override = default;
+    void addPipelineToProcess(const VE_PipelinePtr& a_pipeline);
+    void addPipelinesToProcess(const std::vector<VE_PipelinePtr>& a_pipelines);
+    constexpr size_t pipelineToProcessCount()const 
+    { 
+        std::scoped_lock lock(m_pipelineListProtect);
+        return m_pipelineToProcess.size(); 
+	}
+    void clearPipelinesToProcess();
     void process(const VE_RenderingScenePtr& a_renderingScene) override;
     constexpr std::vector<VE_PipelinePtr>::const_iterator cbegin()const { return m_pipelineToProcess.cbegin(); }
     constexpr std::vector<VE_PipelinePtr>::const_iterator cend()const { return m_pipelineToProcess.cend(); }

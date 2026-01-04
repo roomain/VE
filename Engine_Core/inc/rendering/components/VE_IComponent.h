@@ -40,7 +40,7 @@ class VE_IComponent : public std::enable_shared_from_this<VE_IComponent>
 	friend struct VE_RenderingScene;
 	friend class VE_RenderGraphTask;
 	friend class VE_RenderGraphEditTask;
-	friend class VE_RenderGraph;
+	friend class VE_RenderingCtx;
 
 private:
 	TPreviousCurrent<RenderingFlagBit> m_renderFlag = TPreviousCurrent(RenderingFlagBit::IS_DISABLED);	/*!< indicate how component is rendering*/
@@ -63,7 +63,7 @@ protected:
 	virtual std::shared_ptr<VE_Pipeline> pipeline()const = 0;
 
 	/*@brief create the pipeline of component class*/
-	virtual void createPipeline(const VE_DeviceContext& a_ctxt) = 0;
+	virtual std::shared_ptr<VE_Pipeline> createPipeline(const VE_DeviceContext& a_ctxt) = 0;
 
 
 #pragma region Coms

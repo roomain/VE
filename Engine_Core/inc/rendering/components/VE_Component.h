@@ -25,9 +25,10 @@ protected:
 		return s_pipeline;
 	}
 
-	void createPipeline(const VE_DeviceContext& a_ctxt) final
+	std::shared_ptr<VE_Pipeline> createPipeline(const VE_DeviceContext& a_ctxt) final
 	{
 		if(!s_pipeline)
 			VE_Component<Pipeline>::s_pipeline = std::make_shared<Pipeline>(a_ctxt);
+		return s_pipeline;
 	}
 };
