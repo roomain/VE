@@ -37,7 +37,7 @@ struct VE_RenderingScene
 
     /*An edited component is not in m_ComponentsPerPipeline*/
     ComponentsDatabase componentsPerPipeline;   /*!< rendering components per pipeline*/
-    VectorOfWkComponents editedComponent;       /*!< components in edition mode*/
+    VectorOfWkComponents editedComponent;       /*!< components in edition mode ordered by pipeline*/
 
 #pragma region Slots
 #pragma warning(push)
@@ -69,7 +69,30 @@ struct VE_RenderingScene
             std::scoped_lock selectLock(renderingProtect);
             if (a_selected)
             {
-                editedComponent.emplace_back(a_component->weak_from_this());
+                if (editedComponent.empty())
+                {
+                    editedComponent.emplace_back(a_component->weak_from_this());
+                }
+                else
+                {
+                    // order by pipeline
+                    if (auto iter = std::ranges::find_if(editedComponent, [pipeline](auto& a_cmpWk)
+                        {
+                            if (auto cmp = a_cmpWk.lock())
+                            {
+                                return cmp->pipeline() == pipeline;
+                            }
+                            return false;
+                        }); iter != editedComponent.cend())
+                    {
+                        editedComponent.insert(iter, a_component->weak_from_this());
+                    }
+                    else
+                    {
+                        editedComponent.emplace_back(a_component->weak_from_this());
+                    }
+                }
+                // todo order by pipeline
             }
             else if(auto iter = std::ranges::find_if(editedComponent, [a_component](auto&& a_comp)
                 {

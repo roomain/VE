@@ -92,7 +92,8 @@ void VE_RenderGraphTask::process(const VE_RenderingScenePtr& a_renderingScene)
                 uint32_t indexToRemove = 0;
                 std::vector<uint32_t> listToRemove;
                 auto&& lock = a_pipeline->scopeLock();
-                
+
+                pipeline->bind(m_cmdBuffer);
                 for (auto& component : a_componentList)
                 {
                     if (processComponent(component, initBuffer))
@@ -111,6 +112,8 @@ void VE_RenderGraphTask::process(const VE_RenderingScenePtr& a_renderingScene)
             uint32_t indexToRemove = 0;
             std::vector<uint32_t> listToRemove;
             auto&& lock = pipeline->scopeLock();
+
+            pipeline->bind(m_cmdBuffer);
             a_renderingScene->componentsPerPipeline.for_each(pipeline, [&](auto& a_component)
                 {
                     if (processComponent(a_component, initBuffer))
@@ -146,12 +149,18 @@ void VE_RenderGraphEditTask::process(const VE_RenderingScenePtr& a_renderingScen
     };
 
     std::scoped_lock selectLock(a_renderingScene->renderingProtect);
-
+    VE_PipelinePtr pipeline;
     for (const auto& componentWk : a_renderingScene->editedComponent)
     {
         if (auto component = componentWk.lock())
         {
-            component->pipeline()->bind(m_cmdBuffer);
+            // bind only one time pipeline
+            if (pipeline != component->pipeline())
+            {
+                pipeline = component->pipeline();
+                pipeline->bind(m_cmdBuffer);
+            }
+
             if (component->hasFlag<RenderingFlagBit::IS_RENDERING>())
             {
                 initBuffer();
