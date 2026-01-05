@@ -12,19 +12,15 @@
 
 #pragma warning(push)
 #pragma warning(disable:4251) // disable warning for dll export/import
-class VE_CORE_LIB VE_SwapChain : public VulkanObject<VE_SwapChainContext>
+class VE_SwapChain : public VulkanObject<VE_SwapChainContext>
 {
-	friend class VE_GraphicalDevice;
-private:
-
+public:
 	struct SwapChainBuffer
 	{
 		VkImage m_image = VK_NULL_HANDLE;			/*!< image buffer*/
 		VkImageView m_imageView = VK_NULL_HANDLE;	/*!< image view*/
 	};
-	
-	std::vector<SwapChainBuffer> m_swapChainsBuffers;	/*!< image buffer to display*/
-
+		
 	void createSwapChain(const uint32_t a_width, const uint32_t a_height);
 	void releaseSwapchain(VkSwapchainKHR a_oldSwapChain);
 	void createImageBuffers(const VkFormat a_colorFormat);
@@ -45,10 +41,12 @@ private:
 	
 	VE_SwapChain(const VE_DeviceContext& a_ctxt, VkSurfaceKHR a_surface);
 
-public:
 	NOT_COPIABLE(VE_SwapChain)
 	virtual ~VE_SwapChain()override;
 	void resize(const uint32_t a_width, const uint32_t a_height);
 	[[nodiscard]] uint32_t swapBuffersCount()const noexcept;
+
+private:
+	std::vector<SwapChainBuffer> m_swapChainsBuffers;	/*!< image buffer to display*/
 };
 #pragma warning(pop)

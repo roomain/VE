@@ -17,8 +17,9 @@
 class VE_CORE_LIB VE_RenderingCtx
 {
 private:
-	VE_GraphicalDevicePtr m_device;		/*!< rendering vulkan device*/
-	VE_SwapChainPtr m_swapChain;		/*!< swapchain for rendering*/
+	VE_GraphicalDevicePtr m_device;						/*!< rendering vulkan device*/
+	VE_SwapChainPtr m_swapChain;						/*!< swapchain for rendering*/
+	VkSemaphore m_presentSemaphore = VK_NULL_HANDLE;	/*!< semaphore to signal image presentation*/
 
 	VE_RenderGraph m_renderGraph;		/*!< multithread rendering*/
 	VE_RenderingScenePtr m_renderScene;	/*!< data shared between tasks*/
@@ -37,6 +38,7 @@ public:
 	[[nodiscard]] VE_RenderGraph& renderGraph() { return m_renderGraph; }
 	// todo setup render Graph width  precharged pipelines
 	// void registerPipelines()
+	void processRendering();
 };
 
 #pragma warning(pop)

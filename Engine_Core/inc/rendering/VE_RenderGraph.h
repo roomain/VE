@@ -35,6 +35,7 @@ public:
     VE_RenderGraph() = default;
     ~VE_RenderGraph() override = default;
     void setup(VkQueue a_queue, VkCommandBuffer a_mainCmd);
+    [[nodiscard]] inline VkQueue renderQueue()const { return m_renderQueue; }
     [[nodiscard]] bool setEditTask(const VE_TaskParameters a_taskParameters);
     [[nodiscard]] bool addTasks(const std::vector<VE_TaskParametersEx>& a_tasksParameters);
 };

@@ -93,7 +93,7 @@ void VE_RenderGraphTask::process(const VE_RenderingScenePtr& a_renderingScene)
                 std::vector<uint32_t> listToRemove;
                 auto&& lock = a_pipeline->scopeLock();
 
-                pipeline->bind(m_cmdBuffer);
+                a_pipeline->bind(m_cmdBuffer);
                 for (auto& component : a_componentList)
                 {
                     if (processComponent(component, initBuffer))

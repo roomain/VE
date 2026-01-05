@@ -2,6 +2,7 @@
 #include "rendering/VE_RenderingCtx.h"
 #include "rendering/components/VE_IComponent.h"
 #include "VE_GraphicalDevice.h"
+#include "VE_SwapChain.h"
 
 VE_RenderingCtx::VE_RenderingCtx(VE_GraphicalDevicePtr a_device) : m_device{ a_device }
 {
@@ -34,4 +35,16 @@ bool VE_RenderingCtx::registerComponent(const std::shared_ptr<VE_IComponent>& a_
 		return true;
 	}
 	return false;
+}
+
+void VE_RenderingCtx::processRendering()
+{
+	if(m_presentSemaphore != VK_NULL_HANDLE)
+		/*= m_device->createSemaphore()*/;// do as class member
+
+	uint32_t imageIndex = 0;
+	VE_SwapChain::SwapChainBuffer image{};
+	m_swapChain->acquireNextImage(m_presentSemaphore, nullptr, imageIndex, image);
+	m_renderGraph.process();
+	m_swapChain->present(m_renderGraph.renderQueue(), imageIndex, m_presentSemaphore);
 }

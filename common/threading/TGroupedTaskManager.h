@@ -102,7 +102,7 @@ protected:
         m_pSynchro->waitAllFinish();
     }
 
-    void unsetAllStandby()
+    void unsetAllStandby()const
     {
         for (const auto& task : m_vTask)
             task->setStandBy(false);
@@ -114,12 +114,16 @@ protected:
 
         unsetAllStandby();
 
-        m_vIndexStandby.erase(std::remove_if(m_vIndexStandby.begin(), m_vIndexStandby.end(),
+#pragma warning(push)
+#pragma warning( disable : 4858 )// because unsed local variable
+        std::remove_if(m_vIndexStandby.begin(), m_vIndexStandby.end(),
             [&](const unsigned a_index) {
-                return std::any_of(m_vIndexToStop.cbegin(), m_vIndexToStop.cend(), a_index);
-            }),
-            m_vIndexStandby.end()
-        );
+                return std::any_of(m_vIndexToStop.cbegin(), m_vIndexToStop.cend(), [a_index](const auto a_toStop)
+                    {
+                        return a_toStop == a_index;
+                    });
+            });
+#pragma warning(pop)
 
         for (auto index : m_vIndexStandby)
             m_vTask[index]->setStandBy(true);
