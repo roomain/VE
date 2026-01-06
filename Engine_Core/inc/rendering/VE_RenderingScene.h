@@ -35,13 +35,15 @@ struct VE_RenderingScene
 {
     std::mutex renderingProtect;                /*!< mutex to synchronise rendering/select component */
 
+    // todo rendering configuration also used by components: viewport, filter etc. 
+
     /*An edited component is not in m_ComponentsPerPipeline*/
     ComponentsDatabase componentsPerPipeline;   /*!< rendering components per pipeline*/
     VectorOfWkComponents editedComponent;       /*!< components in edition mode ordered by pipeline*/
 
 #pragma region Slots
 #pragma warning(push)
-#pragma warning( disable : 4100 4189)
+#pragma warning( disable : 4100 4189) // unused local variable lock
     inline void onRenderFlagChanged(const VE_IComponent* a_component, [[maybe_unused]]const RenderingFlagBit, [[maybe_unused]] const RenderingFlagBit)
     {
         if (auto pipeline = a_component->pipeline(); a_component->isRegistered() && pipeline)

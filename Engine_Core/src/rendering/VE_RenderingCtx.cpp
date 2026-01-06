@@ -3,6 +3,7 @@
 #include "rendering/components/VE_IComponent.h"
 #include "VE_GraphicalDevice.h"
 #include "VE_SwapChain.h"
+#include "utils/VulkanInitializers.h"
 
 VE_RenderingCtx::VE_RenderingCtx(VE_GraphicalDevicePtr a_device) : m_device{ a_device }
 {
@@ -39,12 +40,21 @@ bool VE_RenderingCtx::registerComponent(const std::shared_ptr<VE_IComponent>& a_
 
 void VE_RenderingCtx::processRendering()
 {
-	if(m_presentSemaphore != VK_NULL_HANDLE)
-		/*= m_device->createSemaphore()*/;// do as class member
+	if (m_presentSemaphore != VK_NULL_HANDLE)
+	{
+		VkSemaphoreCreateInfo semaphoreInfo = Vulkan::Initializers::semaphoreCreateInfo();
+		VK_CHECK_EXCEPT(vkCreateSemaphore(m_device->context().m_logicalDevice, &semaphoreInfo, nullptr, &m_presentSemaphore))
+	}
 
 	uint32_t imageIndex = 0;
 	VE_SwapChain::SwapChainBuffer image{};
 	m_swapChain->acquireNextImage(m_presentSemaphore, nullptr, imageIndex, image);
+	// todo viewport action
 	m_renderGraph.process();
 	m_swapChain->present(m_renderGraph.renderQueue(), imageIndex, m_presentSemaphore);
+}
+
+void VE_RenderingCtx::onResize(const uint32_t a_width, const uint32_t a_height)
+{
+	m_swapChain->resize(a_width, a_height);
 }
