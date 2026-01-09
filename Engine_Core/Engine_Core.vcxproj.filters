@@ -225,6 +225,9 @@
     <ClInclude Include="inc\rendering\VE_RenderingScene.h">
       <Filter>Fichiers d%27en-tête\rendering</Filter>
     </ClInclude>
+    <ClInclude Include="inc\rendering\VE_Camera.h">
+      <Filter>Fichiers d%27en-tête\rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Capabilities\VE_Capabilities.cpp">

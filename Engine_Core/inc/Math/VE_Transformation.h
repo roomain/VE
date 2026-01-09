@@ -20,17 +20,19 @@ public:
     VE_Transformation() : m_transform{ glm::identity< glm::dmat4>() }{}
     explicit VE_Transformation(const VE_Transformation& a_other) = default;
     VE_Transformation(VE_Transformation&& a_other) noexcept : m_transform{ a_other.m_transform } {}
-   
+
+    inline glm::dmat4 matrix()const noexcept { return m_transform; }
+#pragma region Edition
     /////////////////////////////////////////////
     // EDITION FUNCTION
     /////////////////////////////////////////////
 
-    void setPosition(const glm::dvec3& a_position)
+    inline void setPosition(const glm::dvec3& a_position)
     {
         m_transform[3] = glm::dvec4(a_position, m_transform[3][3]);
     }
 
-    void setRotation(const glm::dvec3& a_axisAngles)
+    inline void setRotation(const glm::dvec3& a_axisAngles)
     {
         glm::dvec3 translation;
         glm::dvec3 scale;
@@ -41,7 +43,7 @@ public:
         m_transform = glm::recompose(scale, glm::dquat(a_axisAngles), translation, skew, perspective);
     }
 
-    void setScale(const glm::dvec3& a_scale)
+    inline void setScale(const glm::dvec3& a_scale)
     {
         glm::dvec3 translation;
         glm::dvec3 scale;
@@ -52,7 +54,7 @@ public:
         m_transform = glm::recompose(a_scale, rotation, translation, skew, perspective);
     }
 
-    void setQuaternion(const glm::dquat& a_quaternion)
+    inline void setQuaternion(const glm::dquat& a_quaternion)
     {
         glm::dvec3 translation;
         glm::dvec3 scale;
@@ -63,12 +65,12 @@ public:
         m_transform = glm::recompose(scale, a_quaternion, translation, skew, perspective);
     }
 
-    [[nodiscard]] glm::dvec3 position()const
+    [[nodiscard]] inline glm::dvec3 position()const
     {
         return glm::xyz(m_transform[3]) * m_transform[3].w;
     }
 
-    [[nodiscard]] glm::dvec3 rotation()const
+    [[nodiscard]] inline glm::dvec3 rotation()const
     {
         glm::dvec3 translation;
         glm::dvec3 scale;
@@ -79,7 +81,7 @@ public:
         return glm::eulerAngles(rotation);
     }
 
-    [[nodiscard]] glm::dvec3 scale()const
+    [[nodiscard]] inline glm::dvec3 scale()const
     {
         glm::dvec3 translation;
         glm::dvec3 scale;
@@ -90,7 +92,7 @@ public:
         return scale;
     }
 
-    [[nodiscard]] glm::dquat quaternion()const
+    [[nodiscard]] inline glm::dquat quaternion()const
     {        
         glm::dvec3 translation;
         glm::dvec3 scale;
@@ -101,14 +103,15 @@ public:
         return rotation;
     }
 
-    inline void rotateAround(const double& a_angle, const glm::dvec3& a_axis, const glm::dvec3& a_position)
+    inline void rotateAround(const double& a_angle, const glm::dvec3& a_axis, const glm::dvec3& a_target)
     {
-        glm::dvec3 offset = a_position - position();
+        glm::dvec3 offset = a_target - position();
         m_transform = glm::translate(m_transform , offset);
         m_transform = glm::rotate(m_transform,  a_angle, a_axis);
         m_transform = glm::translate(m_transform, -offset);
     } 
 
+#pragma endregion
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     [[nodiscard]] inline VE_Transformation& operator = (const VE_Transformation& a_other) = default;

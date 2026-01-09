@@ -184,6 +184,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters $(ProjectDir)inc\rendering\pipeline
     <ClInclude Include="inc\rendering\components\VE_IComponent.h" />
     <ClInclude Include="inc\rendering\components\VE_Component.h" />
     <ClInclude Include="inc\rendering\pipelines\VE_GraphicalPipelineCtx.h" />
+    <ClInclude Include="inc\rendering\VE_Camera.h" />
     <ClInclude Include="inc\rendering\VE_RenderGraph.h" />
     <ClInclude Include="inc\rendering\pipelines\VE_MeshPipeline.h" />
     <ClInclude Include="inc\rendering\pipelines\VE_GraphicalPipeline.h" />
