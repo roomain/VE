@@ -5,10 +5,10 @@
 #include "VE_GraphicalDevice.h"
 
 
-void VE_RenderGraph::setup(VkQueue a_queue, VkCommandBuffer a_mainCmd)
+void VE_RenderGraph::setup(VkQueue a_queue, VE_CommandBuffer&& a_mainCmd)noexcept
 {
 	m_renderQueue = a_queue;
-	m_mainCmdBuffer = a_mainCmd;
+	m_mainCmdBuffer = std::move(a_mainCmd);
 }
 
 bool VE_RenderGraph::setEditTask(const VE_TaskParameters a_taskParameters)
@@ -16,7 +16,7 @@ bool VE_RenderGraph::setEditTask(const VE_TaskParameters a_taskParameters)
 	if (bHasEditTask)
 		return true;
 
-	if ((m_renderQueue != VK_NULL_HANDLE) && (m_mainCmdBuffer != VK_NULL_HANDLE))
+	if ((m_renderQueue != VK_NULL_HANDLE) && (m_mainCmdBuffer.isValid()))
 	{
 		insertTask<VE_RenderGraphEditTask>(a_taskParameters);
 		bHasEditTask = true;
@@ -27,7 +27,7 @@ bool VE_RenderGraph::setEditTask(const VE_TaskParameters a_taskParameters)
 
 bool VE_RenderGraph::addTasks(const std::vector<VE_TaskParametersEx>& a_tasksParameters)
 {
-	if ((m_renderQueue != VK_NULL_HANDLE) && (m_mainCmdBuffer != VK_NULL_HANDLE))
+	if ((m_renderQueue != VK_NULL_HANDLE) && (m_mainCmdBuffer.isValid()))
 	{
 		createTasks<VE_RenderGraphTask, VE_TaskParametersEx>(a_tasksParameters);
 		return true;
@@ -45,6 +45,9 @@ void VE_RenderGraph::startProcess()
 	for (const auto& task : m_vTask | std::views::filter(filter))
 		m_activeBuffer.emplace_back(task->commandBuffer());
 
+	if(m_activeBuffer.empty())
+		return;
+
 	// create submit
 	Vulkan::Initializers::SubmitInfoParameters parameters
 	{
@@ -57,10 +60,13 @@ void VE_RenderGraph::startProcess()
 		.signalCount = 0
 	};
 	m_submitInfo = Vulkan::Initializers::submitInfo(parameters);
+
+	if (const auto& sceneContext = m_vTask[0]->data()->sceneContext)
+		vkCmdSetViewport(m_mainCmdBuffer.get(), 0, 1, &sceneContext->viewport);
 }
 
 void VE_RenderGraph::finishProcess()
 {
-	if ((m_mainCmdBuffer != VK_NULL_HANDLE) && (m_renderQueue != VK_NULL_HANDLE))
+	if ((m_mainCmdBuffer.isValid()) && (m_renderQueue != VK_NULL_HANDLE))
 		VK_CHECK_LOG(vkQueueSubmit(m_renderQueue, 1, &m_submitInfo, VK_NULL_HANDLE))
 }

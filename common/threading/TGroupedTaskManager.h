@@ -230,22 +230,25 @@ public:
 
     void process()
     {
-        // set task to standby in standby mode
-        setStandby();
+        if (m_pSynchro)
+        {
+            // set task to standby in standby mode
+            setStandby();
 
-        // set task to stop in stop mode
-        stopTasks();
+            // set task to stop in stop mode
+            stopTasks();
 
-        // callback when process will start
-        startProcess();
+            // callback when process will start
+            startProcess();
 
-        // process active tasks
-        processTasks();
+            // process active tasks
+            processTasks();
 
-        // remove tasks
-        releaseTasks();
+            // remove tasks
+            releaseTasks();
 
-        // callback when all process are finished
-        finishProcess();
+            // callback when all process are finished
+            finishProcess();
+        }
     }
 };

@@ -53,7 +53,7 @@ class VE_RenderGraphTask : public VE_IRenderGraphTask
 private:
 	mutable std::mutex m_pipelineListProtect;                /*!< protect pipeline list*/
     std::vector<VE_PipelinePtr> m_pipelineToProcess; /*!< list of pipelines to process*/
-    bool processComponent(VE_IComponentWPtr& a_component, TOnlyOneTime<InitBufferAction>& a_bufferInit);
+    bool processComponent(const VE_RenderingScenePtr& a_renderingScene, VE_IComponentWPtr& a_component, TOnlyOneTime<InitBufferAction>& a_bufferInit);
     void clean(const VE_RenderingScenePtr& a_renderingScene, const VE_PipelinePtr a_pipeline, const std::vector<uint32_t>& listToRemove)const;
 
 public:

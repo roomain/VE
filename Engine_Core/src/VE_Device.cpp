@@ -54,6 +54,14 @@ VE_Device::~VE_Device()
 	vkDestroyDevice(m_vkCtxt.m_logicalDevice, nullptr);
 }
 
+std::vector<VE_QueueFamily>::iterator VE_Device::findQueueFamily(const VkQueueFlags a_flag)
+{
+	return std::ranges::find_if(m_queues, [a_flag](const auto& a_queueFam)
+		{
+			return (a_queueFam.familyFlag() & a_flag) == a_flag;
+		});
+}
+
 
 VkQueue VE_Device::createQueue(const VkQueueFlags a_flag)
 {

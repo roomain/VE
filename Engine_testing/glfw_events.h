@@ -6,4 +6,6 @@
 ************************************************/
 #include "GLFW/glfw3.h"
 
-int eventLoop(GLFWwindow* a_window);
+class VE_RenderingCtx;
+
+int eventLoop(GLFWwindow* a_window, VE_RenderingCtx& a_ctx);

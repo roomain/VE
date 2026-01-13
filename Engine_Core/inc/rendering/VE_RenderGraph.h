@@ -24,7 +24,7 @@ private:
     bool bHasEditTask = false;                          /*!< has an edition task in position 0*/
     VkQueue m_renderQueue = VK_NULL_HANDLE;             /*!< render queue*/
     VkSubmitInfo m_submitInfo{};                        /*!< submit information*/
-    VkCommandBuffer m_mainCmdBuffer = VK_NULL_HANDLE;   /*!< command buffer managed by task manager*/
+    VE_CommandBuffer m_mainCmdBuffer;                   /*!< command buffer managed by task manager*/
     std::vector<VkCommandBuffer> m_activeBuffer;        /*!< buffer used for rendering*/
 
 protected:
@@ -34,7 +34,7 @@ protected:
 public:
     VE_RenderGraph() = default;
     ~VE_RenderGraph() override = default;
-    void setup(VkQueue a_queue, VkCommandBuffer a_mainCmd);
+    void setup(VkQueue a_queue, VE_CommandBuffer&& a_mainCmd)noexcept;
     [[nodiscard]] inline VkQueue renderQueue()const { return m_renderQueue; }
     [[nodiscard]] bool setEditTask(const VE_TaskParameters a_taskParameters);
     [[nodiscard]] bool addTasks(const std::vector<VE_TaskParametersEx>& a_tasksParameters);

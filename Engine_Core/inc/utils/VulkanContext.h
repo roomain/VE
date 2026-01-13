@@ -106,7 +106,9 @@ protected:
 public:
 	VulkanObject() = delete;
 	virtual ~VulkanObject() = default;
-	template<typename OtherContext>
+	explicit VulkanObject(VulkanObject<VkContext>&& a_other)noexcept : m_vkCtxt{ a_other.m_vkCtxt } {}
+	explicit VulkanObject(const VulkanObject<VkContext>& a_other)noexcept : m_vkCtxt{ a_other.m_vkCtxt } {}
+	template<typename OtherContext> requires IsVulkanContext<OtherContext>::value
 	explicit VulkanObject(const OtherContext& a_ctxt) : m_vkCtxt{ a_ctxt } {}
 	const VkContext& context()const noexcept { return m_vkCtxt; }
 };

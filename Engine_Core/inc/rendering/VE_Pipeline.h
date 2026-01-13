@@ -10,10 +10,13 @@
 #include <string_view>
 #include <vulkan/vulkan.h>
 #include "utils/VulkanContext.h"
+#include "core_globals.h"
 #include "VE_FwdDecl.h"
 
+#pragma warning(push)
+#pragma warning(disable:4251) // disable warning for dll export/import
 /*@brief base class of pipeline*/
-class VE_Pipeline : public VulkanObject<VE_DeviceContext>
+class VE_CORE_LIB VE_Pipeline : public VulkanObject<VE_DeviceContext>
 {
 private:
 	struct VkPipelineCacheHeader
@@ -39,7 +42,7 @@ protected:
 
 public:
 	explicit VE_Pipeline(const VE_DeviceContext& a_ctxt, const std::string_view& a_cacheFile = "");
-	virtual ~VE_Pipeline()override;
+	~VE_Pipeline()override;
 	virtual void cleanup();
 	[[nodiscard]] constexpr bool isValid()const noexcept { return m_pipeline != VK_NULL_HANDLE; }
 	/*@brief save cache*/
@@ -57,3 +60,5 @@ public:
 
 #define IMPL_PIPELINE_FILE(classname) \
 	static const inline std::string_view s_cacheFile = std::string(#classname) + ".cache";
+
+#pragma warning(pop)

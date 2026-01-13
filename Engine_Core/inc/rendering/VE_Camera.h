@@ -11,9 +11,17 @@
 /*@brief rendering camera*/
 class VE_Camera
 {
+public:
+    enum class Projection
+    {
+        ORTHOGRAPHIC,
+        PERSPECTIVE
+	};
+
 private:
 	glm::dmat4 m_projection;	/*!< projection matrix*/
 	glm::dmat4 m_transform;     /*!< transformation matrix*/
+	Projection m_projectionType; /*!< projection type*/
 
 public:
 
@@ -21,10 +29,58 @@ public:
     inline glm::dmat4 projection()const noexcept { return m_projection; }
 
 #pragma region Projection
-    // todo
+    /*@brief set orthographic projection*/
+    void setOrthographic(const double& a_left, const double& a_right,
+        const double& a_bottom, const double& a_top,
+        const double& a_nearPlane, const double& a_farPlane)
+    {
+		m_projectionType = Projection::ORTHOGRAPHIC;
+        m_projection = glm::ortho(a_left, a_right, a_bottom, a_top, a_nearPlane, a_farPlane);
+	}
+
+    /*@brief set perspective: fov is in radian*/
+    void setPerspective(const double& a_fovY, const double& a_aspectRatio,
+        const double& a_nearPlane, const double& a_farPlane)
+    {
+        m_projectionType = Projection::PERSPECTIVE;
+        m_projection = glm::perspective(a_fovY, a_aspectRatio, a_nearPlane, a_farPlane);
+	}
+
+	[[nodiscard]] constexpr Projection projectionType()const noexcept { return m_projectionType; }
+
+    [[nodiscard]] inline glm::dvec3 forward()const
+    {
+        return glm::normalize(glm::xyz(-m_transform[2]));
+    }
+
+    [[nodiscard]] inline glm::dvec3 up()const
+    {
+        return glm::normalize(glm::xyz(m_transform[1]));
+    }
+
+    [[nodiscard]] inline glm::dvec3 right()const
+    {
+        return glm::normalize(glm::xyz(m_transform[0]));
+	}
+
+    [[nodiscard]] glm::dmat4 projectionMatrix()const
+    {
+        return m_projection;
+	}
+    
 #pragma endregion
 
+    [[nodiscard]] inline glm::dmat4 modelViewMatrix()const
+    {
+        return glm::inverse(m_transform);
+    }
+
 #pragma region Positioning
+    [[nodiscard]] inline glm::dmat4 transformMatrix()const
+    {
+        return m_transform;
+	}
+
     // look at from current position
     inline void lookAt(const glm::dvec3& a_target, const glm::dvec3& a_upVector)
     {

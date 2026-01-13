@@ -92,6 +92,10 @@ int main()
 #pragma warning(push)
 #pragma warning( disable : 4189 )// because unsed local variable
 	VE_RenderingCtx renderingCtx(device);
+	renderingCtx.onResize(800, 800);
+	
+	// setup VE_RenderGraph
+	
 	//const auto swapchain = device->createNewSwapChain();
 	//const auto queue = device->createQueue(VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_TRANSFER_BIT);
 	//VulkanBuffer buffer;
@@ -101,7 +105,7 @@ int main()
 	//-------------------------------------------------------------------------------------
 
 
-	int eventRet = eventLoop(window);
+	int eventRet = eventLoop(window, renderingCtx);
 	glfwDestroyWindow(window);
 	glfwTerminate();
 

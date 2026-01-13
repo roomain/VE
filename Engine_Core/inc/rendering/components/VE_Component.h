@@ -11,7 +11,7 @@
 
 /*@brief base class for renderable class*/
 template<typename Pipeline> requires std::is_base_of_v<VE_GraphicalPipeline, Pipeline>
-class VE_Component : public VE_IComponent
+class  VE_Component : public VE_IComponent
 {
 private:
 	static std::shared_ptr<Pipeline> s_pipeline;

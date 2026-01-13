@@ -6,12 +6,13 @@
 ************************************************/
 #include "rendering/VE_Uniform.h"
 #include "utils/VulkanContext.h"
+#include "core_globals.h"
 
-class VE_UniformSampler : public VE_Uniform, public VulkanObject<VE_DeviceContext>
+class VE_CORE_LIB VE_UniformSampler : public VE_Uniform, public VulkanObject<VE_DeviceContext>
 {
 private:
-    VkImageView m_image;                    /*!< image view from outside*/
-    VkSampler m_sampler = VK_NULL_HANDLE;
+    VkImageView m_image = VK_NULL_HANDLE;   /*!< image view from outside*/
+    VkSampler m_sampler = VK_NULL_HANDLE;   /*!< image sampler*/
 
     explicit VE_UniformSampler(const uint32_t a_bindingPoint, const VE_DeviceContext& a_ctxt);
 

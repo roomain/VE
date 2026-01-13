@@ -24,9 +24,23 @@ private:
 	explicit VE_CommandBuffer(VkCommandBuffer a_cmdBuffer, VkCommandPool a_cmdPool, const VE_DeviceContext& a_ctxt);
 public:
 	VE_CommandBuffer() = delete;
+	VE_CommandBuffer(VE_CommandBuffer&& a_other) noexcept : VulkanObject<VE_DeviceContext>(a_other.m_vkCtxt),
+		m_cmdBuffer{ a_other.m_cmdBuffer },
+		m_cmdPool{ a_other.m_cmdPool }
+	{
+		// no code
+	}
 	NOT_COPIABLE(VE_CommandBuffer)
 	~VE_CommandBuffer() override;
+	void operator = (VE_CommandBuffer&& a_other) noexcept
+	{
+		m_cmdBuffer = a_other.m_cmdBuffer;
+		m_cmdPool = a_other.m_cmdPool;
+		m_vkCtxt = a_other.m_vkCtxt;
+	}
+	[[nodiscard]] constexpr bool isValid()const { return m_cmdBuffer != VK_NULL_HANDLE; }
 	inline explicit operator VkCommandBuffer() { return m_cmdBuffer; }
+	[[nodiscard]] inline VkCommandBuffer get() { return m_cmdBuffer; }
 };
 
 /*@brief represents a group of command buffers*/

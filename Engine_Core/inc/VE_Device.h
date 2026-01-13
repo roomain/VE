@@ -9,6 +9,7 @@
 #include "vulkan/vulkan.hpp"
 #include "utils/VulkanContext.h"
 #include "VE_QueueFamily.h"
+#include "iterators.h"
 #include "core_globals.h"
 
 #pragma warning(push)
@@ -27,9 +28,11 @@ protected:
 
 public:
 	virtual ~VE_Device() override;
-
-
-	VkQueue createQueue(const VkQueueFlags a_flag);
+	DEFINE_ITER(std::vector<VE_QueueFamily>, m_queues)
+	DEFINE_CONST_ITER(std::vector<VE_QueueFamily>, m_queues)
+		
+	[[nodiscard]] std::vector<VE_QueueFamily>::iterator findQueueFamily(const VkQueueFlags a_flag);
+	[[nodiscard]] VkQueue createQueue(const VkQueueFlags a_flag);
 
 };
 #pragma warning(pop)

@@ -38,7 +38,7 @@ void VE_RenderGraphTask::clearPipelinesToProcess()
     m_pipelineToProcess.clear();
 }
 
-bool VE_RenderGraphTask::processComponent(VE_IComponentWPtr& a_component, TOnlyOneTime<InitBufferAction>& a_bufferInit)
+bool VE_RenderGraphTask::processComponent(const VE_RenderingScenePtr& a_renderingScene, VE_IComponentWPtr& a_component, TOnlyOneTime<InitBufferAction>& a_bufferInit)
 {
     
     if (auto cmpPtr = a_component.lock())
@@ -46,7 +46,7 @@ bool VE_RenderGraphTask::processComponent(VE_IComponentWPtr& a_component, TOnlyO
         if (cmpPtr->hasFlag<RenderingFlagBit::IS_RENDERING>() && !cmpPtr->hasFlag<RenderingFlagBit::IS_EDITABLE>())
         {
             a_bufferInit();
-            cmpPtr->writeCommands(m_cmdBuffer);
+            cmpPtr->writeCommands(m_cmdBuffer, a_renderingScene->sceneContext);
         }
         return true;
     }
@@ -68,7 +68,7 @@ void VE_RenderGraphTask::clean(const VE_RenderingScenePtr& a_renderingScene, con
 void VE_RenderGraphTask::process(const VE_RenderingScenePtr& a_renderingScene)
 {
     std::scoped_lock lockPipelineList(m_pipelineListProtect);
-    // todo if no change only flush
+   
     if (m_cmdBuffer == VK_NULL_HANDLE)
         return;
     
@@ -96,7 +96,7 @@ void VE_RenderGraphTask::process(const VE_RenderingScenePtr& a_renderingScene)
                 a_pipeline->bind(m_cmdBuffer);
                 for (auto& component : a_componentList)
                 {
-                    if (processComponent(component, initBuffer))
+                    if (processComponent(a_renderingScene, component, initBuffer))
                         listToRemove.emplace_back(indexToRemove);
                     ++indexToRemove;
                 }
@@ -116,7 +116,7 @@ void VE_RenderGraphTask::process(const VE_RenderingScenePtr& a_renderingScene)
             pipeline->bind(m_cmdBuffer);
             a_renderingScene->componentsPerPipeline.for_each(pipeline, [&](auto& a_component)
                 {
-                    if (processComponent(a_component, initBuffer))
+                    if (processComponent(a_renderingScene, a_component, initBuffer))
                         listToRemove.emplace_back(indexToRemove);
                     ++indexToRemove;
                 });
@@ -164,7 +164,7 @@ void VE_RenderGraphEditTask::process(const VE_RenderingScenePtr& a_renderingScen
             if (component->hasFlag<RenderingFlagBit::IS_RENDERING>())
             {
                 initBuffer();
-                component->writeCommands(m_cmdBuffer);
+                component->writeCommands(m_cmdBuffer, a_renderingScene->sceneContext);
             }
         }
     }

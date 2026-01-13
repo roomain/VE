@@ -59,6 +59,8 @@ public:
         m_workedData = a_workingData;
     }
 
+    [[nodiscard]] inline const Data& data()const noexcept { return m_workedData; }
+
     void setData(const Data& a_workingData)
     {
         m_workedData = a_workingData;

@@ -5,9 +5,10 @@
 * @author Roomain
 ************************************************/
 #include <vulkan/vulkan.hpp>
+#include "core_globals.h"
 
 /*@brief interface for uniform data*/
-class VE_Uniform
+class VE_CORE_LIB VE_Uniform
 {
 public:
     enum class UseMode

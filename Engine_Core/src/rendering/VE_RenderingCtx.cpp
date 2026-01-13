@@ -7,12 +7,27 @@
 
 VE_RenderingCtx::VE_RenderingCtx(VE_GraphicalDevicePtr a_device) : m_device{ a_device }
 {
+
+	// todo revoir command buffer dans VE_RenderGraph et tasks => unique_ptr
 	m_swapChain = a_device->createNewSwapChain();
 	// test
 #pragma warning(push)
 #pragma warning( disable : 4189 )// because unsed local variable
 	m_swapChain->resize(256, 256);
-	unsigned int numImages = m_swapChain->swapBuffersCount();
+	//unsigned int numImages = m_swapChain->swapBuffersCount();
+
+
+	m_renderScene = std::make_shared<VE_RenderingScene>();
+	if(auto queue = a_device->createQueue(VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_TRANSFER_BIT); queue != VK_NULL_HANDLE)
+	{
+		if(auto queueFamilyIt = a_device->findQueueFamily(VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_TRANSFER_BIT);
+			queueFamilyIt != a_device->end())
+		{
+			// setup render graph
+			m_renderGraph.setup(queue, queueFamilyIt->createCommandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY));
+		}
+	}
+
 	//Buffer buffer = allocateStagingBuffer(m_device->context(),
 	//	50 * sizeof(int));
 #pragma warning(pop)
@@ -49,7 +64,7 @@ void VE_RenderingCtx::processRendering()
 	uint32_t imageIndex = 0;
 	VE_SwapChain::SwapChainBuffer image{};
 	m_swapChain->acquireNextImage(m_presentSemaphore, nullptr, imageIndex, image);
-	// todo viewport action
+	
 	m_renderGraph.process();
 	m_swapChain->present(m_renderGraph.renderQueue(), imageIndex, m_presentSemaphore);
 }

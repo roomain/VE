@@ -9,10 +9,15 @@
 #include <vector>
 #include <memory>
 #include <vulkan/vulkan.hpp>
+#include "VE_FwdDecl.h"
 #include "iterators.h"
 #include "bitOperators.h"
 #include "TPreviousCurrent.h"
 #include "TObjectsComs.h"
+#include "core_globals.h"
+
+#pragma warning(push)
+#pragma warning(disable:4251) // disable warning for dll export/import
 
 class VE_IComponent;
 using VE_IComponentPtr = std::shared_ptr<VE_IComponent>;
@@ -34,7 +39,7 @@ enum class RenderingFlagBit
 * A component contains specific part used to render
 * an object
 */
-class VE_IComponent : public std::enable_shared_from_this<VE_IComponent>
+class VE_CORE_LIB VE_IComponent : public std::enable_shared_from_this<VE_IComponent>
 {
 	friend class VE_RenderGraphTask;
 	friend class VE_RenderGraphEditTask;
@@ -52,7 +57,7 @@ protected:
 	const virtual VE_DeviceContext& context()const = 0;
 
 	/*@brief write rendering commands*/
-	virtual void writeCommands(VkCommandBuffer& a_cmdBuffer) = 0;
+	virtual void writeCommands(VkCommandBuffer& a_cmdBuffer, const VE_SceneContextPtr& a_sceneCtx) = 0;
 
 	/*@brief update call each frame by parent component*/
 	virtual void update(const float a_elapsed) = 0;
@@ -113,3 +118,4 @@ public:
 		return m_isRegistered;
 	}
 };
+#pragma warning(pop)

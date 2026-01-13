@@ -16,6 +16,8 @@ class VE_Pipeline;
 class VE_SwapChain;
 class VE_CommandBuffer;
 
+struct VE_SceneContext;
+
 /*shared pointers*/
 using VE_DevicePtr = std::shared_ptr<VE_Device>;
 using VE_GraphicalDevicePtr = std::shared_ptr<VE_GraphicalDevice>;
@@ -24,6 +26,7 @@ using VE_ShaderPtr = std::shared_ptr<VE_Shader>;
 using VE_UniformPtr = std::shared_ptr<VE_Uniform>;
 using VE_PipelinePtr = std::shared_ptr<VE_Pipeline>;
 using VE_SwapChainPtr = std::shared_ptr<VE_SwapChain>;
+using VE_SceneContextPtr = std::shared_ptr<VE_SceneContext>;
 
 /*weak pointers*/
 using VE_DeviceWptr = std::weak_ptr<VE_Device>;

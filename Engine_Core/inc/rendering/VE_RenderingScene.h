@@ -15,12 +15,22 @@
 #include "VE_Pipeline.h"
 #include "TDatabase.h"
 
+class VE_Camera;
+
 using VE_PipelinePtr = std::shared_ptr<VE_Pipeline>;
 using VE_IComponentWPtr = std::weak_ptr<VE_IComponent>;
 using VE_IComponentPtr = std::shared_ptr<VE_IComponent>;
 using VectorOfWkComponents = std::vector<VE_IComponentWPtr>;
-
+using VE_CameraPtr = std::shared_ptr<VE_Camera>;
 using ComponentsDatabase = TDatabase<VE_PipelinePtr, bool, VE_IComponentWPtr>;
+using ComponentFilter = std::function<bool(const VE_IComponentPtr&)>;
+
+/*@brief context for rendering scene*/
+struct VE_SceneContext
+{
+	VE_CameraPtr camera;                    /*!< rendering camera*/
+	VkViewport viewport;                    /*!< rendering viewport*/
+};
 
 /*
 * Scene components are rendered by multiple command buffers in multiple tasks
@@ -33,13 +43,11 @@ using ComponentsDatabase = TDatabase<VE_PipelinePtr, bool, VE_IComponentWPtr>;
 /*@brief regroup all rendering component in scene*/
 struct VE_RenderingScene
 {
-    std::mutex renderingProtect;                /*!< mutex to synchronise rendering/select component */
-
-    // todo rendering configuration also used by components: viewport, filter etc. 
-
+    std::mutex renderingProtect;                    /*!< mutex to synchronise rendering/select component */
+	std::shared_ptr<VE_SceneContext> sceneContext;  /*!< rendering scene context*/
     /*An edited component is not in m_ComponentsPerPipeline*/
-    ComponentsDatabase componentsPerPipeline;   /*!< rendering components per pipeline*/
-    VectorOfWkComponents editedComponent;       /*!< components in edition mode ordered by pipeline*/
+    ComponentsDatabase componentsPerPipeline;       /*!< rendering components per pipeline*/
+    VectorOfWkComponents editedComponent;           /*!< components in edition mode ordered by pipeline*/
 
 #pragma region Slots
 #pragma warning(push)

@@ -8,13 +8,14 @@
 #include <type_traits>
 #include <concepts>
 #include <utility>
+#include "core_globals.h"
 #include "notCopiable.h"
 #include "rendering/VE_Pipeline.h"
 #include "rendering/pipelineS/VE_GraphicalPipelineCtx.h"
 
 
 /*@brief base class of graphica pipeline*/
-class VE_GraphicalPipeline : public VE_Pipeline
+class VE_CORE_LIB VE_GraphicalPipeline : public VE_Pipeline
 {
 public:explicit 
 	VE_GraphicalPipeline(const VE_DeviceContext& a_ctxt, const std::string_view& a_cacheFile);

@@ -11,7 +11,11 @@
 #include <vulkan/vulkan.hpp>
 #include "utils/VulkanContext.h"
 #include "notCopiable.h"
+#include "core_globals.h"
 
+
+#pragma warning(push)
+#pragma warning(disable:4251) // disable warning for dll export/import
 
 struct ShaderFile
 {
@@ -26,7 +30,7 @@ struct ShaderFile
 *   3 - createDescriptorLayouts
 *   4 - createDescriptorSets 
 */
-class VE_Shader : public VulkanObject<VE_DeviceContext>
+class VE_CORE_LIB VE_Shader : public VulkanObject<VE_DeviceContext>
 {
     friend class VE_ShadersDatabase;
 private:
@@ -58,3 +62,4 @@ public:
     void addDescriptorSetBinding(const int a_setIndex, const VkDescriptorSetLayoutBinding& a_binding);
     void createDescriptorLayouts();
 };
+#pragma warning(pop)
