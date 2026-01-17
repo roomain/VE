@@ -1,9 +1,10 @@
 #include "pch.h"
 #include <functional>
-#include "rendering/pipelines/VE_GraphicalPipeline.h"
+#include "rendering/VE_Pipeline.h"
 #include "rendering/VE_RenderGraphTask.h"
 #include "rendering/components/VE_IComponent.h"
 #include "utils/VulkanCmdInitializers.h"
+#include "VE_CommandBuffer.h"
 
 VE_IRenderGraphTask::VE_IRenderGraphTask(TaskSynchroPtr a_pSynchro) : TGroupedTaskInstance<VE_RenderingScenePtr>{ a_pSynchro }
 {
@@ -43,10 +44,10 @@ bool VE_RenderGraphTask::processComponent(const VE_RenderingScenePtr& a_renderin
     
     if (auto cmpPtr = a_component.lock())
     {
-        if (cmpPtr->hasFlag<RenderingFlagBit::IS_RENDERING>() && !cmpPtr->hasFlag<RenderingFlagBit::IS_EDITABLE>())
+        if (cmpPtr->hasFlag<RenderingFlagBit::IS_RENDERING>() && !cmpPtr->hasFlag<RenderingFlagBit::IS_EDITABLE>() && m_cmdBuffer)
         {
             a_bufferInit();
-            cmpPtr->writeCommands(m_cmdBuffer, a_renderingScene->sceneContext);
+            cmpPtr->writeCommands(m_cmdBuffer->get(), a_renderingScene->sceneContext);
         }
         return true;
     }
@@ -69,7 +70,7 @@ void VE_RenderGraphTask::process(const VE_RenderingScenePtr& a_renderingScene)
 {
     std::scoped_lock lockPipelineList(m_pipelineListProtect);
    
-    if (m_cmdBuffer == VK_NULL_HANDLE)
+    if (m_cmdBuffer.get() == nullptr)
         return;
     
     VkCommandBufferBeginInfo cmbBeginInfo = Vulkan::Initializers::commandBufferBeginInfo(0, nullptr);
@@ -79,8 +80,8 @@ void VE_RenderGraphTask::process(const VE_RenderingScenePtr& a_renderingScene)
         [this, &cmbBeginInfo]()
         {
             m_noRendering = false;
-            vkResetCommandBuffer(m_cmdBuffer, 0);
-            vkBeginCommandBuffer(m_cmdBuffer, &cmbBeginInfo);
+            vkResetCommandBuffer(m_cmdBuffer->get(), 0);
+            vkBeginCommandBuffer(m_cmdBuffer->get(), &cmbBeginInfo);
         }
     };
 
@@ -93,7 +94,7 @@ void VE_RenderGraphTask::process(const VE_RenderingScenePtr& a_renderingScene)
                 std::vector<uint32_t> listToRemove;
                 auto&& lock = a_pipeline->scopeLock();
 
-                a_pipeline->bind(m_cmdBuffer);
+                a_pipeline->bind(m_cmdBuffer->get());
                 for (auto& component : a_componentList)
                 {
                     if (processComponent(a_renderingScene, component, initBuffer))
@@ -113,7 +114,7 @@ void VE_RenderGraphTask::process(const VE_RenderingScenePtr& a_renderingScene)
             std::vector<uint32_t> listToRemove;
             auto&& lock = pipeline->scopeLock();
 
-            pipeline->bind(m_cmdBuffer);
+            pipeline->bind(m_cmdBuffer->get());
             a_renderingScene->componentsPerPipeline.for_each(pipeline, [&](auto& a_component)
                 {
                     if (processComponent(a_renderingScene, a_component, initBuffer))
@@ -126,14 +127,14 @@ void VE_RenderGraphTask::process(const VE_RenderingScenePtr& a_renderingScene)
     }
 
     if(initBuffer.isExecuted())
-        vkEndCommandBuffer(m_cmdBuffer);
+        vkEndCommandBuffer(m_cmdBuffer->get());
 }
 #pragma warning(pop)
 
 void VE_RenderGraphEditTask::process(const VE_RenderingScenePtr& a_renderingScene)
 {
     m_noRendering = true;
-    if (m_cmdBuffer == VK_NULL_HANDLE || !a_renderingScene->hasEditComponent())
+    if (!m_cmdBuffer || !a_renderingScene->hasEditComponent())
         return;
 
     VkCommandBufferBeginInfo cmbBeginInfo = Vulkan::Initializers::commandBufferBeginInfo(0, nullptr);
@@ -143,8 +144,8 @@ void VE_RenderGraphEditTask::process(const VE_RenderingScenePtr& a_renderingScen
         [this, &cmbBeginInfo]()
         {
             m_noRendering = false;
-            vkResetCommandBuffer(m_cmdBuffer, 0);
-            vkBeginCommandBuffer(m_cmdBuffer, &cmbBeginInfo);
+            vkResetCommandBuffer(m_cmdBuffer->get(), 0);
+            vkBeginCommandBuffer(m_cmdBuffer->get(), &cmbBeginInfo);
         }
     };
 
@@ -158,17 +159,17 @@ void VE_RenderGraphEditTask::process(const VE_RenderingScenePtr& a_renderingScen
             if (pipeline != component->pipeline())
             {
                 pipeline = component->pipeline();
-                pipeline->bind(m_cmdBuffer);
+                pipeline->bind(m_cmdBuffer->get());
             }
 
             if (component->hasFlag<RenderingFlagBit::IS_RENDERING>())
             {
                 initBuffer();
-                component->writeCommands(m_cmdBuffer, a_renderingScene->sceneContext);
+                component->writeCommands(m_cmdBuffer->get(), a_renderingScene->sceneContext);
             }
         }
     }
 
     if (initBuffer.isExecuted())
-        vkEndCommandBuffer(m_cmdBuffer);
+        vkEndCommandBuffer(m_cmdBuffer->get());
 }

@@ -228,6 +228,9 @@
     <ClInclude Include="inc\rendering\VE_Camera.h">
       <Filter>Fichiers d%27en-tête\rendering</Filter>
     </ClInclude>
+    <ClInclude Include="inc\VE_CommandBuffer.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Capabilities\VE_Capabilities.cpp">
@@ -298,6 +301,9 @@
     </ClCompile>
     <ClCompile Include="src\memory\Memory.cpp">
       <Filter>Fichiers sources\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VE_CommandBuffer.cpp">
+      <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -3,12 +3,13 @@
 #include <functional>
 #include "rendering/VE_RenderGraph.h"
 #include "VE_GraphicalDevice.h"
+#include "VE_CommandBuffer.h"
 
 
-void VE_RenderGraph::setup(VkQueue a_queue, VE_CommandBuffer&& a_mainCmd)noexcept
+void VE_RenderGraph::setup(VkQueue a_queue, const VE_CommandBufferPtr& a_mainCmd)
 {
 	m_renderQueue = a_queue;
-	m_mainCmdBuffer = std::move(a_mainCmd);
+	m_mainCmdBuffer = a_mainCmd;
 }
 
 bool VE_RenderGraph::setEditTask(const VE_TaskParameters a_taskParameters)
@@ -16,7 +17,7 @@ bool VE_RenderGraph::setEditTask(const VE_TaskParameters a_taskParameters)
 	if (bHasEditTask)
 		return true;
 
-	if ((m_renderQueue != VK_NULL_HANDLE) && (m_mainCmdBuffer.isValid()))
+	if ((m_renderQueue != VK_NULL_HANDLE) && m_mainCmdBuffer)
 	{
 		insertTask<VE_RenderGraphEditTask>(a_taskParameters);
 		bHasEditTask = true;
@@ -27,7 +28,7 @@ bool VE_RenderGraph::setEditTask(const VE_TaskParameters a_taskParameters)
 
 bool VE_RenderGraph::addTasks(const std::vector<VE_TaskParametersEx>& a_tasksParameters)
 {
-	if ((m_renderQueue != VK_NULL_HANDLE) && (m_mainCmdBuffer.isValid()))
+	if ((m_renderQueue != VK_NULL_HANDLE) && m_mainCmdBuffer)
 	{
 		createTasks<VE_RenderGraphTask, VE_TaskParametersEx>(a_tasksParameters);
 		return true;
@@ -43,7 +44,7 @@ void VE_RenderGraph::startProcess()
 
 	// Get active command buffers
 	for (const auto& task : m_vTask | std::views::filter(filter))
-		m_activeBuffer.emplace_back(task->commandBuffer());
+		m_activeBuffer.emplace_back(task->commandBuffer()->get());
 
 	if(m_activeBuffer.empty())
 		return;
@@ -62,11 +63,11 @@ void VE_RenderGraph::startProcess()
 	m_submitInfo = Vulkan::Initializers::submitInfo(parameters);
 
 	if (const auto& sceneContext = m_vTask[0]->data()->sceneContext)
-		vkCmdSetViewport(m_mainCmdBuffer.get(), 0, 1, &sceneContext->viewport);
+		vkCmdSetViewport(m_mainCmdBuffer->get(), 0, 1, &sceneContext->viewport);
 }
 
 void VE_RenderGraph::finishProcess()
 {
-	if ((m_mainCmdBuffer.isValid()) && (m_renderQueue != VK_NULL_HANDLE))
+	if (m_mainCmdBuffer && (m_renderQueue != VK_NULL_HANDLE))
 		VK_CHECK_LOG(vkQueueSubmit(m_renderQueue, 1, &m_submitInfo, VK_NULL_HANDLE))
 }

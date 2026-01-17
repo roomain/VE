@@ -17,6 +17,9 @@
 
 using CmdBufferGenerator = std::function<VkCommandBuffer()>;
 
+class VE_CommandBuffer;
+using VE_CommandBufferPtr = std::shared_ptr<VE_CommandBuffer>;
+
 /*@brief Manage rendering in multiple threads*/
 class VE_RenderGraph : public TGroupedTaskManager<VE_RenderingScenePtr, VE_IRenderGraphTask>
 {
@@ -24,7 +27,7 @@ private:
     bool bHasEditTask = false;                          /*!< has an edition task in position 0*/
     VkQueue m_renderQueue = VK_NULL_HANDLE;             /*!< render queue*/
     VkSubmitInfo m_submitInfo{};                        /*!< submit information*/
-    VE_CommandBuffer m_mainCmdBuffer;                   /*!< command buffer managed by task manager*/
+    VE_CommandBufferPtr m_mainCmdBuffer;                /*!< command buffer managed by task manager*/
     std::vector<VkCommandBuffer> m_activeBuffer;        /*!< buffer used for rendering*/
 
 protected:
@@ -34,7 +37,7 @@ protected:
 public:
     VE_RenderGraph() = default;
     ~VE_RenderGraph() override = default;
-    void setup(VkQueue a_queue, VE_CommandBuffer&& a_mainCmd)noexcept;
+    void setup(VkQueue a_queue, const VE_CommandBufferPtr& a_mainCmd);
     [[nodiscard]] inline VkQueue renderQueue()const { return m_renderQueue; }
     [[nodiscard]] bool setEditTask(const VE_TaskParameters a_taskParameters);
     [[nodiscard]] bool addTasks(const std::vector<VE_TaskParametersEx>& a_tasksParameters);

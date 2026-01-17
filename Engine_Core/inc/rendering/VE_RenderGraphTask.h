@@ -17,13 +17,16 @@
 #include "TOnlyOneTime.h"
 
 class VE_RenderGraph;
+class VE_CommandBuffer;
+class VE_Pipeline;
 
-using InitBufferAction = std::function<void()>;
+using InitBufferAction = std::function<void()>; 
+using VE_CommandBufferPtr = std::shared_ptr<VE_CommandBuffer>;
 
 struct VE_TaskParameters
 {
     VE_RenderingScenePtr sharedData;
-    VkCommandBuffer workingBuffer;
+    VE_CommandBufferPtr workingBuffer;
 };
 
 struct VE_TaskParametersEx : public VE_TaskParameters
@@ -35,17 +38,17 @@ struct VE_TaskParametersEx : public VE_TaskParameters
 class VE_IRenderGraphTask : public TGroupedTaskInstance<VE_RenderingScenePtr>
 {
 protected:
-    VkCommandBuffer m_cmdBuffer = VK_NULL_HANDLE;       /*!< command buffer managed by task manager*/
-    bool m_noRendering = true;                          /*! indicate if no rendering eg no data to process*/
+    VE_CommandBufferPtr m_cmdBuffer;       /*!< command buffer managed by task manager*/
+    bool m_noRendering = true;             /*! indicate if no rendering eg no data to process*/
 
 public:
     explicit VE_IRenderGraphTask(TaskSynchroPtr a_pSynchro);
     explicit VE_IRenderGraphTask(TaskSynchroPtr a_synchro, const VE_TaskParameters& a_parameters);
     virtual ~VE_IRenderGraphTask() = default;
-    void setCmdBuffer(VkCommandBuffer a_cmdBuffer) { m_cmdBuffer = a_cmdBuffer; }
+    void setCmdBuffer(const VE_CommandBufferPtr& a_cmdBuffer) { m_cmdBuffer = a_cmdBuffer; }
     [[nodiscard]] bool noRendering()const { return m_noRendering; }
     virtual void process(const VE_RenderingScenePtr& a_data) = 0;
-    [[nodiscard]] VkCommandBuffer commandBuffer()const { return m_cmdBuffer; }
+    [[nodiscard]] VE_CommandBufferPtr commandBuffer()const { return m_cmdBuffer; }
 };
 
 class VE_RenderGraphTask : public VE_IRenderGraphTask

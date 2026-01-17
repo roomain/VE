@@ -211,6 +211,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters $(ProjectDir)inc\rendering\pipeline
     <ClInclude Include="inc\utils\Vulkan_macros.h" />
     <ClInclude Include="inc\utils\vulkan_string_to_enum.h" />
     <ClInclude Include="inc\VE_Application.h" />
+    <ClInclude Include="inc\VE_CommandBuffer.h" />
     <ClInclude Include="inc\VE_Device.h" />
     <ClInclude Include="inc\VE_FwdDecl.h" />
     <ClInclude Include="inc\VE_GraphicalDevice.h" />
@@ -237,6 +238,7 @@ reflectGen.py -i $(ProjectDir)inc\parameters $(ProjectDir)inc\rendering\pipeline
     <ClCompile Include="src\rendering\VE_ShadersDatabase.cpp" />
     <ClCompile Include="src\rendering\VE_UniformSampler.cpp" />
     <ClCompile Include="src\VE_Application.cpp" />
+    <ClCompile Include="src\VE_CommandBuffer.cpp" />
     <ClCompile Include="src\VE_Device.cpp" />
     <ClCompile Include="src\VE_GraphicalDevice.cpp" />
     <ClCompile Include="src\VE_QueueFamily.cpp" />
