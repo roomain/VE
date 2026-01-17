@@ -3,12 +3,6 @@
 #include "VE_Application.h"
 #include "enumerate.h"
 
-VE_InstanceCapabilities VE_Application::m_capabilities;
-
-const VE_InstanceCapabilities& VE_Application::capabilities()
-{
-	return VE_Application::m_capabilities;
-}
 
 VkBool32 VE_Application::debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT a_messageSeverity,
 	VkDebugUtilsMessageTypeFlagsEXT /*a_messageTypes*/,
@@ -37,7 +31,7 @@ VE_Application::VE_Application(const VE_Parameter& a_parameter, const CreateSurf
 	m_surfaceCreateCallback{ a_surfCreate }
 {
 	auto appInfo = Vulkan::Initializers::applicationInfo("VulkanEngine", 0, "VulkanEngine", 
-		ENGINE_VERSION, VK_API_VERSION_1_3);
+		ENGINE_VERSION);
 	auto instanceInfo = Vulkan::Initializers::instanceCreateInfo(&appInfo);
 	instanceInfo.enabledLayerCount = static_cast<uint32_t>(a_parameter.layers.size());
 	auto tempLayers = vStringToChar(a_parameter.layers);
@@ -140,7 +134,7 @@ std::shared_ptr<VE_GraphicalDevice> VE_Application::createGraphicalDevice(const 
 			int presentationQueueFamilyIndex = -1;
 			createVulkanDevice(devCtxt, availableQueueFamilies, presentationQueueFamilyIndex, chosenIndex, a_devParameters, surface);
 			// because ctor is private
-			device = std::shared_ptr<VE_GraphicalDevice>(new VE_GraphicalDevice(devCtxt, availableQueueFamilies, surface, presentationQueueFamilyIndex));
+			device = std::shared_ptr<VE_GraphicalDevice>(new VE_GraphicalDevice(m_capabilities, devCtxt, availableQueueFamilies, surface, presentationQueueFamilyIndex));
 			m_graphicalDevices.emplace_back(device);
 		}
 	}

@@ -7,10 +7,10 @@
 
 //---------------------------------------------------------------------------------------------------------
 
-VE_QueueFamily::VE_QueueFamily(const uint32_t a_queueFamilyIndex, const VE_DeviceContext& a_ctxt) :
+VE_QueueFamily::VE_QueueFamily(const VE_InstanceCapabilities& a_capabilities, const uint32_t a_queueFamilyIndex, const VE_DeviceContext& a_ctxt) :
 	VulkanObject<VE_DeviceContext>(a_ctxt), m_familyIndex{ a_queueFamilyIndex }
 {
-	auto queue = (VE_Application::capabilities().deviceBegin() + a_ctxt.m_deviceIndex)->queueBegin() + a_queueFamilyIndex;
+	auto queue = (a_capabilities.deviceBegin() + a_ctxt.m_deviceIndex)->queueBegin() + a_queueFamilyIndex;
 	m_numQueueAvailable = queue->queueCount;
 	m_familyFlag = queue->queueFlags;
 }

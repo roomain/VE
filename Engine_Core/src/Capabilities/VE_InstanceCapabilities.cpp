@@ -4,16 +4,16 @@
 #include "Capabilities/VE_InstanceCapabilities.h"
 #include "enumerate.h"
 
-VE_InstanceCapabilities::VE_InstanceCapabilities() : VE_Capabilities()
+void VE_InstanceCapabilities::readCapabilities()
 {
 	enumerate(&vkEnumerateInstanceExtensionProperties, m_extensions, nullptr);
 	enumerate(&vkEnumerateInstanceLayerProperties, m_layers);
 
-	auto appInfo = Vulkan::Initializers::applicationInfo("VulkanEngine", 0, "VulkanEngine", 0,VK_API_VERSION_1_3);
+	auto appInfo = Vulkan::Initializers::applicationInfo("VulkanEngine", 0, "VulkanEngine", 0);
 	auto instanceInfo = Vulkan::Initializers::instanceCreateInfo(&appInfo);
 	VkInstance tempInstance;
 	VK_CHECK_EXCEPT(vkCreateInstance(&instanceInfo, nullptr, &tempInstance))
-	readCapabilities(tempInstance);	
+	readCapabilities(tempInstance);
 	vkDestroyInstance(tempInstance, nullptr);
 }
 

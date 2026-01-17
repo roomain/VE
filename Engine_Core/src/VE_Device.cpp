@@ -19,6 +19,9 @@ void VE_Device::createMemoryAllocator()
 		.vkGetDeviceProcAddr = vkGetDeviceProcAddr
 	};
 
+	uint32_t apiVersion = VK_API_VERSION_1_0;
+	vkEnumerateInstanceVersion(&apiVersion);
+
 	VmaAllocatorCreateInfo vmaInfo
 	{
 		.flags = VMA_ALLOCATOR_CREATE_EXT_MEMORY_BUDGET_BIT | VMA_ALLOCATOR_CREATE_AMD_DEVICE_COHERENT_MEMORY_BIT |
@@ -32,18 +35,18 @@ void VE_Device::createMemoryAllocator()
 		.pHeapSizeLimit = 0,
 		.pVulkanFunctions = &vulkanFunctions,
 		.instance = m_vkCtxt.m_instance,
-		.vulkanApiVersion = VK_API_VERSION_1_3
+		.vulkanApiVersion = apiVersion
 	};
 
 	VK_CHECK_EXCEPT(vmaCreateAllocator(&vmaInfo, &m_vkCtxt.m_memAllocator))
 }
 
-VE_Device::VE_Device(const VE_DeviceContext& a_context, const std::vector<int>& a_queueFamilies) :
+VE_Device::VE_Device(const VE_InstanceCapabilities& a_capabilities, const VE_DeviceContext& a_context, const std::vector<int>& a_queueFamilies) :
 	VulkanObject<VE_DeviceContext>{ a_context }
 {
 	// create queue family
 	for (const auto& familyIndex : a_queueFamilies)
-		m_queues.emplace_back(familyIndex, m_vkCtxt);
+		m_queues.emplace_back(a_capabilities, familyIndex, m_vkCtxt);
 
 	createMemoryAllocator();
 }

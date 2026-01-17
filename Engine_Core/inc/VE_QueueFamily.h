@@ -14,6 +14,7 @@
 #pragma warning(push)
 #pragma warning( disable : 4251 )
 
+class VE_InstanceCapabilities;
 class VE_CommandBuffer;
 using VE_CommandBufferPtr = std::shared_ptr<VE_CommandBuffer>;
 
@@ -32,7 +33,7 @@ private:
 	std::vector<VkFence> m_waitFences;				/*!< instanciated fence*/
 
 public:
-	explicit VE_QueueFamily(const uint32_t a_queueFamilyIndex, const VE_DeviceContext& a_ctxt);
+	explicit VE_QueueFamily(const VE_InstanceCapabilities& a_capabilities, const uint32_t a_queueFamilyIndex, const VE_DeviceContext& a_ctxt);
 	~VE_QueueFamily() override;
 	[[nodiscard]] VkCommandPool commandPool();
 	[[nodiscard]] VkQueueFlags familyFlag()const noexcept;

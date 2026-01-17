@@ -9,6 +9,7 @@
 #include "core_globals.h"
 
 class VE_SwapChain;
+class VE_InstanceCapabilities;
 
 #pragma warning(push)
 #pragma warning(disable:4251) // disable warning for dll export/import
@@ -21,7 +22,7 @@ private:
 	int32_t m_presentationQueueIndex = -1;		/*!< presentation queue index*/
 	VkSurfaceKHR m_surface = VK_NULL_HANDLE;
 
-	explicit VE_GraphicalDevice(const VE_DeviceContext& a_context, const std::vector<int>& a_queueFamilies, 
+	explicit VE_GraphicalDevice(const VE_InstanceCapabilities& a_capabilities, const VE_DeviceContext& a_context, const std::vector<int>& a_queueFamilies,
 		VkSurfaceKHR a_surface, const int a_presentQueueIndex);
 
 	[[nodiscard]] std::shared_ptr<VE_SwapChain> createNewSwapChain();

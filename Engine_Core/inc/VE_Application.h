@@ -37,8 +37,8 @@ private:
         const VkDebugUtilsMessengerCallbackDataEXT* a_pCallbackData,
         [[maybe_unused]] void* a_pUserData);
 #pragma endregion
-    static VE_InstanceCapabilities m_capabilities;                      /*!< capabilities*/
-    CreateSurfaceCallback m_surfaceCreateCallback;                      /*!< surface creation callback depends of windows manager*/
+    VE_InstanceCapabilities m_capabilities;                      /*!< capabilities*/
+    CreateSurfaceCallback m_surfaceCreateCallback;               /*!< surface creation callback depends of windows manager*/
 
     template<typename ChoiceFun> requires std::is_base_of_v<DeviceChoice, ChoiceFun>
     int chooseDevice(const ChoiceFun& a_chooseFun, const VE_DeviceParameter& a_devParameters, const VkSurfaceKHR a_surface = VK_NULL_HANDLE)const
@@ -59,10 +59,10 @@ private:
     void createVulkanDevice(VE_DeviceContext& a_ctxt, std::vector<int>& a_useQueuesFamilies, int& a_presentFamQueueIndex, const int a_devIndex, const VE_DeviceParameter& a_devParameters, VkSurfaceKHR a_surface = VK_NULL_HANDLE)const;
 
 public:
-    VE_Application(const VE_Parameter& a_parameter, const CreateSurfaceCallback a_surfCreate = nullptr);
+    explicit VE_Application(const VE_Parameter& a_parameter, const CreateSurfaceCallback a_surfCreate = nullptr);
     virtual ~VE_Application();
 
-    [[nodiscard]] static const VE_InstanceCapabilities& capabilities();
+	[[nodiscard]] const VE_InstanceCapabilities& capabilities()const { return m_capabilities; }
 
     [[nodiscard]] uint32_t numGraphicalDevices()const noexcept;
     [[nodiscard]] std::shared_ptr<VE_GraphicalDevice> createGraphicalDevice(const DeviceChoice& a_choice, const VE_DeviceParameter& a_devParameters);

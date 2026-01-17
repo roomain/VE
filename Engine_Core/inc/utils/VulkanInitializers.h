@@ -59,9 +59,11 @@ namespace Vulkan::Initializers
 		};
 	}
 
-	[[nodiscard]] constexpr VkApplicationInfo applicationInfo(const char* a_appName, const uint32_t a_appVersion, 
-		const char* a_engineName, const uint32_t a_engineVersion, const uint32_t a_apiVersion)
+	[[nodiscard]] inline VkApplicationInfo applicationInfo(const char* a_appName, const uint32_t a_appVersion, 
+		const char* a_engineName, const uint32_t a_engineVersion)
 	{
+		uint32_t apiVersion = VK_API_VERSION_1_0;
+		vkEnumerateInstanceVersion(&apiVersion);
 		return VkApplicationInfo{ 
 			.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO, 
 			.pNext = nullptr,
@@ -69,7 +71,7 @@ namespace Vulkan::Initializers
 			.applicationVersion = a_appVersion,
 			.pEngineName = a_engineName,
 			.engineVersion = a_engineVersion,
-			.apiVersion = a_apiVersion
+			.apiVersion = apiVersion
 		};
 	}
 

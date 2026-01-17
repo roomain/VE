@@ -64,6 +64,15 @@ int deviceChoice(const std::vector<int>&)
 
 int main()
 {
+	// get vulkan api version
+	uint32_t apiVersion = VK_API_VERSION_1_0;
+	vkEnumerateInstanceVersion(&apiVersion);
+	std::cout << "Vulkan API Version: " 
+		<< VK_VERSION_MAJOR(apiVersion) << "." 
+		<< VK_VERSION_MINOR(apiVersion) << "." 
+		<< VK_VERSION_PATCH(apiVersion) << std::endl;
+
+
 	// load configuration
 	loadConfiguration();
 
@@ -73,7 +82,9 @@ int main()
 
 	// get capabilities
     CapabilitiesVisitor capVisitor;
-    VE_Application::capabilities().visit(capVisitor);
+	VE_InstanceCapabilities capabilities;
+	capabilities.readCapabilities();
+	capabilities.visit(capVisitor);
 
 	initGLFW();
 	GLFWwindow* window = glfwCreateWindow(800, 800, "GLFW Vulkan", nullptr, nullptr);

@@ -14,7 +14,7 @@
 
 #pragma warning(push)
 #pragma warning(disable:4251) // disable warning for dll export/import
-
+class VE_InstanceCapabilities;
 
 class VE_CORE_LIB VE_Device : public VulkanObject<VE_DeviceContext>
 {
@@ -24,10 +24,10 @@ protected:
 	std::vector<VE_QueueFamily>	m_queues; /*!< queues availables/used by device*/
 
 	void createMemoryAllocator();
-	explicit VE_Device(const VE_DeviceContext& a_context, const std::vector<int>& a_queueFamilies);
+	explicit VE_Device(const VE_InstanceCapabilities& a_capabilities, const VE_DeviceContext& a_context, const std::vector<int>& a_queueFamilies);
 
 public:
-	virtual ~VE_Device() override;
+	virtual ~VE_Device();
 	DEFINE_ITER(std::vector<VE_QueueFamily>, m_queues)
 	DEFINE_CONST_ITER(std::vector<VE_QueueFamily>, m_queues)
 		
