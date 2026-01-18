@@ -20,7 +20,7 @@ struct VE_GraphicalPipelineCtx
 	REFLECT_MEMBER
 	uint32_t m_viewportCount = 1;									/*!< viewport count*/
 	REFLECT_MEMBER
-	uint32_t m_scissorCount = 1;									/*!< scissor counr*/
+	uint32_t m_scissorCount = 1;									/*!< scissor count*/
 	REFLECT_MEMBER
 	VkBool32 m_blendEnable = VK_FALSE;
 	REFLECT_MEMBER
